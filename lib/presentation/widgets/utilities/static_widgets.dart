@@ -1,0 +1,75 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_take/constants/api.dart';
+import 'package:share_take/constants/enums.dart';
+import 'package:share_take/constants/theme/theme_colors.dart';
+
+import '../../../constants/proxy.dart';
+
+
+class StaticWidgets {
+  static void showSnackBar(BuildContext context, String message,
+      {TimeDuration duration = TimeDuration.short}) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: ThemeColors.orange.shade400,
+      duration: ProxyConstants.getTimeDurationValue(duration),
+    );
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+  }
+
+  static Future showCustomDialog({required BuildContext context, required Widget child}) async {
+    await showDialog(
+      barrierColor: ThemeColors.orange.withOpacity(0.3),
+      context: context,
+      builder: (context) {
+        return child;
+      },
+    );
+  }
+
+  // static Widget getIcon({required IconName name, double? width, double? height, Color? color}) {
+  //   String path = StaticPaths.getIconPath(name);
+  //
+  //   if (path.contains("png")) {
+  //     return Image(
+  //       image: AssetImage(
+  //         path,
+  //       ),
+  //       width: width,
+  //       height: height,
+  //       color: color,
+  //     );
+  //   } else {
+  //     return SvgPicture.asset(
+  //       path,
+  //       width: width,
+  //       height: height,
+  //       color: color,
+  //     );
+  //   }
+  // }
+
+  static Widget getIconRemote(
+      {required String relativePath, double? width, double? height, Color? color}) {
+    String path = ApiConstants.host + relativePath;
+    try{
+      return Image.network(
+        path,
+        width: width,
+        height: height,
+        color: color,
+        errorBuilder: (context, error, trace) {
+          return SvgPicture.network(path, width: width, height: height, color: color,);
+        },
+      );
+    } catch(e) {
+      return const SizedBox.shrink();
+    }
+  }
+
+}
