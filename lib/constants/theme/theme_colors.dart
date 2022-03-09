@@ -26,6 +26,15 @@ class ThemeColors {
         600: const Color(0xFFC38000),
       }
   );
+
+  static const MaterialColor brown = MaterialColor(
+      0xFFF6A100,
+      const <int, Color> {
+        400: const Color(0xFFB46D02),
+        500: const Color(0xFF925901),
+        600: const Color(0xFF764800),
+      }
+  );
   static const MaterialColor red = MaterialColor(
       0xFFF70015,
       const <int, Color> {
@@ -91,6 +100,9 @@ class ThemeColors {
   static const Color priceCampaign = red;
   static const Color priceEmployee = purple;
   static const Color priceUnknown = red;
+  static const Color primaryColor = orange;
+  static const Color secondaryColor = white;
+  static const Color backgroundColor = blue;
 
   // Overlays
   static const Color modalOverlay = Color(0x80000000);

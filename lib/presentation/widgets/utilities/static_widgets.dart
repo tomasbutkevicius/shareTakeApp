@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:share_take/constants/api.dart';
 import 'package:share_take/constants/enums.dart';
+import 'package:share_take/constants/static_paths.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
 
 import '../../../constants/proxy.dart';
@@ -15,7 +16,7 @@ class StaticWidgets {
     final snackBar = SnackBar(
       content: Text(message),
       backgroundColor: ThemeColors.orange.shade400,
-      duration: ProxyConstants.getTimeDurationValue(duration),
+      duration: StaticProxy.getTimeDurationValue(duration),
     );
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -32,27 +33,28 @@ class StaticWidgets {
     );
   }
 
-  // static Widget getIcon({required IconName name, double? width, double? height, Color? color}) {
-  //   String path = StaticPaths.getIconPath(name);
-  //
-  //   if (path.contains("png")) {
-  //     return Image(
-  //       image: AssetImage(
-  //         path,
-  //       ),
-  //       width: width,
-  //       height: height,
-  //       color: color,
-  //     );
-  //   } else {
-  //     return SvgPicture.asset(
-  //       path,
-  //       width: width,
-  //       height: height,
-  //       color: color,
-  //     );
-  //   }
-  // }
+
+  static Widget getIcon({required IconName name, double? width, double? height, Color? color}) {
+    String path = StaticPaths.getIconPath(name);
+
+    if (path.contains("png")) {
+      return Image(
+        image: AssetImage(
+          path,
+        ),
+        width: width,
+        height: height,
+        color: color,
+      );
+    } else {
+      return SvgPicture.asset(
+        path,
+        width: width,
+        height: height,
+        color: color,
+      );
+    }
+  }
 
   static Widget getIconRemote(
       {required String relativePath, double? width, double? height, Color? color}) {

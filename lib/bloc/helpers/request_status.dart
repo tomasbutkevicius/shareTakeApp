@@ -7,9 +7,7 @@ class RequestStatusInitial extends RequestStatus {
   const RequestStatusInitial();
 }
 
-class RequestStatusGetting extends RequestStatus {}
-
-class RequestStatusPosting extends RequestStatus {}
+class RequestStatusLoading extends RequestStatus {}
 
 class RequestStatusError extends RequestStatus {
   final String message;
