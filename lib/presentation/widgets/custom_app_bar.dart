@@ -11,7 +11,7 @@ class CustomAppBar {
       }) {
     return AppBar(
       shadowColor: ThemeColors.white.withOpacity(0.5),
-      backgroundColor: ThemeColors.blue,
+      backgroundColor: ThemeColors.brown.shade600,
       leading: showBackBtn ? _backButton(context) : SizedBox.shrink(),
       title: showTitle ? const Center(
         child: AppTitleTextWidget(),

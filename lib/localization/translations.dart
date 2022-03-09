@@ -36,6 +36,10 @@ class Translations {
     return tr("logout");
   }
   
+  static String get login {
+    return tr("login");
+  }
+  
 
 
 }
