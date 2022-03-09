@@ -47,8 +47,8 @@ class ProxyButtonWidget extends StatelessWidget {
         foregroundColor: MaterialStateProperty.all<Color>(ThemeColors.white),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(padding),
         textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
-          fontSize: ProxyConstants.getFontSize(fontSize),
-          fontWeight: ProxyConstants.getFontWeight(fontWeight),
+          fontSize: StaticProxy.getFontSize(fontSize),
+          fontWeight: StaticProxy.getFontWeight(fontWeight),
         )),
       ),
     );
