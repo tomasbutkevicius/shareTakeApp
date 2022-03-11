@@ -26,7 +26,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
       languageSelectionBloc.add(
         LanguageSwitchEvent(
-          StaticLocalization.languageCodeLithuanian,
+          StaticLocalization.languageCodeEnglish,
           event.context,
         ),
       );

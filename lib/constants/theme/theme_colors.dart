@@ -92,7 +92,7 @@ class ThemeColors {
   static const Color grey = Color(0xFFDDDDDD);
   static const Color dark_grey = Color(0xFFAFAFAF);
   static const Color darker_grey = Color(0xFF777777);
-  static const Color black = Color(0xFF333333);
+  static const Color black = Color(0xFF000000);
 
   // Price colors.
   static const Color priceRegular = black;

@@ -1,6 +1,9 @@
+import 'package:share_take/data/models/response/book_response.dart';
+
+
 class Book {
-  final int id;
-  final String? isbn;
+  final String id;
+  final int? isbn;
   final String title;
   final String? subtitle;
   final List<String> authors;
@@ -22,4 +25,21 @@ class Book {
     required this.publishDate,
     required this.description,
   });
+
+  factory Book.fromResponse(BookResponse response, String imageUrl) {
+
+    return Book(
+      id: response.id,
+      isbn: response.isbn,
+      title: response.title,
+      subtitle: response.subtitle,
+      authors: response.authors,
+      imageUrl: imageUrl,
+      language: response.language,
+      pages: response.pages,
+      publishDate: response.publishDate,
+      description: response.description,
+    );
+  }
+
 }
