@@ -12,7 +12,7 @@ part 'language_selection_event.dart';
 part 'language_selection_state.dart';
 
 class LanguageSelectionBloc extends Bloc<LanguageSelectionEvent, LanguageSelectionState> {
-  LanguageSelectionBloc() : super(const LanguageSelectionState(languageCode: StaticLocalization.languageCodeLithuanian),){
+  LanguageSelectionBloc() : super(const LanguageSelectionState(languageCode: StaticLocalization.languageCodeEnglish),){
     on<LanguageSwitchEvent>((event, emit) async {
       try {
         await event.context.setLocale(Locale(event.languageCode));

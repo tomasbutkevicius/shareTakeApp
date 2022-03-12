@@ -6,6 +6,7 @@ import 'package:share_take/constants/api.dart';
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_paths.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
+import 'package:share_take/data/firebase_storage.dart';
 
 import '../../../constants/proxy.dart';
 
@@ -24,6 +25,7 @@ class StaticWidgets {
   }
 
   static Future showCustomDialog({required BuildContext context, required Widget child}) async {
+
     await showDialog(
       barrierColor: ThemeColors.orange.withOpacity(0.3),
       context: context,
@@ -57,8 +59,7 @@ class StaticWidgets {
   }
 
   static Widget getIconRemote(
-      {required String relativePath, double? width, double? height, Color? color}) {
-    String path = ApiConstants.host + relativePath;
+      {required String path, double? width, double? height, Color? color, Widget errorWidget = const SizedBox.shrink()}) {
     try{
       return Image.network(
         path,
@@ -70,7 +71,7 @@ class StaticWidgets {
         },
       );
     } catch(e) {
-      return const SizedBox.shrink();
+      return errorWidget;
     }
   }
 

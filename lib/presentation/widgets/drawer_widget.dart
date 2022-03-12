@@ -21,7 +21,7 @@ class DrawerWidget extends StatelessWidget {
 
     return Drawer(
       child: Material(
-        color: ThemeColors.blue,
+        color: ThemeColors.brown.shade600,
         child: ListView(
           padding: padding,
           children: [
@@ -52,8 +52,8 @@ class DrawerWidget extends StatelessWidget {
               size: ProxySpacing.small,
             ),
             _buildMenuItemIconData(
-              text: Translations.logout,
-              iconData: Icons.logout,
+              text: Translations.login,
+              iconData: Icons.login,
               onTap: () {
                 context.read<AuthenticationBloc>().add(LoggedOutEvent());
                 StaticNavigator.popUntilFirstRoute(context);
@@ -95,7 +95,7 @@ class DrawerWidget extends StatelessWidget {
   Widget _buildMenuItemIconData(
       {required String text, required IconData iconData, required GestureTapCallback onTap}) {
     const color = ThemeColors.white;
-    const iconColor = ThemeColors.orange;
+    const iconColor = ThemeColors.white;
 
 
     return ListTile(

@@ -6,5 +6,6 @@
   "emailPasswordCannotBeEmpty": "Email and Password cannot be empty",
   "wish_list": "Wishes",
   "your_offers": "You Offer",
-  "logout": "logout"
+  "logout": "Logout",
+  "login": "Login"
 }

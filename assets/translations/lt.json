@@ -1,10 +1,11 @@
 {
-  "hint_text": "Tekstas",
-  "go_back": "Atgal",
-  "invalid_route": "Nerastas puslapis",
+  "hint_text": "Your text",
+  "go_back": "Go back",
+  "invalid_route": "Invalid route",
   "app_title": "Share Take",
   "emailPasswordCannotBeEmpty": "Email and Password cannot be empty",
   "wish_list": "Wishes",
   "your_offers": "You Offer",
-  "logout": "logout"
+  "logout": "Logout",
+  "login": "Login"
 }
