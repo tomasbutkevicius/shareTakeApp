@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/data/models/book/book.dart';
-import 'package:share_take/data/models/user/user.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
 
 part 'book_event.dart';
@@ -49,5 +49,5 @@ class BookBloc extends Bloc<BookEvent, BookState> {
     );
   }
 
-  User? get user => authenticationBloc.state.user;
+  UserLocal? get user => authenticationBloc.state.user;
 }

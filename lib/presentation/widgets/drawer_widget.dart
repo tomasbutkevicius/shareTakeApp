@@ -30,6 +30,28 @@ class DrawerWidget extends StatelessWidget {
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.extraLarge,
             ),
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                bool isLoggedIn = state.user != null;
+                if(isLoggedIn) {
+                  return _buildMenuItemIconData(
+                    text: state.user!.email,
+                    iconData: Icons.verified_user,
+                    onTap: () {
+
+                    },
+                  );
+                }
+                return _buildMenuItemIconData(
+                  text: "Not logged in",
+                  iconData: Icons.supervised_user_circle_sharp,
+                  onTap: () {
+
+                  },
+                );
+              },
+            ),
+            _buildDivider(),
             _buildMenuItemIconData(
               text: Translations.wishList,
               iconData: Icons.favorite,
@@ -58,7 +80,7 @@ class DrawerWidget extends StatelessWidget {
                 bool isLoggedIn = state.user != null;
 
                 if(state.status is RequestStatusLoading){
-                  return CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 return _buildMenuItemIconData(
@@ -68,7 +90,6 @@ class DrawerWidget extends StatelessWidget {
                     if (isLoggedIn) {
                       context.read<AuthenticationBloc>().add(AuthLoggedOutEvent());
                       StaticNavigator.popContext(context);
-                      StaticNavigator.popUntilFirstRoute(context);
                       StaticNavigator.pushLoginScreen(context);
                     } else {
                       StaticNavigator.popContext(context);

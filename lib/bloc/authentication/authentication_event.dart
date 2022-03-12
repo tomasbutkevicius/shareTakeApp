@@ -48,7 +48,7 @@ class AuthRemindPasswordEvent extends AuthenticationEvent {
 class AuthLoggedOutEvent extends AuthenticationEvent {}
 
 class AuthenticationUpdateEvent extends AuthenticationEvent {
-  final User user;
+  final UserLocal user;
 
   const AuthenticationUpdateEvent({
     required this.user,
@@ -56,7 +56,7 @@ class AuthenticationUpdateEvent extends AuthenticationEvent {
 }
 
 class AuthUserDisableFirstTimeLogin extends AuthenticationEvent {
-  final User user;
+  final UserLocal user;
 
   const AuthUserDisableFirstTimeLogin({
     required this.user,

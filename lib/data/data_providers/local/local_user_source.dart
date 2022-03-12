@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:share_take/data/models/user/user.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalUserSource {
@@ -9,9 +9,9 @@ class LocalUserSource {
   static const testUserName = "demo@byl.example.com";
   static const int testUserId = 000;
 
-  Future addUser(User user) async {
+  Future addUser(UserLocal user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<User> oldUserList = await getStoredUsers();
+    List<UserLocal> oldUserList = await getStoredUsers();
     List<Map<String, dynamic>> newUserList = [];
 
     for (var user in oldUserList) {
@@ -25,8 +25,8 @@ class LocalUserSource {
     await prefs.setString(_keyUserList, jsonEncode(newUserList));
   }
 
-  Future<User?> findUserById(int id) async {
-    List<User> oldUserList = await getStoredUsers();
+  Future<UserLocal?> findUserById(int id) async {
+    List<UserLocal> oldUserList = await getStoredUsers();
 
     for (var user in oldUserList) {
       if (user.id == id) {
@@ -38,8 +38,8 @@ class LocalUserSource {
     return null;
   }
 
-  Future<User?> findUserByEmail(String email) async {
-    List<User> oldUserList = await getStoredUsers();
+  Future<UserLocal?> findUserByEmail(String email) async {
+    List<UserLocal> oldUserList = await getStoredUsers();
 
     for (var user in oldUserList) {
       if (user.email == email) {
@@ -51,11 +51,11 @@ class LocalUserSource {
     return null;
   }
 
-  Future updateUser(User user) async {
-    List<User> userList = await getStoredUsers();
+  Future updateUser(UserLocal user) async {
+    List<UserLocal> userList = await getStoredUsers();
     List<Map<String, dynamic>> newUserList = [];
 
-    for (User userInList in userList) {
+    for (UserLocal userInList in userList) {
       if (userInList.id == user.id) {
         userInList = user;
         await setActiveUser(user);
@@ -68,7 +68,7 @@ class LocalUserSource {
     await prefs.setString(_keyUserList, jsonEncode(newUserList));
   }
 
-  Future<List<User>> getStoredUsers() async {
+  Future<List<UserLocal>> getStoredUsers() async {
     print("DB Getting users in local storage");
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -82,10 +82,10 @@ class LocalUserSource {
     } else {
       print("DB Found user list:");
       List<dynamic> userMapList = jsonDecode(rawData) as List<dynamic>;
-      List<User> userList = [];
+      List<UserLocal> userList = [];
 
       for (var userMap in userMapList) {
-        User user = User.fromJson(userMap as Map<String, dynamic>);
+        UserLocal user = UserLocal.fromJson(userMap as Map<String, dynamic>);
         print(user.username);
         userList.add(user);
       }
@@ -94,7 +94,7 @@ class LocalUserSource {
     }
   }
 
-  Future setActiveUser(User user) async {
+  Future setActiveUser(UserLocal user) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString(_keyActiveUser, jsonEncode(user.toJson()));
   }
@@ -104,7 +104,7 @@ class LocalUserSource {
     sharedPreferences.remove(_keyActiveUser);
   }
 
-  Future<User?> getActiveUser() async {
+  Future<UserLocal?> getActiveUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? userRaw = sharedPreferences.getString(_keyActiveUser);
 
@@ -113,29 +113,6 @@ class LocalUserSource {
     }
     print("DB Found active user");
     Map<String, dynamic> jsonUser = jsonDecode(userRaw) as Map<String, dynamic>;
-    return User.fromJson(jsonUser);
-  }
-
-  Future<User> authenticate({required String email, required String password}) async {
-    User? foundUser = await findUserByEmail(email);
-
-    if (foundUser != null) {
-      return foundUser;
-    }
-
-    List<User> users = await getStoredUsers();
-
-    User demoUser = User(
-      id: users.length + 1,
-      token: "demo",
-      username: "demo",
-      email: email,
-      firstName: "demo",
-      lastName: "demo",
-    );
-
-    addUser(demoUser);
-
-    return demoUser;
+    return UserLocal.fromJson(jsonUser);
   }
 }

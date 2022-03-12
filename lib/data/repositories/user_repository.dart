@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_user_source.dart';
-import 'package:share_take/data/models/user/user.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 
 class UserRepository {
   final LocalUserSource _localUserSource;
@@ -8,22 +9,21 @@ class UserRepository {
 
   UserRepository(this._localUserSource, this._remoteUserSource);
 
-  Future<User> authenticate({
+  Future<UserLocal> authenticate({
     required String email,
     required String password,
   }) async {
-    // AuthResponse authResponse =
-    //     await _remoteUserSource.authenticate(email: email, password: password);
+    UserCredential userRemote = await _remoteUserSource.signIn(email: email, password: password);
 
-    User user = await _localUserSource.authenticate(email: email, password: password);
+    UserLocal userLocal = UserLocal.fromUserCredential(userRemote);
 
-    await _localUserSource.setActiveUser(user);
-    return user;
+    await _localUserSource.setActiveUser(userLocal);
+    return userLocal;
   }
 
-  Future<User?> getActiveUser() async {
-    User? user = await _localUserSource.getActiveUser();
-
+  Future<UserLocal?> getActiveUser() async {
+    UserLocal? user = await _localUserSource.getActiveUser();
+    //TODO: Update token
     return user;
   }
 
@@ -31,11 +31,11 @@ class UserRepository {
     _localUserSource.removeActiveUser();
   }
 
-  Future updateLocalUser(User user) async {
+  Future updateLocalUser(UserLocal user) async {
     await _localUserSource.updateUser(user);
   }
 
-  // Future updateRemoteSettings(String token) async {
-  //   await _remoteUserSource.postSettings(token);
-  // }
+// Future updateRemoteSettings(String token) async {
+//   await _remoteUserSource.postSettings(token);
+// }
 }

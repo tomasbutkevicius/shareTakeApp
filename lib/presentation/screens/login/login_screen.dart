@@ -5,6 +5,7 @@ import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
+import 'package:share_take/presentation/router/static_navigator.dart';
 import 'package:share_take/presentation/screens/login/widgets/login_form.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
@@ -34,6 +35,11 @@ class LoginScreen extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          }
+
+          if(state.status is RequestStatusSuccess){
+            BlocGetter.getAuthBloc(context).add(AuthResetStatusEvent());
+            StaticNavigator.popUntilFirstRoute(context);
           }
 
           return Center(

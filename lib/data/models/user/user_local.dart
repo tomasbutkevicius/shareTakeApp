@@ -1,17 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'user.g.dart';
+
+part 'user_local.g.dart';
 
 @JsonSerializable()
-class User extends Equatable {
-  final int id;
+class UserLocal extends Equatable {
+  final String id;
   final String token;
   final String email;
   final String username;
   final String firstName;
   final String lastName;
 
-  const User({
+  const UserLocal({
     required this.id,
     required this.token,
     required this.email,
@@ -20,9 +22,18 @@ class User extends Equatable {
     required this.lastName,
   });
 
+  factory UserLocal.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  static UserLocal fromUserCredential(UserCredential userCredential) {
+    return UserLocal(
+      id: userCredential.user!.uid,
+      token: userCredential.user!.refreshToken!,
+      email: userCredential.user!.email!,
+      username: "",
+      firstName: "",
+      lastName: "",
+    );
+  }
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
@@ -32,10 +43,17 @@ class User extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, token, email, username, firstName, lastName,];
+  List<Object?> get props => [
+        id,
+        token,
+        email,
+        username,
+        firstName,
+        lastName,
+      ];
 
-  User copyWith({
-    int? id,
+  UserLocal copyWith({
+    String? id,
     String? token,
     String? email,
     String? password,
@@ -45,7 +63,7 @@ class User extends Equatable {
     bool? subscriptionActive,
     bool? firstLogin,
   }) {
-    return User(
+    return UserLocal(
       id: id ?? this.id,
       token: token ?? this.token,
       email: email ?? this.email,

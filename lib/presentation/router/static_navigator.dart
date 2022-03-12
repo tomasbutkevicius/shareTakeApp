@@ -59,6 +59,8 @@ class StaticNavigator {
   }
 
   static void popUntilFirstRoute(BuildContext context) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    });
   }
 }

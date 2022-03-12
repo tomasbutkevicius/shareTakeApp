@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/bloc/language_selection/language_selection_bloc.dart';
 import 'package:share_take/constants/static_localization.dart';
-import 'package:share_take/data/models/user/user.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 import 'package:share_take/presentation/router/static_navigator.dart';
 
@@ -32,7 +32,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         ),
       );
 
-      final User? storedUser = await userRepository.getActiveUser();
+      final UserLocal? storedUser = await userRepository.getActiveUser();
 
       if (storedUser != null) {
         emit(
@@ -63,7 +63,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       }
 
       try {
-        User user = await userRepository.authenticate(
+        UserLocal user = await userRepository.authenticate(
           email: event.email.trim(),
           password: event.password.trim(),
         );
@@ -72,7 +72,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           status: const RequestStatusSuccess(message: ""),
           user: user,
         ));
-        StaticNavigator.popUntilFirstRoute(event.context);
       } on Exception catch (exc) {
         emit(state.copyWith(
           status: RequestStatusError(message: exc.toString()),
@@ -89,10 +88,17 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     });
 
     on<AuthLoggedOutEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          user: state.user,
+          status: RequestStatusLoading(),
+        ),
+      );
       await userRepository.logout();
       emit(
         state.copyWith(
           user: null,
+          status: const RequestStatusInitial(),
         ),
       );
     });
