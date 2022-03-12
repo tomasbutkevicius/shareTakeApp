@@ -71,7 +71,7 @@ class StaticWidgets {
         },
       );
     } catch(e) {
-      return const SizedBox.shrink();
+      return errorWidget;
     }
   }
 
