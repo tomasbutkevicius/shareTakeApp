@@ -69,6 +69,7 @@ class DrawerWidget extends StatelessWidget {
                       context.read<AuthenticationBloc>().add(AuthLoggedOutEvent());
                       StaticNavigator.popContext(context);
                       StaticNavigator.popUntilFirstRoute(context);
+                      StaticNavigator.pushLoginScreen(context);
                     } else {
                       StaticNavigator.popContext(context);
                       StaticNavigator.pushLoginScreen(context);
