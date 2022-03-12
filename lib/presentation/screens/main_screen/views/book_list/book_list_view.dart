@@ -42,6 +42,7 @@ class BookListView extends StatelessWidget {
         itemBuilder: (context, index) {
           return Column(
             children: [
+              ProxySpacingVerticalWidget(),
               _bookCard(state.bookList[index]),
               ProxySpacingVerticalWidget(),
             ],
@@ -88,7 +89,7 @@ class BookListView extends StatelessWidget {
                 text: book.subtitle ?? "",
               ),
               Container(
-                constraints: BoxConstraints(maxHeight: 300, maxWidth: 403000),
+                constraints: BoxConstraints(maxHeight: 250, maxWidth: 250),
                 child: StaticWidgets.getIconRemote(
                   path: book.imageUrl ?? "",
                 ),
