@@ -7,6 +7,7 @@ import 'package:share_take/bloc/language_selection/language_selection_bloc.dart'
 import 'package:share_take/constants/static_localization.dart';
 import 'package:share_take/data/models/user/user.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
+import 'package:share_take/presentation/router/static_navigator.dart';
 
 import '../../localization/translations.dart';
 
@@ -19,8 +20,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   final LanguageSelectionBloc languageSelectionBloc;
 
   AuthenticationBloc(this.userRepository, this.languageSelectionBloc) : super(const AuthenticationState()) {
-    on<AppStarted>((event, emit) async {
-      emit(state.copyWith(status: const RequestStatusInitial(), user: null));
+    on<AuthAppStarted>((event, emit) async {
+      emit(state.copyWith(status: RequestStatusLoading(), user: null));
       //To get locale of device:
       //window.locale.languageCode
 
@@ -37,17 +38,20 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         emit(
           state.copyWith(
             user: storedUser,
+            status: const RequestStatusInitial(),
           ),
         );
       } else {
         emit(
           state.copyWith(
             user: null,
+            status: const RequestStatusInitial(),
           ),
         );
       }
     });
-    on<LoginEvent>((event, emit) async {
+
+    on<AuthLoginEvent>((event, emit) async {
       emit(state.copyWith(status: RequestStatusLoading(), user: null));
 
       if (event.email.trim().isEmpty || event.password.trim().isEmpty) {
@@ -68,6 +72,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           status: const RequestStatusSuccess(message: ""),
           user: user,
         ));
+        StaticNavigator.popUntilFirstRoute(event.context);
       } on Exception catch (exc) {
         emit(state.copyWith(
           status: RequestStatusError(message: exc.toString()),
@@ -82,19 +87,29 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         return;
       }
     });
-    on<LoggedOutEvent>((event, emit) async {
-      await userRepository.logout();
-      emit(state.copyWith(
-        user: null,
-      ));
-      on<AuthenticationUpdateEvent>((event, emit) async {
-        await userRepository.updateLocalUser(event.user);
 
-        emit(state.copyWith(user: event.user));
-      });
+    on<AuthLoggedOutEvent>((event, emit) async {
+      await userRepository.logout();
+      emit(
+        state.copyWith(
+          user: null,
+        ),
+      );
+    });
+
+    on<AuthenticationUpdateEvent>((event, emit) async {
+      await userRepository.updateLocalUser(event.user);
+
+      emit(state.copyWith(user: event.user));
+    });
+
+    on<AuthResetStatusEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          status: RequestStatusInitial(),
+          user: state.user,
+        ),
+      );
     });
   }
-
-
-
 }

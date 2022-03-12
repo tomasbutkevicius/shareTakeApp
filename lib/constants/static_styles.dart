@@ -7,5 +7,11 @@ class StaticStyles {
 
   static const EdgeInsetsGeometry bottomNavItemMargin = EdgeInsets.only(top: 2, right: 0, left: 0);
   static const EdgeInsetsGeometry listViewPadding = EdgeInsets.symmetric(horizontal: 30);
-
+  static const EdgeInsetsGeometry headerPadding = EdgeInsets.only(top: 40, bottom: 10, right: 0, left: 0);
+  static const EdgeInsetsGeometry contentPadding = EdgeInsets.only(
+    top: 14.0,
+    bottom: 10.0,
+    left: 35.0,
+    right: 35.0,
+  );
 }

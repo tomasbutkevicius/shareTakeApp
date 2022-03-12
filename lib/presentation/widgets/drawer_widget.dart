@@ -1,8 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
+import 'package:share_take/bloc/helpers/bloc_getter.dart';
+import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
@@ -51,12 +53,28 @@ class DrawerWidget extends StatelessWidget {
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.small,
             ),
-            _buildMenuItemIconData(
-              text: Translations.login,
-              iconData: Icons.login,
-              onTap: () {
-                context.read<AuthenticationBloc>().add(LoggedOutEvent());
-                StaticNavigator.popUntilFirstRoute(context);
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                bool isLoggedIn = state.user != null;
+
+                if(state.status is RequestStatusLoading){
+                  return CircularProgressIndicator();
+                }
+
+                return _buildMenuItemIconData(
+                  text: isLoggedIn ? Translations.logout : Translations.login,
+                  iconData: isLoggedIn ? Icons.logout : Icons.login,
+                  onTap: () {
+                    if (isLoggedIn) {
+                      context.read<AuthenticationBloc>().add(AuthLoggedOutEvent());
+                      StaticNavigator.popContext(context);
+                      StaticNavigator.popUntilFirstRoute(context);
+                    } else {
+                      StaticNavigator.popContext(context);
+                      StaticNavigator.pushLoginScreen(context);
+                    }
+                  },
+                );
               },
             ),
             const ProxySpacingVerticalWidget(
@@ -68,10 +86,12 @@ class DrawerWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDivider() => const Padding(
-    padding: StaticStyles.listViewPadding,
-    child: Divider(color: ThemeColors.white),
-  );
+  Widget _buildDivider() =>
+      const Padding(
+        padding: StaticStyles.listViewPadding,
+        child: Divider(color: ThemeColors.white),
+      );
+
   //
   // Widget _buildMenuItem({
   //   required String text,
@@ -92,8 +112,7 @@ class DrawerWidget extends StatelessWidget {
   //   );
   // }
 
-  Widget _buildMenuItemIconData(
-      {required String text, required IconData iconData, required GestureTapCallback onTap}) {
+  Widget _buildMenuItemIconData({required String text, required IconData iconData, required GestureTapCallback onTap}) {
     const color = ThemeColors.white;
     const iconColor = ThemeColors.white;
 

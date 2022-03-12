@@ -116,22 +116,26 @@ class LocalUserSource {
     return User.fromJson(jsonUser);
   }
 
-  Future authenticate({required String email, required String password}) async {
+  Future<User> authenticate({required String email, required String password}) async {
     User? foundUser = await findUserByEmail(email);
 
-    if(foundUser != null){
+    if (foundUser != null) {
       return foundUser;
     }
 
+    List<User> users = await getStoredUsers();
 
-      List<User> users = await getStoredUsers();
-      addUser(User(
-        id: users.length + 1,
-        token: "demo",
-        username: "demo",
-        email: email,
-        firstName: "demo",
-        lastName: "demo",
-      ));
+    User demoUser = User(
+      id: users.length + 1,
+      token: "demo",
+      username: "demo",
+      email: email,
+      firstName: "demo",
+      lastName: "demo",
+    );
+
+    addUser(demoUser);
+
+    return demoUser;
   }
 }

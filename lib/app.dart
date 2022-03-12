@@ -53,26 +53,37 @@ class MyApp extends StatelessWidget {
                 context.read<UserRepository>(),
                 BlocProvider.of<LanguageSelectionBloc>(_),
               )..add(
-                  AppStarted(context),
+                  AuthAppStarted(context),
                 ),
             ),
             BlocProvider<BookBloc>(
               create: (_) => BookBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
               ),
             ),
           ],
-          child: MaterialApp(
-            title: StaticTexts.appTitle,
-            theme: appTheme(),
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            onGenerateRoute: appRouter.onGenerateRoute,
+          child: BlocListener<AuthenticationBloc, AuthenticationState>(
+            listener: _listener,
+            listenWhen: _listenWhen,
+            child: MaterialApp(
+              title: StaticTexts.appTitle,
+              theme: appTheme(),
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              onGenerateRoute: appRouter.onGenerateRoute,
+            ),
           ),
         );
       }),
     );
   }
+
+  void _listener(BuildContext context, AuthenticationState state) {
+    context.read<BookBloc>().add(BookResetEvent());
+  }
+
+  bool _listenWhen(AuthenticationState previousState, AuthenticationState state) => previousState.user != state.user;
 }
