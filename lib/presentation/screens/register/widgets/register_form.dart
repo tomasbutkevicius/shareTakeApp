@@ -9,15 +9,17 @@ import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget
 import 'package:share_take/presentation/widgets/proxy/input/proxy_text_form_field.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({Key? key}) : super(key: key);
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _RegisterFormState createState() => _RegisterFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _RegisterFormState extends State<RegisterForm> {
   late final TextEditingController _emailController = TextEditingController();
+  late final TextEditingController _firstNameController = TextEditingController();
+  late final TextEditingController _lastNameController = TextEditingController();
   late final TextEditingController _passwordController = TextEditingController();
   final focus = FocusNode();
 
@@ -25,6 +27,8 @@ class _LoginFormState extends State<LoginForm> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     super.dispose();
   }
 
@@ -38,6 +42,10 @@ class _LoginFormState extends State<LoginForm> {
             _emailField(context),
             const ProxySpacingVerticalWidget(),
             _passwordField(context),
+            const ProxySpacingVerticalWidget(),
+            _firstNameField(context),
+            const ProxySpacingVerticalWidget(),
+            _lastNameField(context),
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.extraLarge,
             ),
@@ -98,8 +106,60 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
+  Widget _firstNameField(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 480,
+            ),
+            child: ProxyTextFormField(
+              controller: _firstNameController,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (v) {
+                FocusScope.of(context).requestFocus(focus);
+              },
+              labelText: "First name",
+              icon: Icon(
+                Icons.person,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _lastNameField(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 480,
+            ),
+            child: ProxyTextFormField(
+              controller: _lastNameController,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (v) {
+                FocusScope.of(context).requestFocus(focus);
+              },
+              labelText: "Last name",
+              icon: Icon(
+                Icons.person,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _getSubmitBtn(BuildContext context) {
-    String buttonText = "LOGIN";
+    String buttonText = "JOIN THE CLUB";
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
@@ -110,12 +170,14 @@ class _LoginFormState extends State<LoginForm> {
       isUppercase: false,
       onPressed: () {
         context.read<AuthenticationBloc>().add(
-              AuthLoginEvent(
-                email: _emailController.text,
-                password: _passwordController.text,
-                context: context,
-              ),
-            );
+          AuthRegisterEvent(
+            email: _emailController.text,
+            password: _passwordController.text,
+            firstName: _firstNameController.text,
+            lastName: _lastNameController.text,
+            context: context,
+          ),
+        );
       },
     );
   }

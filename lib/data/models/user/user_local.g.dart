@@ -8,7 +8,6 @@ part of 'user_local.dart';
 
 UserLocal _$UserFromJson(Map<String, dynamic> json) => UserLocal(
       id: json['id'] as String,
-      token: json['token'] as String,
       email: json['email'] as String,
       username: json['username'] as String,
       firstName: json['firstName'] as String,
@@ -17,7 +16,6 @@ UserLocal _$UserFromJson(Map<String, dynamic> json) => UserLocal(
 
 Map<String, dynamic> _$UserToJson(UserLocal instance) => <String, dynamic>{
       'id': instance.id,
-      'token': instance.token,
       'email': instance.email,
       'username': instance.username,
       'firstName': instance.firstName,

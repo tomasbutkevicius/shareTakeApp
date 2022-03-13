@@ -11,6 +11,7 @@ import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/information_card.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
+import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -72,19 +73,19 @@ class LoginScreen extends StatelessWidget {
                       child: LoginForm(),
                     ),
                       ProxySpacingVerticalWidget(),
-                      // InkWell(
-                      //   onTap: () {
-                      //     StaticNavigator.navigateToRemindPasswordScreen(context);
-                      //   },
-                      //   child: Padding(
-                      //     padding: StaticStyles.contentPadding,
-                      //     child: ProxyTextWidget(
-                      //       color: StaticStyles.brandColorDarkBlue,
-                      //       text: Translations.forgotPassword,
-                      //       fontStyle: FontStyle.italic,
-                      //     ),
-                      //   ),
-                      // ),
+                      InkWell(
+                        onTap: () {
+                          StaticNavigator.pushRegisterScreen(context);
+                        },
+                        child: Padding(
+                          padding: StaticStyles.contentPadding,
+                          child: ProxyTextWidget(
+                            color: ThemeColors.orange,
+                            text: "Register",
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),

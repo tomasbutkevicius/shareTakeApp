@@ -6,6 +6,7 @@ import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/presentation/screens/login/login_screen.dart';
 import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
+import 'package:share_take/presentation/screens/register/register_screen.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
 
@@ -34,6 +35,12 @@ class StaticNavigator {
   static void pushLoginScreen(BuildContext context) {
     Navigator.of(context).pushNamed(
       LoginScreen.routeName,
+    );
+  }
+
+  static void pushRegisterScreen(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      RegisterScreen.routeName,
     );
   }
   

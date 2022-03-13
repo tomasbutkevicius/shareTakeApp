@@ -25,10 +25,26 @@ class AuthLoginEvent extends AuthenticationEvent {
   });
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [email, password, context];
+}
+
+class AuthRegisterEvent extends AuthenticationEvent {
+  final String email;
+  final String password;
+  final String firstName;
+  final String lastName;
+  final BuildContext context;
+
+  const AuthRegisterEvent({
+    required this.email,
+    required this.password,
+    required this.firstName,
+    required this.lastName,
+    required this.context,
+  });
 
   @override
-  String toString() => 'SignInButtonPressedEvent { email: $email }';
+  List<Object> get props => [email, password, firstName, lastName, context];
 }
 
 class AuthRemindPasswordEvent extends AuthenticationEvent {

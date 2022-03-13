@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_user_source.dart';
+import 'package:share_take/data/models/request/register_request.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 
 class UserRepository {
@@ -19,6 +20,17 @@ class UserRepository {
 
     await _localUserSource.setActiveUser(userLocal);
     return userLocal;
+  }
+
+  Future register(RegisterRequest registerRequest) async {
+    UserCredential userCredential =
+        await _remoteUserSource.signUp(email: registerRequest.email, password: registerRequest.password);
+
+    await _remoteUserSource.updateUserData(
+      userId: userCredential.user!.uid,
+      firstName: registerRequest.firstName,
+      lastName: registerRequest.lastName,
+    );
   }
 
   Future<UserLocal?> getActiveUser() async {

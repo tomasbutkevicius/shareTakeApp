@@ -7,7 +7,6 @@ part 'user_local.g.dart';
 @JsonSerializable()
 class UserLocal extends Equatable {
   final String id;
-  final String token;
   final String email;
   final String username;
   final String firstName;
@@ -15,7 +14,6 @@ class UserLocal extends Equatable {
 
   const UserLocal({
     required this.id,
-    required this.token,
     required this.email,
     required this.username,
     required this.firstName,
@@ -27,7 +25,6 @@ class UserLocal extends Equatable {
   static UserLocal fromUserCredential(UserCredential userCredential) {
     return UserLocal(
       id: userCredential.user!.uid,
-      token: userCredential.user!.refreshToken!,
       email: userCredential.user!.email!,
       username: "",
       firstName: "",
@@ -39,13 +36,12 @@ class UserLocal extends Equatable {
 
   @override
   String toString() {
-    return 'User{id: $id, token: $token, email: $email, username: $username, firstName: $firstName, lastName: $lastName,}';
+    return 'User{id: $id, email: $email, username: $username, firstName: $firstName, lastName: $lastName,}';
   }
 
   @override
   List<Object?> get props => [
         id,
-        token,
         email,
         username,
         firstName,
@@ -65,7 +61,6 @@ class UserLocal extends Equatable {
   }) {
     return UserLocal(
       id: id ?? this.id,
-      token: token ?? this.token,
       email: email ?? this.email,
       username: username ?? this.username,
       firstName: firstName ?? this.firstName,
