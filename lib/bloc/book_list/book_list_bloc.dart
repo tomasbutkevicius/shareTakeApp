@@ -7,19 +7,19 @@ import 'package:share_take/data/models/book/book.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
 
-part 'book_event.dart';
+part 'book_list_event.dart';
 
-part 'book_state.dart';
+part 'book_list_state.dart';
 
-class BookBloc extends Bloc<BookEvent, BookState> {
+class BookListBloc extends Bloc<BookListEvent, BookListState> {
   final BookRepository bookRepository;
   final AuthenticationBloc authenticationBloc;
 
-  BookBloc({
+  BookListBloc({
     required this.bookRepository,
     required this.authenticationBloc,
-  }) : super(const BookState()) {
-    on<BookGetListEvent>((event, emit) async {
+  }) : super(const BookListState()) {
+    on<BookListGetListEvent>((event, emit) async {
       emit(
         state.copyWith(
           status: RequestStatusLoading(),
@@ -38,12 +38,12 @@ class BookBloc extends Bloc<BookEvent, BookState> {
       );
     });
 
-    on<BookResetEvent>(
+    on<BookListResetEvent>(
       (event, emit) {
         emit(
-          const BookState(),
+          const BookListState(),
         );
-        add(BookGetListEvent());
+        add(BookListGetListEvent());
         print("Book reset called");
       },
     );

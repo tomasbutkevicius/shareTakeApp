@@ -1,20 +1,20 @@
-part of 'book_bloc.dart';
+part of 'book_list_bloc.dart';
 
 
-class BookState extends Equatable {
+class BookListState extends Equatable {
   final RequestStatus status;
   final List<Book> bookList;
 
-  const BookState({
+  const BookListState({
     this.status = const RequestStatusInitial(),
     this.bookList = const [],
   });
 
-  BookState copyWith({
+  BookListState copyWith({
     RequestStatus? status,
     List<Book>? bookList,
   }) {
-    return BookState(
+    return BookListState(
       status: status ?? this.status,
       bookList: bookList ?? this.bookList,
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_take/bloc/book/book_bloc.dart';
+import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/enums.dart';
@@ -17,9 +17,9 @@ class BookListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocGetter.getBookBloc(context).add(BookGetListEvent());
+    BlocGetter.getBookListBloc(context).add(BookListGetListEvent());
 
-    return BlocConsumer<BookBloc, BookState>(
+    return BlocConsumer<BookListBloc, BookListState>(
       listener: (context, state) {
         // TODO: implement listener
       },
@@ -32,25 +32,31 @@ class BookListView extends StatelessWidget {
     );
   }
 
-  Widget _body(BookState state) {
+  Widget _body(BookListState state) {
     return Center(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        itemCount: state.bookList.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: StaticStyles.listViewPadding,
-            child: Column(
-              children: [
-                ProxySpacingVerticalWidget(),
-                _bookCard(state.bookList[index]),
-                ProxySpacingVerticalWidget(),
-              ],
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              itemCount: state.bookList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: StaticStyles.listViewPadding,
+                  child: Column(
+                    children: [
+                      ProxySpacingVerticalWidget(),
+                      _bookCard(state.bookList[index]),
+                      ProxySpacingVerticalWidget(),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -58,7 +64,7 @@ class BookListView extends StatelessWidget {
   Widget _bookCard(Book book) {
     return  Container(
       decoration: BoxDecoration(
-        color: ThemeColors.brown.shade600,
+        color: ThemeColors.bordo.shade600,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),

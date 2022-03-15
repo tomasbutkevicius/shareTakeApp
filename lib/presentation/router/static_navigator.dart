@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
+import 'package:share_take/presentation/screens/add_book/add_book_screen.dart';
 import 'package:share_take/presentation/screens/login/login_screen.dart';
 import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
@@ -48,6 +49,12 @@ class StaticNavigator {
   static void pushUserScreen(BuildContext context) {
     Navigator.of(context).pushNamed(
       UserScreen.routeName,
+    );
+  }
+
+  static void pushAddBookScreen(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      AddBookScreen.routeName,
     );
   }
   
