@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookResponse {
   final String id;
-  final int? isbn;
+  final String? isbn;
   final String title;
   final String? subtitle;
   final List<String> authors;
@@ -31,7 +31,7 @@ class BookResponse {
 
     return BookResponse(
       id: snapshot.id,
-      isbn: json['isbn'] as int?,
+      isbn: json['isbn'] as String?,
       title: json['title'] as String,
       subtitle: json['subtitle'] as String?,
       authors:

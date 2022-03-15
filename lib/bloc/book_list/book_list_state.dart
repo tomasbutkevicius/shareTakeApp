@@ -3,7 +3,7 @@ part of 'book_list_bloc.dart';
 
 class BookListState extends Equatable {
   final RequestStatus status;
-  final List<Book> bookList;
+  final List<BookLocal> bookList;
 
   const BookListState({
     this.status = const RequestStatusInitial(),
@@ -12,7 +12,7 @@ class BookListState extends Equatable {
 
   BookListState copyWith({
     RequestStatus? status,
-    List<Book>? bookList,
+    List<BookLocal>? bookList,
   }) {
     return BookListState(
       status: status ?? this.status,

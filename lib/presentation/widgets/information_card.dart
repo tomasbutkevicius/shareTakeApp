@@ -18,7 +18,7 @@ class InformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 250,
       width: MediaQuery.of(context).size.width * 0.8,
       padding: StaticStyles.listViewPadding,
       decoration: BoxDecoration(
@@ -27,11 +27,13 @@ class InformationCard extends StatelessWidget {
           Radius.circular(4),
         ),
       ),
-      child: Center(
-        child: ProxyTextWidget(
-          text: message,
-          color: textColor,
-        ),
+      child: ListView(
+        children: [
+          ProxyTextWidget(
+            text: message,
+            color: textColor,
+          ),
+        ],
       ),
     );
   }

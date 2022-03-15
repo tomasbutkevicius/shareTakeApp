@@ -44,11 +44,7 @@ class ProxyTextFormField extends StatelessWidget {
       onChanged: onChanged,
       onFieldSubmitted: onFieldSubmitted,
       decoration: decoration ?? InputDecoration(
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: ThemeColors.purple,
-          ),
-        ),
+        floatingLabelBehavior:FloatingLabelBehavior.always,
         icon: icon,
         labelText: labelText,
       ),

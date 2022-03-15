@@ -6,7 +6,7 @@ import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
-import 'package:share_take/data/models/book/book.dart';
+import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
@@ -61,7 +61,7 @@ class BookListView extends StatelessWidget {
     );
   }
 
-  Widget _bookCard(Book book) {
+  Widget _bookCard(BookLocal book) {
     return  Container(
       decoration: BoxDecoration(
         color: ThemeColors.bordo.shade600,

@@ -1,46 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/src/provider.dart';
-import 'package:share_take/bloc/authentication/authentication_bloc.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:share_take/bloc/book_add/book_add_bloc.dart';
+import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
+import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/input/proxy_text_form_field.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
+import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 
 class AddBookForm extends StatefulWidget {
-  const AddBookForm({Key? key}) : super(key: key);
+  const AddBookForm({Key? key, required this.bookToAdd}) : super(key: key);
+
+  final BookLocal? bookToAdd;
 
   @override
   _AddBookFormState createState() => _AddBookFormState();
 }
 
 class _AddBookFormState extends State<AddBookForm> {
-  late final TextEditingController _isbnController = TextEditingController();
-  late final TextEditingController _titleController = TextEditingController();
-  late final TextEditingController _subtitleController = TextEditingController();
-  late final TextEditingController _authorsController = TextEditingController();
+  late final TextEditingController _isbnController = TextEditingController(text: widget.bookToAdd?.isbn);
+  late final TextEditingController _titleController = TextEditingController(text: widget.bookToAdd?.title);
+  late final TextEditingController _subtitleController = TextEditingController(text: widget.bookToAdd?.subtitle);
+  late final TextEditingController _authorsController = TextEditingController(text: widget.bookToAdd?.authors.toString());
+  late final TextEditingController _imageController = TextEditingController(text: widget.bookToAdd?.imageUrl);
+  late final TextEditingController _langController = TextEditingController(text: widget.bookToAdd?.language);
+  late final TextEditingController _pagesController = TextEditingController(text: widget.bookToAdd?.pages.toString());
+  late final TextEditingController _dateController = TextEditingController(text: widget.bookToAdd?.publishDate.toString());
+  late final TextEditingController _descriptionController = TextEditingController(text: widget.bookToAdd?.description);
 
   final focus = FocusNode();
-/*  final String id;
-  final int? isbn;
-  final String title;
-  final String? subtitle;
-  final List<String> authors;
-  final String? imageUrl;
-  final String? language;
-  final int pages;
-  final DateTime publishDate;
-  final String description;*/
+
   @override
   void dispose() {
     _isbnController.dispose();
-    _authorsController.dispose();
+    // _authorsController.dispose();
     _titleController.dispose();
     _subtitleController.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +52,23 @@ class _AddBookFormState extends State<AddBookForm> {
         padding: StaticStyles.listViewPadding,
         child: Column(
           children: <Widget>[
-            _emailField(context),
+            _inputField(context: context, controller: _isbnController, label: "isbn"),
             const ProxySpacingVerticalWidget(),
-            _passwordField(context),
+            _inputField(context: context, controller: _titleController, label: "Title"),
             const ProxySpacingVerticalWidget(),
-            _firstNameField(context),
+            _inputField(context: context, controller: _subtitleController, label: "Subtitle"),
             const ProxySpacingVerticalWidget(),
-            _lastNameField(context),
+            _inputField(context: context, controller: _authorsController, label: "Authors"),
+            const ProxySpacingVerticalWidget(),
+            _inputField(context: context, controller: _imageController, label: "Image url"),
+            const ProxySpacingVerticalWidget(),
+            _inputField(context: context, controller: _langController, label: "Language"),
+            const ProxySpacingVerticalWidget(),
+            _inputField(context: context, controller: _pagesController, label: "Pages"),
+            const ProxySpacingVerticalWidget(),
+            _inputField(context: context, controller: _dateController, label: "Publish date"),
+            const ProxySpacingVerticalWidget(),
+            _inputField(context: context, controller: _descriptionController, label: "description"),
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.extraLarge,
             ),
@@ -66,31 +79,28 @@ class _AddBookFormState extends State<AddBookForm> {
     );
   }
 
-  Widget _passwordField(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 480.0),
-            child: ProxyTextFormField(
-              obscureText: true,
-              controller: _authorsController,
-              onFieldSubmitted: (v) {
-                FocusScope.of(context).requestFocus(focus);
-              },
-              labelText: "Password",
-              icon: Icon(
-                Icons.security,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+
+      BlocGetter.getAddBookBloc(context).add(BookAddHandleIsbnEvent(isbn: barcodeScanRes));
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
   }
 
-  Widget _emailField(BuildContext context) {
+  Widget _inputField({required BuildContext context, required TextEditingController controller, required String label}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -100,66 +110,14 @@ class _AddBookFormState extends State<AddBookForm> {
               maxWidth: 480,
             ),
             child: ProxyTextFormField(
-              controller: _isbnController,
+              controller: controller,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (v) {
                 FocusScope.of(context).requestFocus(focus);
               },
-              labelText: "Email",
+              labelText: label,
               icon: Icon(
-                Icons.email,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _firstNameField(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 480,
-            ),
-            child: ProxyTextFormField(
-              controller: _titleController,
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (v) {
-                FocusScope.of(context).requestFocus(focus);
-              },
-              labelText: "First name",
-              icon: Icon(
-                Icons.person,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _lastNameField(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 480,
-            ),
-            child: ProxyTextFormField(
-              controller: _subtitleController,
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (v) {
-                FocusScope.of(context).requestFocus(focus);
-              },
-              labelText: "Last name",
-              icon: Icon(
-                Icons.person,
+                Icons.description,
               ),
             ),
           ),
@@ -169,7 +127,7 @@ class _AddBookFormState extends State<AddBookForm> {
   }
 
   Widget _getSubmitBtn(BuildContext context) {
-    String buttonText = "Create";
+    String buttonText = "Scan";
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
@@ -178,16 +136,8 @@ class _AddBookFormState extends State<AddBookForm> {
       text: buttonText,
       color: ThemeColors.bordo.shade600,
       isUppercase: false,
-      onPressed: () {
-        context.read<AuthenticationBloc>().add(
-          AuthRegisterEvent(
-            email: _isbnController.text,
-            password: _authorsController.text,
-            firstName: _titleController.text,
-            lastName: _subtitleController.text,
-            context: context,
-          ),
-        );
+      onPressed: () async {
+        await scanBarcodeNormal();
       },
     );
   }

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
-import 'package:share_take/data/models/book/book.dart';
+import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
 
@@ -25,8 +25,8 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
           status: RequestStatusLoading(),
         ),
       );
-      List<Book> books = await bookRepository.getAllBooks();
-      for (Book book in books) {
+      List<BookLocal> books = await bookRepository.getAllBooks();
+      for (BookLocal book in books) {
         print(book.title);
         print(book.imageUrl);
       }

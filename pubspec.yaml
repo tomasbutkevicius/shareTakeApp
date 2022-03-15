@@ -46,6 +46,9 @@ dependencies:
   cloud_firestore: ^3.1.10
   firebase_storage: ^10.2.9
   firebase_auth: ^3.3.10
+  flutter_barcode_scanner: ^2.0.0
+  books_finder: ^4.2.0
+  http: ^0.13.4
 
 dev_dependencies:
   json_serializable: ^6.0.1

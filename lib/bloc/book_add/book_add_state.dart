@@ -2,23 +2,23 @@ part of 'book_add_bloc.dart';
 
 class BookAddState extends Equatable {
   final RequestStatus status;
-  final AddBookRequest? addBookRequest;
+  final BookLocal? bookToAdd;
 
   const BookAddState({
     this.status = const RequestStatusInitial(),
-    this.addBookRequest,
+    this.bookToAdd,
   });
 
   BookAddState copyWith({
     RequestStatus? status,
-    AddBookRequest? addBookRequest,
+    BookLocal? bookToAdd,
   }) {
     return BookAddState(
       status: status ?? this.status,
-      addBookRequest: addBookRequest ?? this.addBookRequest,
+      bookToAdd: bookToAdd ?? this.bookToAdd,
     );
   }
 
   @override
-  List<Object?> get props => [status, addBookRequest];
+  List<Object?> get props => [status, bookToAdd];
 }
