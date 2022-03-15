@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,10 +9,8 @@ import 'package:share_take/data/firebase_storage.dart';
 
 import '../../../constants/proxy.dart';
 
-
 class StaticWidgets {
-  static void showSnackBar(BuildContext context, String message,
-      {TimeDuration duration = TimeDuration.short}) {
+  static void showSnackBar(BuildContext context, String message, {TimeDuration duration = TimeDuration.short}) {
     final snackBar = SnackBar(
       content: Text(message),
       backgroundColor: ThemeColors.orange.shade400,
@@ -25,16 +22,16 @@ class StaticWidgets {
   }
 
   static Future showCustomDialog({required BuildContext context, required Widget child}) async {
-
-    await showDialog(
-      barrierColor: ThemeColors.orange.withOpacity(0.3),
-      context: context,
-      builder: (context) {
-        return child;
-      },
-    );
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      await showDialog(
+        barrierColor: ThemeColors.orange.withOpacity(0.3),
+        context: context,
+        builder: (context) {
+          return child;
+        },
+      );
+    });
   }
-
 
   static Widget getIcon({required IconName name, double? width, double? height, Color? color}) {
     String path = StaticPaths.getIconPath(name);
@@ -60,19 +57,23 @@ class StaticWidgets {
 
   static Widget getIconRemote(
       {required String path, double? width, double? height, Color? color, Widget errorWidget = const SizedBox.shrink()}) {
-    try{
+    try {
       return Image.network(
         path,
         width: width,
         height: height,
         color: color,
         errorBuilder: (context, error, trace) {
-          return SvgPicture.network(path, width: width, height: height, color: color,);
+          return SvgPicture.network(
+            path,
+            width: width,
+            height: height,
+            color: color,
+          );
         },
       );
-    } catch(e) {
+    } catch (e) {
       return errorWidget;
     }
   }
-
 }

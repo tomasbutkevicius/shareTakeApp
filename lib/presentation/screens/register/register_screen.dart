@@ -5,13 +5,11 @@ import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
-import 'package:share_take/presentation/router/static_navigator.dart';
 import 'package:share_take/presentation/screens/register/widgets/register_form.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/information_card.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
-import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -39,13 +37,7 @@ class RegisterScreen extends StatelessWidget {
           }
 
           if(state.status is RequestStatusSuccess) {
-            // StaticWidgets.showCustomDialog(context: context, child: const AlertDialog(
-            //   title: Center(
-            //     child: Text("Thank you for joining"),
-            //   ),
-            // ),);
-            BlocGetter.getAuthBloc(context).add(AuthResetStatusEvent());
-            StaticNavigator.popContext(context);
+            message = "Registered successfully";
           }
 
           return Center(

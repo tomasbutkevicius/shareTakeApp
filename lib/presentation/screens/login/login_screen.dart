@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
             );
           }
 
-          if(state.status is RequestStatusSuccess){
+          if(state.status is RequestStatusSuccess && state.user != null){
             BlocGetter.getAuthBloc(context).add(AuthResetStatusEvent());
             StaticNavigator.popUntilFirstRoute(context);
           }

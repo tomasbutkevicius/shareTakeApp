@@ -148,7 +148,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     });
 
     on<AuthenticationUpdateEvent>((event, emit) async {
-      await userRepository.updateLocalUser(event.user);
+      // await userRepository.updateLocalUser(event.user);
 
       emit(state.copyWith(user: event.user));
     });

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/constants/api.dart';
 import 'package:share_take/data/models/request/register_request.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 
 class RemoteUserSource {
   final FirebaseAuth firebaseAuth;
@@ -15,15 +16,13 @@ class RemoteUserSource {
   Future<UserCredential> signIn({required String email, required String password}) async {
     try {
       UserCredential userCredential = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      print(userCredential.toString());
       return userCredential;
-      // return UserLocal(id: userCredential.user!.uid, token: userCredential, email: email, username: username, firstName: firstName, lastName: lastName);
     } on FirebaseAuthException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }
   }
 
-  Future<UserCredential> signUp({required String email, required String password}) async {
+  Future<UserCredential> signUpWithEmailPassword({required String email, required String password}) async {
     try {
       UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       return userCredential;
@@ -32,18 +31,32 @@ class RemoteUserSource {
     }
   }
 
-  Future updateUserData({required String userId, required String firstName, required String lastName}) async {
+  Future updateUserData(UserLocal userLocal) async {
     try {
-      await fireStore.collection(StaticApi.usersCollection).doc(userId).set(
+      await fireStore.collection(StaticApi.usersCollection).doc(userLocal.id).set(
           {
-            "firstName": firstName,
-            "lastName": lastName,
+            'email': userLocal.email,
+            'username': userLocal.username,
+            'firstName': userLocal.firstName,
+            'lastName': userLocal.lastName,
           }
       );
     } on FirebaseAuthException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }
   }
+
+  Future<DocumentSnapshot> getUserData({required String userId, required String email,}) async {
+    try {
+      DocumentReference userReference = fireStore.collection(StaticApi.usersCollection).doc(userId);
+      DocumentSnapshot docSnap = await userReference.get();
+      return docSnap;
+    } on FirebaseException catch(firebaseException) {
+      throw Exception(firebaseException.message);
+    }
+  }
+
+
 
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
   

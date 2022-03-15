@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_user_source.dart';
@@ -15,21 +16,40 @@ class UserRepository {
     required String password,
   }) async {
     UserCredential userRemote = await _remoteUserSource.signIn(email: email, password: password);
+    DocumentSnapshot? userDocument;
+    UserLocal? userLocal;
+    try {
+      userDocument = await _remoteUserSource.getUserData(userId: userRemote.user!.uid, email: email);
+      userLocal = UserLocal.fromSnapshot(email, userDocument);
+    } catch (e) {
+      print("ERROR RECEIVING USER INFO");
+      print(e.runtimeType);
+      print(e.toString());
+    }
 
-    UserLocal userLocal = UserLocal.fromUserCredential(userRemote);
+    userLocal ??= _handleUserDataNotReceived(userRemote, email);
 
     await _localUserSource.setActiveUser(userLocal);
     return userLocal;
   }
 
+  UserLocal _handleUserDataNotReceived(UserCredential userRemote, String email) {
+    return UserLocal(id: userRemote.user!.uid, email: email, username: "", firstName: "", lastName: "");
+  }
+
   Future register(RegisterRequest registerRequest) async {
     UserCredential userCredential =
-        await _remoteUserSource.signUp(email: registerRequest.email, password: registerRequest.password);
+        await _remoteUserSource.signUpWithEmailPassword(email: registerRequest.email, password: registerRequest.password);
 
-    await _remoteUserSource.updateUserData(
-      userId: userCredential.user!.uid,
+    UserLocal userLocal = UserLocal(
+      id: userCredential.user!.uid,
+      email: registerRequest.email,
+      username: "",
       firstName: registerRequest.firstName,
       lastName: registerRequest.lastName,
+    );
+    await _remoteUserSource.updateUserData(
+      userLocal,
     );
   }
 
@@ -43,8 +63,8 @@ class UserRepository {
     _localUserSource.removeActiveUser();
   }
 
-  Future updateLocalUser(UserLocal user) async {
-    await _localUserSource.updateUser(user);
+  Future updateUser(UserLocal user) async {
+    // await _localUserSource.updateUser(user);
   }
 
 // Future updateRemoteSettings(String token) async {

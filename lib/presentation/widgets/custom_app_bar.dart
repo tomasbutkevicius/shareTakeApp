@@ -8,7 +8,7 @@ class CustomAppBar {
       BuildContext context, {
         bool showBackBtn = true,
         bool showTitle = true,
-        Color backgroundColor = const Color(0xFF764800),
+        Color backgroundColor = ThemeColors.blue,
       }) {
     return AppBar(
       shadowColor: ThemeColors.white.withOpacity(0.5),

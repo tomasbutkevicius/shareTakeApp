@@ -23,7 +23,7 @@ class DrawerWidget extends StatelessWidget {
 
     return Drawer(
       child: Material(
-        color: ThemeColors.brown.shade600,
+        color: ThemeColors.blue.shade600,
         child: ListView(
           padding: padding,
           children: [
@@ -38,7 +38,8 @@ class DrawerWidget extends StatelessWidget {
                     text: state.user!.email,
                     iconData: Icons.verified_user,
                     onTap: () {
-
+                      StaticNavigator.popContext(context);
+                      StaticNavigator.pushUserScreen(context);
                     },
                   );
                 }

@@ -7,7 +7,7 @@ class InformationCard extends StatelessWidget {
   const InformationCard({
     Key? key,
     required this.message,
-    required this.backgroundColor,
+    this.backgroundColor = ThemeColors.blue,
     this.textColor = ThemeColors.black,
   }) : super(key: key);
 
