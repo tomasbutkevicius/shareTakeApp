@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/constants/settings.dart';
-import 'package:share_take/presentation/screens/main_screen/widgets/bottom_nav_bar.dart';
+import 'package:share_take/presentation/screens/main/widgets/bottom_nav_bar.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/drawer_widget.dart';
 

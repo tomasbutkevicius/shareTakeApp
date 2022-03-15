@@ -1,12 +1,21 @@
 
 import 'package:flutter/material.dart';
-import 'package:share_take/presentation/screens/main_screen/main_menu_screen.dart';
+import 'package:share_take/presentation/screens/login/login_screen.dart';
+import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
+import 'package:share_take/presentation/screens/register/register_screen.dart';
+import 'package:share_take/presentation/screens/user/user_screen.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case MainScreen.routeName:
         return _handleMainScreen();
+      case LoginScreen.routeName:
+        return _handleLoginScreen();
+      case RegisterScreen.routeName:
+        return _handleRegisterScreen();
+      case UserScreen.routeName:
+        return _handleUserScreen();
       default:
         return null;
     }
@@ -18,4 +27,21 @@ class AppRouter {
     );
   }
 
+  MaterialPageRoute<dynamic> _handleLoginScreen() {
+    return MaterialPageRoute<dynamic>(
+      builder: (_) => const LoginScreen(),
+    );
+  }
+
+  MaterialPageRoute<dynamic> _handleRegisterScreen() {
+    return MaterialPageRoute<dynamic>(
+      builder: (_) => const RegisterScreen(),
+    );
+  }
+
+  MaterialPageRoute<dynamic> _handleUserScreen() {
+    return MaterialPageRoute<dynamic>(
+      builder: (_) => const UserScreen(),
+    );
+  }
 }

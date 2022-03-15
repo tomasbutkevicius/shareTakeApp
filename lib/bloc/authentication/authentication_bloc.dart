@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/bloc/language_selection/language_selection_bloc.dart';
 import 'package:share_take/constants/static_localization.dart';
-import 'package:share_take/data/models/user/user.dart';
+import 'package:share_take/data/models/request/register_request.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
+import 'package:share_take/presentation/router/static_navigator.dart';
 
 import '../../localization/translations.dart';
 
@@ -19,8 +21,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   final LanguageSelectionBloc languageSelectionBloc;
 
   AuthenticationBloc(this.userRepository, this.languageSelectionBloc) : super(const AuthenticationState()) {
-    on<AppStarted>((event, emit) async {
-      emit(state.copyWith(status: const RequestStatusInitial(), user: null));
+    on<AuthAppStarted>((event, emit) async {
+      emit(state.copyWith(status: RequestStatusLoading(), user: null));
       //To get locale of device:
       //window.locale.languageCode
 
@@ -31,23 +33,26 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         ),
       );
 
-      final User? storedUser = await userRepository.getActiveUser();
+      final UserLocal? storedUser = await userRepository.getActiveUser();
 
       if (storedUser != null) {
         emit(
           state.copyWith(
             user: storedUser,
+            status: const RequestStatusInitial(),
           ),
         );
       } else {
         emit(
           state.copyWith(
             user: null,
+            status: const RequestStatusInitial(),
           ),
         );
       }
     });
-    on<LoginEvent>((event, emit) async {
+
+    on<AuthLoginEvent>((event, emit) async {
       emit(state.copyWith(status: RequestStatusLoading(), user: null));
 
       if (event.email.trim().isEmpty || event.password.trim().isEmpty) {
@@ -59,7 +64,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       }
 
       try {
-        User user = await userRepository.authenticate(
+        UserLocal user = await userRepository.authenticate(
           email: event.email.trim(),
           password: event.password.trim(),
         );
@@ -82,19 +87,95 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         return;
       }
     });
-    on<LoggedOutEvent>((event, emit) async {
-      await userRepository.logout();
-      emit(state.copyWith(
-        user: null,
-      ));
-      on<AuthenticationUpdateEvent>((event, emit) async {
-        await userRepository.updateLocalUser(event.user);
 
-        emit(state.copyWith(user: event.user));
-      });
+    on<AuthRegisterEvent>((event, emit) async {
+      emit(state.copyWith(user: null, status: RequestStatusLoading()));
+
+      try {
+        RegisterRequest registerRequest = RegisterRequest(
+          email: event.email.trim(),
+          password: event.password.trim(),
+          firstName: event.firstName.trim(),
+          lastName: event.lastName.trim(),
+        );
+
+        String? errorMessage = validateRegisterRequest(registerRequest);
+        if (errorMessage != null) {
+          emit(state.copyWith(
+            status: RequestStatusError(message: errorMessage),
+            user: null,
+          ));
+          return;
+        }
+
+        await userRepository.register(
+          RegisterRequest(
+            email: event.email,
+            password: event.password,
+            firstName: event.firstName,
+            lastName: event.lastName,
+          ),
+        );
+
+        emit(
+          state.copyWith(
+            user: null,
+            status: const RequestStatusSuccess(message: ""),
+          ),
+        );
+      } catch (e) {
+        emit(state.copyWith(
+          status: RequestStatusError(message: e.toString()),
+          user: null,
+        ));
+      }
+    });
+
+    on<AuthLoggedOutEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          user: state.user,
+          status: RequestStatusLoading(),
+        ),
+      );
+      await userRepository.logout();
+      emit(
+        state.copyWith(
+          user: null,
+          status: const RequestStatusInitial(),
+        ),
+      );
+    });
+
+    on<AuthenticationUpdateEvent>((event, emit) async {
+      // await userRepository.updateLocalUser(event.user);
+
+      emit(state.copyWith(user: event.user));
+    });
+
+    on<AuthResetStatusEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          status: RequestStatusInitial(),
+          user: state.user,
+        ),
+      );
     });
   }
 
-
-
+  String? validateRegisterRequest(RegisterRequest registerRequest) {
+    if (registerRequest.firstName.isEmpty) {
+      return "First name cannot be empty";
+    }
+    if (registerRequest.lastName.isEmpty) {
+      return "Last name cannot be empty";
+    }
+    if (registerRequest.password.isEmpty) {
+      return "Password cannot be empty";
+    }
+    if (registerRequest.password.length <= 5) {
+      return "Password must be longer than 5 symbols";
+    }
+    return null;
+  }
 }

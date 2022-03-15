@@ -1,8 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
+import 'package:share_take/bloc/helpers/bloc_getter.dart';
+import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
@@ -21,13 +23,36 @@ class DrawerWidget extends StatelessWidget {
 
     return Drawer(
       child: Material(
-        color: ThemeColors.brown.shade600,
+        color: ThemeColors.blue.shade600,
         child: ListView(
           padding: padding,
           children: [
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.extraLarge,
             ),
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                bool isLoggedIn = state.user != null;
+                if(isLoggedIn) {
+                  return _buildMenuItemIconData(
+                    text: state.user!.email,
+                    iconData: Icons.verified_user,
+                    onTap: () {
+                      StaticNavigator.popContext(context);
+                      StaticNavigator.pushUserScreen(context);
+                    },
+                  );
+                }
+                return _buildMenuItemIconData(
+                  text: "Not logged in",
+                  iconData: Icons.supervised_user_circle_sharp,
+                  onTap: () {
+
+                  },
+                );
+              },
+            ),
+            _buildDivider(),
             _buildMenuItemIconData(
               text: Translations.wishList,
               iconData: Icons.favorite,
@@ -51,12 +76,28 @@ class DrawerWidget extends StatelessWidget {
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.small,
             ),
-            _buildMenuItemIconData(
-              text: Translations.login,
-              iconData: Icons.login,
-              onTap: () {
-                context.read<AuthenticationBloc>().add(LoggedOutEvent());
-                StaticNavigator.popUntilFirstRoute(context);
+            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                bool isLoggedIn = state.user != null;
+
+                if(state.status is RequestStatusLoading){
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return _buildMenuItemIconData(
+                  text: isLoggedIn ? Translations.logout : Translations.login,
+                  iconData: isLoggedIn ? Icons.logout : Icons.login,
+                  onTap: () {
+                    if (isLoggedIn) {
+                      context.read<AuthenticationBloc>().add(AuthLoggedOutEvent());
+                      StaticNavigator.popContext(context);
+                      StaticNavigator.pushLoginScreen(context);
+                    } else {
+                      StaticNavigator.popContext(context);
+                      StaticNavigator.pushLoginScreen(context);
+                    }
+                  },
+                );
               },
             ),
             const ProxySpacingVerticalWidget(
@@ -68,10 +109,12 @@ class DrawerWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDivider() => const Padding(
-    padding: StaticStyles.listViewPadding,
-    child: Divider(color: ThemeColors.white),
-  );
+  Widget _buildDivider() =>
+      const Padding(
+        padding: StaticStyles.listViewPadding,
+        child: Divider(color: ThemeColors.white),
+      );
+
   //
   // Widget _buildMenuItem({
   //   required String text,
@@ -92,8 +135,7 @@ class DrawerWidget extends StatelessWidget {
   //   );
   // }
 
-  Widget _buildMenuItemIconData(
-      {required String text, required IconData iconData, required GestureTapCallback onTap}) {
+  Widget _buildMenuItemIconData({required String text, required IconData iconData, required GestureTapCallback onTap}) {
     const color = ThemeColors.white;
     const iconColor = ThemeColors.white;
 

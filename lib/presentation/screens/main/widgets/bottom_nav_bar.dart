@@ -15,8 +15,8 @@ class MainBottomNavigationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color activeColor = ThemeColors.brown.shade600;
-    Color defaultColor = ThemeColors.brown.shade600.withOpacity(0.5);
+    Color activeColor = ThemeColors.blue.shade600;
+    Color defaultColor = ThemeColors.blue.shade600.withOpacity(0.5);
     Color activeLineColor = activeColor;
     Color defaultLineColor = ThemeColors.white;
 

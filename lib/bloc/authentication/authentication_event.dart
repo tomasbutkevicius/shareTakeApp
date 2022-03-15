@@ -7,34 +7,50 @@ abstract class AuthenticationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AppStarted extends AuthenticationEvent {
+class AuthAppStarted extends AuthenticationEvent {
   final BuildContext context;
 
-  const AppStarted(this.context);
+  const AuthAppStarted(this.context);
 }
 
-class LoginEvent extends AuthenticationEvent {
+class AuthLoginEvent extends AuthenticationEvent {
   final String email;
   final String password;
   final BuildContext context;
 
-  const LoginEvent({
+  const AuthLoginEvent({
     required this.email,
     required this.password,
     required this.context,
   });
 
   @override
-  List<Object> get props => [email, password];
-
-  @override
-  String toString() => 'SignInButtonPressedEvent { email: $email }';
+  List<Object> get props => [email, password, context];
 }
 
-class RemindPasswordEvent extends AuthenticationEvent {
+class AuthRegisterEvent extends AuthenticationEvent {
+  final String email;
+  final String password;
+  final String firstName;
+  final String lastName;
+  final BuildContext context;
+
+  const AuthRegisterEvent({
+    required this.email,
+    required this.password,
+    required this.firstName,
+    required this.lastName,
+    required this.context,
+  });
+
+  @override
+  List<Object> get props => [email, password, firstName, lastName, context];
+}
+
+class AuthRemindPasswordEvent extends AuthenticationEvent {
   final String email;
 
-  const RemindPasswordEvent({
+  const AuthRemindPasswordEvent({
     required this.email,
   });
 
@@ -45,22 +61,24 @@ class RemindPasswordEvent extends AuthenticationEvent {
   String toString() => 'RemindPasswordPressedEvent { email: $email }';
 }
 
-class LoggedOutEvent extends AuthenticationEvent {}
+class AuthLoggedOutEvent extends AuthenticationEvent {}
 
 class AuthenticationUpdateEvent extends AuthenticationEvent {
-  final User user;
+  final UserLocal user;
 
   const AuthenticationUpdateEvent({
     required this.user,
   });
 }
 
-class UserDisableFirstTimeLogin extends AuthenticationEvent {
-  final User user;
+class AuthUserDisableFirstTimeLogin extends AuthenticationEvent {
+  final UserLocal user;
 
-  const UserDisableFirstTimeLogin({
+  const AuthUserDisableFirstTimeLogin({
     required this.user,
   });
 }
 
-class ResetStateEvent extends AuthenticationEvent {}
+class AuthResetStateEvent extends AuthenticationEvent {}
+
+class AuthResetStatusEvent extends AuthenticationEvent {}

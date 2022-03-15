@@ -2,7 +2,7 @@ part of 'authentication_bloc.dart';
 
 class AuthenticationState extends Equatable {
   final RequestStatus status;
-  final User? user;
+  final UserLocal? user;
 
   const AuthenticationState({
     this.status = const RequestStatusInitial(),
@@ -10,7 +10,7 @@ class AuthenticationState extends Equatable {
   });
 
   AuthenticationState copyWith({
-    required User? user,
+    required UserLocal? user,
     int? wrongInputCount,
     RequestStatus? status,
   }) {

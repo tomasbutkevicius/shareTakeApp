@@ -40,12 +40,15 @@ class BookListView extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         itemCount: state.bookList.length,
         itemBuilder: (context, index) {
-          return Column(
-            children: [
-              ProxySpacingVerticalWidget(),
-              _bookCard(state.bookList[index]),
-              ProxySpacingVerticalWidget(),
-            ],
+          return Padding(
+            padding: StaticStyles.listViewPadding,
+            child: Column(
+              children: [
+                ProxySpacingVerticalWidget(),
+                _bookCard(state.bookList[index]),
+                ProxySpacingVerticalWidget(),
+              ],
+            ),
           );
         },
       ),

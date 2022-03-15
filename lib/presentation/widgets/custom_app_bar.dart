@@ -6,12 +6,13 @@ import 'package:share_take/presentation/widgets/title_widget.dart';
 class CustomAppBar {
   static AppBar build(
       BuildContext context, {
-        bool showBackBtn = false,
+        bool showBackBtn = true,
         bool showTitle = true,
+        Color backgroundColor = ThemeColors.blue,
       }) {
     return AppBar(
       shadowColor: ThemeColors.white.withOpacity(0.5),
-      backgroundColor: ThemeColors.brown.shade600,
+      backgroundColor: backgroundColor,
       leading: showBackBtn ? _backButton(context) : SizedBox.shrink(),
       title: showTitle ? const Center(
         child: AppTitleTextWidget(),
