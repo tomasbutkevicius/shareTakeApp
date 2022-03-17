@@ -67,6 +67,7 @@ class _AddBookFormState extends State<AddBookForm> {
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.extraLarge,
             ),            _inputField(context: context, controller: _isbnController, label: "isbn", enabled: false),
+            _getISBNPickerBtn(context),
             const ProxySpacingVerticalWidget(),
             _inputField(context: context, controller: _titleController, label: "Title",),
             const ProxySpacingVerticalWidget(),
@@ -157,6 +158,23 @@ class _AddBookFormState extends State<AddBookForm> {
     );
   }
 
+  Widget _getISBNPickerBtn(BuildContext context) {
+    String buttonText = "Enter ISBN";
+    return ProxyButtonWidget(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 100,
+      ),
+      text: buttonText,
+      color: ThemeColors.bordo.shade600,
+      isUppercase: false,
+      onPressed: () async {
+        await _displayTextInputDialog(context);
+      },
+    );
+  }
+
+
   Widget _getDatePickerBtn(BuildContext context) {
     String buttonText = "Select date";
     return ProxyButtonWidget(
@@ -220,5 +238,35 @@ class _AddBookFormState extends State<AddBookForm> {
         );
       },
     );
+  }
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    String isbnValue = "";
+    return showDialog(
+        context: context,
+        builder: (alertContext) {
+          return AlertDialog(
+            title: Text('TextField in Dialog'),
+            content: TextField(
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                isbnValue = value;
+              },
+              decoration: InputDecoration(hintText: "Text Field in Dialog"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('ok'),
+                onPressed: () {
+                  setState(() {
+                    BlocGetter.getAddBookBloc(context).add(BookAddHandleIsbnEvent(isbn: isbnValue));
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+
+            ],
+          );
+        });
   }
 }
