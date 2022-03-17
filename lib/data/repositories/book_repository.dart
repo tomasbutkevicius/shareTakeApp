@@ -3,8 +3,7 @@ import 'package:share_take/data/data_providers/remote/remote_book_source.dart';
 import 'package:share_take/data/firebase_storage.dart';
 import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/response/book_response.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+
 class BookRepository {
   final RemoteBookSource remoteBookSource;
   final FirebaseStorageService firebaseStorageService;
@@ -17,16 +16,24 @@ class BookRepository {
 
     List<BookLocal> books = [];
 
-   for(BookResponse response in bookResponseList){
-     String url = "";
-     try {
-       url = await firebaseStorageService.getFileUrl(response.imagePath!);
-     } catch (e) {}
+    for (BookResponse response in bookResponseList) {
+      String url = "";
 
-     books.add(
-       BookLocal.fromResponse(response, url),
-     );
-   }
+      if(response.imagePath != null){
+        try {
+          if(!url.contains("http")) {
+            url = await firebaseStorageService.getFileUrl(response.imagePath!);
+          } else {
+            url = response.imagePath!;
+          }
+        } catch (e) {}
+      }
+
+
+      books.add(
+        BookLocal.fromResponse(response, url),
+      );
+    }
 
     return books;
   }
@@ -39,11 +46,16 @@ class BookRepository {
       orderBy: OrderBy.relevance,
     );
 
-    if(queriedBooks.isEmpty){
+    if (queriedBooks.isEmpty) {
       return null;
     }
 
     return queriedBooks.first;
+  }
+
+  Future addBook(BookLocal bookLocal) async {
+
+    await remoteBookSource.addBook(bookLocal);
   }
 
 }

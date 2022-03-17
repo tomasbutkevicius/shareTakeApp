@@ -14,6 +14,7 @@ class ProxyTextFormField extends StatelessWidget {
   final Icon? icon;
   final bool obscureText;
   final TextInputType? keyboardType;
+  final bool enabled;
 
   const ProxyTextFormField({
     Key? key,
@@ -27,12 +28,14 @@ class ProxyTextFormField extends StatelessWidget {
     this.icon,
     this.labelText = "text",
     this.obscureText = false,
+    this.enabled = true,
     this.keyboardType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       keyboardType: keyboardType,
       minLines: keyboardType == TextInputType.multiline ? 3 : null,
       maxLines: keyboardType == TextInputType.multiline ? null : 1,
