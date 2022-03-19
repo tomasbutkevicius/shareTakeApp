@@ -7,6 +7,7 @@ import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/presentation/router/static_navigator.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
@@ -48,7 +49,7 @@ class BookListView extends StatelessWidget {
                   child: Column(
                     children: [
                       ProxySpacingVerticalWidget(),
-                      _bookCard(state.bookList[index]),
+                      _bookCard(state.bookList[index], context),
                       ProxySpacingVerticalWidget(),
                     ],
                   ),
@@ -61,7 +62,7 @@ class BookListView extends StatelessWidget {
     );
   }
 
-  Widget _bookCard(BookLocal book) {
+  Widget _bookCard(BookLocal book, BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: ThemeColors.bordo.shade600,
@@ -95,7 +96,9 @@ class BookListView extends StatelessWidget {
                   ),
                   Expanded(
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        StaticNavigator.pushBookDetailScreen(context, book);
+                      },
                       icon: const Icon(Icons.arrow_forward_ios),
                     ),
                   ),

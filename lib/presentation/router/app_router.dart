@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/presentation/router/arguments.dart';
 import 'package:share_take/presentation/screens/add_book/add_book_screen.dart';
+import 'package:share_take/presentation/screens/book_details/book_details_screen.dart';
 import 'package:share_take/presentation/screens/login/login_screen.dart';
 import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
@@ -19,6 +22,8 @@ class AppRouter {
         return _handleUserScreen();
       case AddBookScreen.routeName:
         return _handleAddBookScreen();
+      case BookDetailsScreen.routeName:
+        return _handleBookDetailsScreen(settings);
       default:
         return null;
     }
@@ -53,4 +58,16 @@ class AppRouter {
       builder: (_) => const AddBookScreen(),
     );
   }
+
+  MaterialPageRoute<dynamic> _handleBookDetailsScreen(RouteSettings settings) {
+    final args = settings.arguments as ScreenArguments;
+    return MaterialPageRoute(
+      builder: (context) {
+        return BookDetailsScreen(
+          bookLocal: args.bookLocal!,
+        );
+      },
+    );
+  }
+
 }
