@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
@@ -35,12 +36,9 @@ class BookDetailsWidget extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ListTile(
-                leading: ProxyTextWidget(text: book.title, fontSize: ProxyFontSize.extraLarge,),
-              ),
-              ListTile(
-                leading: ProxyTextWidget(text: book.subtitle ?? "", fontSize: ProxyFontSize.large,),
-              ),
+              Header(text: book.title),
+              ProxyTextWidget(text: book.subtitle ?? "", fontSize: ProxyFontSize.large,),
+              ProxySpacingVerticalWidget(),
               _getImage(book),
               ProxySpacingVerticalWidget(),
               book.publishDate != null
