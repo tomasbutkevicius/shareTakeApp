@@ -359,8 +359,10 @@ class _AddBookFormState extends State<AddBookForm> {
               TextButton(
                 child: Text('ok'),
                 onPressed: () {
-                  BlocGetter.getAddBookBloc(context).add(BookAddHandleIsbnEvent(isbn: isbnValue));
-                  Navigator.pop(alertContext);
+                  if(isbnValue.trim().isNotEmpty) {
+                    BlocGetter.getAddBookBloc(context).add(BookAddHandleIsbnEvent(isbn: isbnValue));
+                    Navigator.pop(alertContext);
+                  }
                 },
               ),
             ],

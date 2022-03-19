@@ -21,6 +21,9 @@ samples, guidance on mobile development, and a full API reference.
 run in terminal after creating new @GenerateMocks[]
 flutter packages pub run build_runner build
 
+isbns
+9783540609360
+
 
 ##Json generate from annotations
 flutter packages pub run build_runner build --delete-conflicting-outputs
