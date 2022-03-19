@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/book_add/book_add_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
@@ -26,7 +27,9 @@ class AddBookScreen extends StatelessWidget {
     String message = "";
 
     return BlocProvider(
-      create: (context) => BookAddBloc(bookRepository: context.read<BookRepository>()),
+      create: (context) => BookAddBloc(
+        authenticationBloc: context.read<AuthenticationBloc>(),
+          bookRepository: context.read<BookRepository>()),
       child: BlocBuilder<BookAddBloc, BookAddState>(
         builder: (context, state) {
           if (state.status is RequestStatusError) {

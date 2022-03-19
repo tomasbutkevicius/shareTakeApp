@@ -1,10 +1,6 @@
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:share_take/constants/api.dart';
-import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/request/add_book_request.dart';
 import 'package:share_take/data/models/response/book_response.dart';
 
@@ -31,7 +27,7 @@ class RemoteBookSource {
       if (foundByIsbn.isNotEmpty) {
         throw Exception("Book with this ISBN is already added ");
       }
-      bookCollection.doc().set(
+      await bookCollection.doc().set(
         bookRequest.toMap(),
           );
     } on FirebaseException catch (firebaseException) {

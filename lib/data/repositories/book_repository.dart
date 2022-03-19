@@ -60,8 +60,8 @@ class BookRepository {
     return queriedBooks.first;
   }
 
-  Future addBook(BookLocal bookLocal) async {
-    AddBookRequest bookRequest = AddBookRequest.fromBookLocal(bookLocal);
+  Future addBook(BookLocal bookLocal, String userId) async {
+    AddBookRequest bookRequest = AddBookRequest.fromBookLocal(bookLocal, userId);
 
     await remoteBookSource.addBook(bookRequest);
   }

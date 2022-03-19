@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:books_finder/books_finder.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
 import 'package:share_take/utilities/static_utilities.dart';
 
@@ -13,8 +15,9 @@ part 'book_add_state.dart';
 
 class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
   final BookRepository bookRepository;
+  final AuthenticationBloc authenticationBloc;
 
-  BookAddBloc({required this.bookRepository}) : super(const BookAddState()) {
+  BookAddBloc({required this.bookRepository, required this.authenticationBloc}) : super(const BookAddState()) {
     on<BookAddStatusResetEvent>((event, emit) => emit(state.copyWith(status: RequestStatusInitial())));
     on<BookAddChangeBookDataEvent>((event, emit) {
 
@@ -72,7 +75,11 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
         return;
       }
       try {
-        await bookRepository.addBook(event.bookLocal);
+        UserLocal? user = authenticationBloc.state.user;
+        if(user == null){
+          throw Exception("Please login to continue");
+        }
+        await bookRepository.addBook(event.bookLocal, authenticationBloc.state.user!.id);
         emit(
           state.copyWith(
             status: RequestStatusSuccess(message: "Book Added! Thank you."),

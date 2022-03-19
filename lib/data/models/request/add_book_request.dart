@@ -10,6 +10,7 @@ class AddBookRequest {
   final int pages;
   final DateTime? publishDate;
   final String description;
+  final String userId;
 
   const AddBookRequest({
     this.isbn,
@@ -21,6 +22,7 @@ class AddBookRequest {
     required this.pages,
     required this.publishDate,
     required this.description,
+    required this.userId,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,24 +36,11 @@ class AddBookRequest {
       'pages': this.pages,
       'publishDate': this.publishDate,
       'description': this.description,
+      "userId": this.userId
     };
   }
 
-  factory AddBookRequest.fromMap(Map<String, dynamic> map) {
-    return AddBookRequest(
-      isbn: map['isbn'] as String,
-      title: map['title'] as String,
-      subtitle: map['subtitle'] as String,
-      authors: map['authors'] as List<String>,
-      imageUrl: map['imageUrl'] as String?,
-      language: map['language'] as String,
-      pages: map['pages'] as int,
-      publishDate: map['publishDate'] as DateTime,
-      description: map['description'] as String,
-    );
-  }
-
-  factory AddBookRequest.fromBookLocal(BookLocal book) {
+  factory AddBookRequest.fromBookLocal(BookLocal book, String userId) {
     try {
       return AddBookRequest(
         isbn: book.isbn,
@@ -63,6 +52,7 @@ class AddBookRequest {
         language: book.language,
         publishDate: book.publishDate,
         description: book.description,
+        userId: userId,
       );
     } catch (e) {
       throw Exception("Error parsing request. Make sure app is latest version");
