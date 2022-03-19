@@ -62,15 +62,14 @@ class BookListView extends StatelessWidget {
   }
 
   Widget _bookCard(BookLocal book) {
-    return  Container(
+    return Container(
       decoration: BoxDecoration(
         color: ThemeColors.bordo.shade600,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
             bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)
-        ),
+            bottomRight: Radius.circular(10)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -86,27 +85,50 @@ class BookListView extends StatelessWidget {
           padding: StaticStyles.listViewPadding,
           child: Column(
             children: [
-              Row(
+              Flex(
+                direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ProxyTextWidget(
-                      text: book.title),
-                  IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_forward_ios),),
+                  Expanded(
+                    flex: 2,
+                    child: ProxyTextWidget(text: book.title),
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.arrow_forward_ios),
+                    ),
+                  ),
                 ],
               ),
               ProxyTextWidget(
                 text: book.subtitle ?? "",
               ),
               Container(
-                constraints: BoxConstraints(maxHeight: 250, maxWidth: 250),
+                constraints: BoxConstraints(
+                  minHeight: 250,
+                  minWidth: 250,
+                  maxHeight: 250,
+                  maxWidth: 250,
+                ),
                 child: StaticWidgets.getIconRemote(
                   path: book.imageUrl ?? "",
                 ),
               ),
-              Row(
+              Flex(
+                direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(onPressed: (){}, icon: const Icon(Icons.favorite_border_outlined),),
+                  Expanded(
+                    flex: 2,
+                    child: ProxySpacingVerticalWidget(),
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.favorite_border_outlined),
+                    ),
+                  ),
                 ],
               ),
             ],

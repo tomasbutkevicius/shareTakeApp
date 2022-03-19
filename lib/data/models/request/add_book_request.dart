@@ -1,13 +1,14 @@
+import 'package:share_take/data/models/book/book_local.dart';
 
 class AddBookRequest {
-  final int? isbn;
+  final String? isbn;
   final String title;
   final String? subtitle;
   final List<String> authors;
   final String? imageUrl;
   final String? language;
   final int pages;
-  final DateTime publishDate;
+  final DateTime? publishDate;
   final String description;
 
   const AddBookRequest({
@@ -38,15 +39,33 @@ class AddBookRequest {
 
   factory AddBookRequest.fromMap(Map<String, dynamic> map) {
     return AddBookRequest(
-      isbn: map['isbn'] as int,
+      isbn: map['isbn'] as String,
       title: map['title'] as String,
       subtitle: map['subtitle'] as String,
       authors: map['authors'] as List<String>,
-      imageUrl: map['imageUrl'] as String,
+      imageUrl: map['imageUrl'] as String?,
       language: map['language'] as String,
       pages: map['pages'] as int,
       publishDate: map['publishDate'] as DateTime,
       description: map['description'] as String,
     );
+  }
+
+  factory AddBookRequest.fromBookLocal(BookLocal book) {
+    try {
+      return AddBookRequest(
+        isbn: book.isbn,
+        title: book.title,
+        subtitle: book.subtitle,
+        authors: book.authors,
+        pages: book.pages,
+        imageUrl: book.imageUrl,
+        language: book.language,
+        publishDate: book.publishDate,
+        description: book.description,
+      );
+    } catch (e) {
+      throw Exception("Error parsing request. Make sure app is latest version");
+    }
   }
 }

@@ -45,12 +45,30 @@ class ReviewBookView extends StatelessWidget {
             Header(text: "Review book submission"),
             ProxySpacingVerticalWidget(),
             BookDetailsWidget(bookLocal: bookLocal),
+            ProxySpacingVerticalWidget(size: ProxySpacing.large,),
+            _getSubmitBtn(context),
           ProxySpacingVerticalWidget(size: ProxySpacing.large,),
             _getStageToEditBtn(context),
             ProxySpacingVerticalWidget(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _getSubmitBtn(BuildContext context) {
+    String buttonText = "Submit";
+    return ProxyButtonWidget(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 100,
+      ),
+      text: buttonText,
+      color: ThemeColors.blue.shade600,
+      isUppercase: false,
+      onPressed: () {
+        BlocGetter.getAddBookBloc(context).add(BookAddSubmitEvent(bookLocal: bookLocal),);
+      },
     );
   }
 

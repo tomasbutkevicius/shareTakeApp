@@ -7,7 +7,7 @@ class BookResponse {
   final String title;
   final String? subtitle;
   final List<String> authors;
-  final String? imagePath;
+  final String? imageUrl;
   final String? language;
   final int pages;
   final DateTime publishDate;
@@ -19,7 +19,7 @@ class BookResponse {
     required this.title,
     this.subtitle,
     required this.authors,
-    this.imagePath,
+    this.imageUrl,
     this.language,
     required this.pages,
     required this.publishDate,
@@ -36,7 +36,7 @@ class BookResponse {
       subtitle: json['subtitle'] as String?,
       authors:
       (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
-      imagePath: json['imagePath'] as String?,
+      imageUrl: json['imageUrl'] as String?,
       language: json['language'] as String?,
       pages: json['pages'] as int,
       publishDate: DateTime.fromMillisecondsSinceEpoch((snapshot["publishDate"] as Timestamp).millisecondsSinceEpoch),

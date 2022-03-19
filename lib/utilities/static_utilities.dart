@@ -27,4 +27,8 @@ class StaticUtilities {
 
     return formatter.format(date);
   }
+
+  static bool isUrl(String text) {
+    return Uri.tryParse(text)?.hasAbsolutePath ?? false;
+  }
 }

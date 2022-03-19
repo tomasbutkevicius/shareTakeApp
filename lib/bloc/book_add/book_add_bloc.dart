@@ -54,7 +54,40 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
         ));
       }
     });
-    on<BookAddSubmitEvent>((event, emit) async {});
+    on<BookAddSubmitEvent>((event, emit) async {
+      emit(
+        state.copyWith(
+          status: RequestStatusLoading(),
+        ),
+      );
+      String? validationMessage = validateBookRequest(event.bookLocal);
+      if (validationMessage != null) {
+        emit(
+          state.copyWith(
+            status: RequestStatusError(
+              message: validationMessage,
+            ),
+          ),
+        );
+        return;
+      }
+      try {
+        await bookRepository.addBook(event.bookLocal);
+        emit(
+          state.copyWith(
+            status: RequestStatusSuccess(message: "Book Added! Thank you."),
+          )
+        );
+      } catch(e){
+        emit(
+          state.copyWith(
+            status: RequestStatusError(
+              message: e.toString(),
+            ),
+          ),
+        );
+      }
+    });
 
     on<BookAddEditStageEvent>(
       (event, emit) {

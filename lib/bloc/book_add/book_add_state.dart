@@ -48,3 +48,7 @@ class BookAddEditStage extends BookAddStage {
 class BookAddReviewStage extends BookAddStage {
   const BookAddReviewStage();
 }
+
+class BookAddSuccessStage extends BookAddStage {
+  const BookAddSuccessStage();
+}

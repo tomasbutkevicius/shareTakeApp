@@ -36,10 +36,11 @@ class BookDetailsWidget extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                leading: ProxyTextWidget(text: book.title, fontSize: ProxyFontSize.large,),
+                leading: ProxyTextWidget(text: book.title, fontSize: ProxyFontSize.extraLarge,),
               ),
-              ProxySpacingVerticalWidget(),
-              ProxyTextWidget(text: book.subtitle ?? ""),
+              ListTile(
+                leading: ProxyTextWidget(text: book.subtitle ?? "", fontSize: ProxyFontSize.large,),
+              ),
               _getImage(book),
               ProxySpacingVerticalWidget(),
               book.publishDate != null
