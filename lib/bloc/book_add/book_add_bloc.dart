@@ -16,6 +16,11 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
 
   BookAddBloc({required this.bookRepository}) : super(const BookAddState()) {
     on<BookAddStatusResetEvent>((event, emit) => emit(state.copyWith(status: RequestStatusInitial())));
+    on<BookAddChangeBookDataEvent>((event, emit) {
+
+      emit(state.copyWith(bookToAdd: event.bookLocal));
+
+    });
     on<BookAddHandleIsbnEvent>((event, emit) async {
       emit(
         state.copyWith(
@@ -58,6 +63,8 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
     );
     on<BookAddReviewStageEvent>(
       (event, emit) {
+        print("Book placed to review submit:");
+        print(event.bookLocal.toString());
         String? validationMessage = validateBookRequest(event.bookLocal);
         if (validationMessage != null) {
           emit(

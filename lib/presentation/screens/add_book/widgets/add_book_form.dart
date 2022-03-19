@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/book_add/book_add_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/constants/enums.dart';
@@ -37,14 +38,14 @@ class _AddBookFormState extends State<AddBookForm> {
 
   final focus = FocusNode();
 
-
   @override
   void initState() {
-    super.initState();
     DateFormat formatter = DateFormat('yyyy/MM/dd');
 
     selectedDate = widget.bookToAdd.publishDate ?? DateTime.now();
     _dateController.value = TextEditingValue(text: formatter.format(selectedDate));
+    super.initState();
+
   }
 
   @override
@@ -58,42 +59,67 @@ class _AddBookFormState extends State<AddBookForm> {
 
   @override
   Widget build(BuildContext context) {
+    _authorsController.text = widget.bookToAdd.authors.toString();
     return Form(
-      child: Padding(
-        padding: StaticStyles.listViewPadding,
-        child: Column(
-          children: <Widget>[
-            _getScanBtn(context),
-            const ProxySpacingVerticalWidget(
-              size: ProxySpacing.extraLarge,
-            ),            _inputField(context: context, controller: _isbnController, label: "isbn", enabled: false),
-            _getISBNPickerBtn(context),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _titleController, label: "Title",),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _subtitleController, label: "Subtitle"),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _authorsController, label: "Authors", enabled: false),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _imageController, label: "Image url", enabled: false),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _langController, label: "Language",),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _pagesController, label: "Pages", textInputType: TextInputType.number,),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _dateController, label: "Publish date", textInputType: TextInputType.datetime, enabled: false,),
-            const ProxySpacingVerticalWidget(),
-            // _getDatePickerBtn(context),
-            const ProxySpacingVerticalWidget(),
-            _inputField(context: context, controller: _descriptionController, label: "description"),
-            const ProxySpacingVerticalWidget(
-              size: ProxySpacing.extraLarge,
+          child: Padding(
+            padding: StaticStyles.listViewPadding,
+            child: Column(
+              children: <Widget>[
+                _getScanBtn(context),
+                const ProxySpacingVerticalWidget(
+                  size: ProxySpacing.extraLarge,
+                ),
+                _inputField(context: context, controller: _isbnController, label: "isbn", enabled: false),
+                _getISBNPickerBtn(context),
+                const ProxySpacingVerticalWidget(),
+                _inputField(
+                  context: context,
+                  controller: _titleController,
+                  label: "Title",
+                ),
+                const ProxySpacingVerticalWidget(),
+                _inputField(context: context, controller: _subtitleController, label: "Subtitle"),
+                const ProxySpacingVerticalWidget(),
+                _inputField(context: context, controller: _authorsController, label: "Authors", enabled: false),
+                const ProxySpacingVerticalWidget(),
+                _getAddAuthorBtn(context),
+                const ProxySpacingVerticalWidget(),
+                _getRemoveAuthorBtn(context),
+                const ProxySpacingVerticalWidget(),
+                _inputField(context: context, controller: _imageController, label: "Image url", enabled: false),
+                const ProxySpacingVerticalWidget(),
+                _inputField(
+                  context: context,
+                  controller: _langController,
+                  label: "Language",
+                ),
+                const ProxySpacingVerticalWidget(),
+                _inputField(
+                  context: context,
+                  controller: _pagesController,
+                  label: "Pages",
+                  textInputType: TextInputType.number,
+                ),
+                const ProxySpacingVerticalWidget(),
+                _inputField(
+                  context: context,
+                  controller: _dateController,
+                  label: "Publish date",
+                  textInputType: TextInputType.datetime,
+                  enabled: false,
+                ),
+                const ProxySpacingVerticalWidget(),
+                // _getDatePickerBtn(context),
+                const ProxySpacingVerticalWidget(),
+                _inputField(context: context, controller: _descriptionController, label: "description"),
+                const ProxySpacingVerticalWidget(
+                  size: ProxySpacing.extraLarge,
+                ),
+                _getReviewBtn(context)
+              ],
             ),
-            _getReviewBtn(context)
-          ],
-        ),
-      ),
-    );
+          ),
+        );
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -114,7 +140,13 @@ class _AddBookFormState extends State<AddBookForm> {
     if (!mounted) return;
   }
 
-  Widget _inputField({required BuildContext context, required TextEditingController controller, required String label, TextInputType  textInputType = TextInputType.text, bool enabled = true,}) {
+  Widget _inputField({
+    required BuildContext context,
+    required TextEditingController controller,
+    required String label,
+    TextInputType textInputType = TextInputType.text,
+    bool enabled = true,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -169,11 +201,47 @@ class _AddBookFormState extends State<AddBookForm> {
       color: ThemeColors.bordo.shade600,
       isUppercase: false,
       onPressed: () async {
-        await _displayTextInputDialog(context);
+        await _displayISBNInputDialog(context);
       },
     );
   }
 
+  Widget _getAddAuthorBtn(BuildContext context) {
+    String buttonText = "Add author";
+    return ProxyButtonWidget(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 100,
+      ),
+      text: buttonText,
+      color: ThemeColors.bordo.shade600,
+      isUppercase: false,
+      onPressed: () async {
+        await _displayAuthorInputDialog(context);
+      },
+    );
+  }
+
+  Widget _getRemoveAuthorBtn(BuildContext context) {
+    String buttonText = "Remove author";
+    return ProxyButtonWidget(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 100,
+      ),
+      text: buttonText,
+      color: ThemeColors.bordo.shade600,
+      isUppercase: false,
+      onPressed: () {
+        if (widget.bookToAdd.authors.isNotEmpty) {
+          setState(() {
+            widget.bookToAdd.authors.removeLast();
+            _authorsController.text = widget.bookToAdd.authors.toString();
+          });
+        }
+      },
+    );
+  }
 
   Widget _getDatePickerBtn(BuildContext context) {
     String buttonText = "Select date";
@@ -194,19 +262,14 @@ class _AddBookFormState extends State<AddBookForm> {
   Future _selectDate(BuildContext context) async {
     DateFormat formatter = DateFormat('yyyy/MM/dd');
 
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1901, 1),
-        lastDate: DateTime(2100));
+    final DateTime? picked =
+    await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(1901, 1), lastDate: DateTime(2100));
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
         _dateController.value = TextEditingValue(text: formatter.format(picked));
       });
   }
-
-
 
   Widget _getReviewBtn(BuildContext context) {
     String buttonText = "Review";
@@ -219,7 +282,6 @@ class _AddBookFormState extends State<AddBookForm> {
       color: ThemeColors.bordo.shade600,
       isUppercase: false,
       onPressed: () {
-
         BookLocal bookLocal = BookLocal(
           id: widget.bookToAdd.id,
           title: _titleController.text,
@@ -240,7 +302,46 @@ class _AddBookFormState extends State<AddBookForm> {
     );
   }
 
-  Future<void> _displayTextInputDialog(BuildContext context) async {
+  Future<void> _displayAuthorInputDialog(BuildContext context) async {
+    String authorValue = "";
+    return showDialog(
+        context: context,
+        builder: (alertContext) {
+          return AlertDialog(
+            title: Text('Add author'),
+            content: TextField(
+              onChanged: (value) {
+                authorValue = value;
+              },
+              decoration: InputDecoration(hintText: "Type author name"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('ok'),
+                onPressed: () {
+                  if (authorValue
+                      .trim()
+                      .isNotEmpty) {
+                    BlocGetter.getAddBookBloc(context).add(
+                      BookAddChangeBookDataEvent(
+                        bookLocal: widget.bookToAdd.copyWith(
+                          authors: [
+                            ...widget.bookToAdd.authors,
+                            authorValue,
+                          ],
+                        ),
+                      ),
+                    );
+                    Navigator.of(alertContext).pop();
+                  }
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _displayISBNInputDialog(BuildContext context) async {
     String isbnValue = "";
     return showDialog(
         context: context,
@@ -258,13 +359,10 @@ class _AddBookFormState extends State<AddBookForm> {
               TextButton(
                 child: Text('ok'),
                 onPressed: () {
-                  setState(() {
-                    BlocGetter.getAddBookBloc(context).add(BookAddHandleIsbnEvent(isbn: isbnValue));
-                    Navigator.pop(context);
-                  });
+                  BlocGetter.getAddBookBloc(context).add(BookAddHandleIsbnEvent(isbn: isbnValue));
+                  Navigator.pop(alertContext);
                 },
               ),
-
             ],
           );
         });

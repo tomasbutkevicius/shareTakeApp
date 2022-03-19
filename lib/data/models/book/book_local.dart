@@ -1,9 +1,8 @@
-
 import 'package:books_finder/books_finder.dart';
+import 'package:equatable/equatable.dart';
 import 'package:share_take/data/models/response/book_response.dart';
 
-
-class BookLocal {
+class BookLocal extends Equatable {
   final String id;
   final String? isbn;
   final String title;
@@ -29,7 +28,6 @@ class BookLocal {
   });
 
   factory BookLocal.fromResponse(BookResponse response, String imageUrl) {
-
     return BookLocal(
       id: response.id,
       isbn: response.isbn,
@@ -46,12 +44,12 @@ class BookLocal {
 
   factory BookLocal.fromBookFinder(Book foundBook, String isbn) {
     String? imageUrl;
-    try{
+    try {
       imageUrl = foundBook.info.imageLinks["thumbnail"]!.toString();
-    } catch(e){
+    } catch (e) {
       try {
         imageUrl = foundBook.info.imageLinks["smallThumbnail"]!.toString();
-      } catch(e){}
+      } catch (e) {}
     }
 
     print("IMAGE:");
@@ -71,4 +69,48 @@ class BookLocal {
     );
   }
 
+  @override
+  String toString() {
+    return 'BookLocal{id: $id, isbn: $isbn, title: $title, subtitle: $subtitle, authors: $authors, imageUrl: $imageUrl, language: $language, pages: $pages, publishDate: $publishDate, description: $description}';
+  }
+
+  BookLocal copyWith({
+    String? id,
+    String? isbn,
+    String? title,
+    String? subtitle,
+    List<String>? authors,
+    String? imageUrl,
+    String? language,
+    int? pages,
+    DateTime? publishDate,
+    String? description,
+  }) {
+    return BookLocal(
+      id: id ?? this.id,
+      isbn: isbn ?? this.isbn,
+      title: title ?? this.title,
+      subtitle: subtitle ?? this.subtitle,
+      authors: authors ?? this.authors,
+      imageUrl: imageUrl ?? this.imageUrl,
+      language: language ?? this.language,
+      pages: pages ?? this.pages,
+      publishDate: publishDate ?? this.publishDate,
+      description: description ?? this.description,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        id,
+        isbn,
+        title,
+        subtitle,
+        authors,
+        imageUrl,
+        language,
+        pages,
+        publishDate,
+        description,
+      ];
 }

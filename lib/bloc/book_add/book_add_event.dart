@@ -23,6 +23,14 @@ class BookAddReviewStageEvent extends BookAddEvent {
   });
 }
 
+class BookAddChangeBookDataEvent extends BookAddEvent {
+  final BookLocal bookLocal;
+
+  BookAddChangeBookDataEvent({
+    required this.bookLocal,
+  });
+}
+
 class BookAddSubmitEvent extends BookAddEvent {
   final BookLocal bookLocal;
 
