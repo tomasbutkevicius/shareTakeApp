@@ -27,12 +27,12 @@ class ThemeColors {
       }
   );
 
-  static const MaterialColor brown = MaterialColor(
+  static const MaterialColor bordo = MaterialColor(
       0xFFF6A100,
       const <int, Color> {
-        400: const Color(0xFFB46D02),
-        500: const Color(0xFF925901),
-        600: const Color(0xFF764800),
+        400: const Color(0xFFA33700),
+        500: const Color(0xFF5A2F00),
+        600: const Color(0xFF5A2001),
       }
   );
   static const MaterialColor red = MaterialColor(

@@ -56,7 +56,7 @@ class StaticWidgets {
   }
 
   static Widget getIconRemote(
-      {required String path, double? width, double? height, Color? color, Widget errorWidget = const SizedBox.shrink()}) {
+      {required String path, double? width, double? height, Color? color, Widget errorWidget = const Icon(Icons.image)}) {
     try {
       return Image.network(
         path,

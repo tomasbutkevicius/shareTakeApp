@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_take/bloc/book/book_bloc.dart';
+import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/constants/static_texts.dart';
 import 'package:share_take/constants/theme/theme.dart';
@@ -61,8 +61,8 @@ class MyApp extends StatelessWidget {
                   AuthAppStarted(context),
                 ),
             ),
-            BlocProvider<BookBloc>(
-              create: (_) => BookBloc(
+            BlocProvider<BookListBloc>(
+              create: (_) => BookListBloc(
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
               ),
@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
   }
 
   void _listener(BuildContext context, AuthenticationState state) {
-    context.read<BookBloc>().add(BookResetEvent());
+    context.read<BookListBloc>().add(BookListResetEvent());
   }
 
   bool _listenWhen(AuthenticationState previousState, AuthenticationState state) => previousState.user != state.user;

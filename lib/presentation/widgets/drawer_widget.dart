@@ -69,6 +69,14 @@ class DrawerWidget extends StatelessWidget {
                 // StaticNavigator.navigateToHistoryMain(context);
               },
             ),
+            _buildMenuItemIconData(
+              text: "Add book",
+              iconData: Icons.add,
+              onTap: () {
+                Navigator.pop(context);
+                StaticNavigator.pushAddBookScreen(context);
+              },
+            ),
             const ProxySpacingVerticalWidget(
               size: ProxySpacing.small,
             ),
