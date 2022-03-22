@@ -19,8 +19,8 @@ class UserRepository {
     DocumentSnapshot? userDocument;
     UserLocal? userLocal;
     try {
-      userDocument = await _remoteUserSource.getUserData(userId: userRemote.user!.uid, email: email);
-      userLocal = UserLocal.fromSnapshot(email, userDocument);
+      userDocument = await _remoteUserSource.getUserData(userId: userRemote.user!.uid,);
+      userLocal = UserLocal.fromSnapshot(userDocument);
     } catch (e) {
       print("ERROR RECEIVING USER INFO");
       print(e.runtimeType);
@@ -65,6 +65,10 @@ class UserRepository {
 
   Future updateUser(UserLocal user) async {
     // await _localUserSource.updateUser(user);
+  }
+
+  Future<List<UserLocal>> getAllUsers() async {
+    return _remoteUserSource.getAllUsers();
   }
 
 // Future updateRemoteSettings(String token) async {

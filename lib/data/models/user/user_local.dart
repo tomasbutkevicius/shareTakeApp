@@ -20,20 +20,20 @@ class UserLocal extends Equatable {
     required this.lastName,
   });
 
-
-  factory UserLocal.fromSnapshot(String email, DocumentSnapshot snapshot) {
+  factory UserLocal.fromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> json = snapshot.data() as Map<String, dynamic>;
-
-    return UserLocal(
-      id: snapshot.id,
-      email: email,
-      firstName: json["firstName"] as String,
-      lastName: json["lastName"] as String,
-      username: json["username"] as String,
-    );
+    try {
+      return UserLocal(
+        id: snapshot.id,
+        email: json["email"] as String,
+        firstName: json["firstName"] as String,
+        lastName: json["lastName"] as String,
+        username: json["username"] as String,
+      );
+    } catch (e) {
+      return UserLocal(id: "", email: "", username: "", firstName: "", lastName: "");
+    }
   }
-
-
 
   @override
   String toString() {

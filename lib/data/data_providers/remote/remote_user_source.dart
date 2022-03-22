@@ -33,31 +33,39 @@ class RemoteUserSource {
 
   Future updateUserData(UserLocal userLocal) async {
     try {
-      await fireStore.collection(StaticApi.usersCollection).doc(userLocal.id).set(
-          {
-            'email': userLocal.email,
-            'username': userLocal.username,
-            'firstName': userLocal.firstName,
-            'lastName': userLocal.lastName,
-          }
-      );
+      await fireStore.collection(StaticApi.usersCollection).doc(userLocal.id).set({
+        'email': userLocal.email,
+        'firstName': userLocal.firstName,
+        'lastName': userLocal.lastName,
+      });
     } on FirebaseAuthException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }
   }
 
-  Future<DocumentSnapshot> getUserData({required String userId, required String email,}) async {
+  Future<DocumentSnapshot> getUserData({
+    required String userId,
+  }) async {
     try {
       DocumentReference userReference = fireStore.collection(StaticApi.usersCollection).doc(userId);
       DocumentSnapshot docSnap = await userReference.get();
       return docSnap;
-    } on FirebaseException catch(firebaseException) {
+    } on FirebaseException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }
   }
 
-
+  Future<List<UserLocal>> getAllUsers() async {
+    try {
+      QuerySnapshot snapshot = await fireStore.collection(StaticApi.usersCollection).get();
+      return snapshot.docs.map((doc) {
+        UserLocal user = UserLocal.fromSnapshot(doc);
+        return user;
+      }).toList();
+    } on FirebaseException catch (firebaseException) {
+      throw Exception(firebaseException.message);
+    }
+  }
 
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
-  
 }

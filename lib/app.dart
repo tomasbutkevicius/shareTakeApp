@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
+import 'package:share_take/bloc/user_list/user_list_bloc.dart';
 import 'package:share_take/constants/static_texts.dart';
 import 'package:share_take/constants/theme/theme.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
@@ -60,6 +61,11 @@ class MyApp extends StatelessWidget {
               )..add(
                   AuthAppStarted(context),
                 ),
+            ),
+            BlocProvider<UserListBloc>(
+              create: (_) => UserListBloc(
+                userRepository: context.read<UserRepository>(),
+              ),
             ),
             BlocProvider<BookListBloc>(
               create: (_) => BookListBloc(
