@@ -7,8 +7,8 @@ import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dar
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 import 'package:share_take/utilities/static_utilities.dart';
 
-class BookDetailsWidget extends StatelessWidget {
-  const BookDetailsWidget({Key? key, required this.bookLocal}) : super(key: key);
+class BookDetailsMainWidget extends StatelessWidget {
+  const BookDetailsMainWidget({Key? key, required this.bookLocal}) : super(key: key);
   final BookLocal bookLocal;
 
   @override

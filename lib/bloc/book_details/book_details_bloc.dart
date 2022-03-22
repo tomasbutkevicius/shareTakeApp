@@ -25,6 +25,9 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
     required this.userRepository,
     required this.bookRepository,
   }) : super(const BookDetailsState()) {
+    on<BookDetailsResetEvent>((event, emit) async {
+      emit(BookDetailsState());
+    });
     on<BookDetailsGetEvent>((event, emit) async {
       emit(state.copyWith(status: RequestStatusLoading()));
       try {

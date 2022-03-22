@@ -44,7 +44,7 @@ class ReviewBookView extends StatelessWidget {
             ),
             Header(text: "Review book submission"),
             ProxySpacingVerticalWidget(),
-            BookDetailsWidget(bookLocal: bookLocal),
+            BookDetailsMainWidget(bookLocal: bookLocal),
             ProxySpacingVerticalWidget(size: ProxySpacing.large,),
             _getSubmitBtn(context),
           ProxySpacingVerticalWidget(size: ProxySpacing.large,),

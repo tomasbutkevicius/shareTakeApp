@@ -3,6 +3,8 @@ part of 'book_details_bloc.dart';
 @immutable
 abstract class BookDetailsEvent {}
 
+class BookDetailsResetEvent extends BookDetailsEvent {}
+
 class BookDetailsGetEvent extends BookDetailsEvent {
   final String bookId;
 
