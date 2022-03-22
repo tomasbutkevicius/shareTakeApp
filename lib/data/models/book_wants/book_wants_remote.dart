@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-class BookWantsRemote {
+class BookWantsRemote extends Equatable {
   final String id;
   final String bookId;
   final String userId;
@@ -41,4 +42,7 @@ class BookWantsRemote {
       throw Exception("Error parsing book wants, make sure app is updated");
     }
   }
+
+  @override
+  List<Object?> get props => [id, bookId, userId,];
 }

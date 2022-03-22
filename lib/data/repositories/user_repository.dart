@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_user_source.dart';
+import 'package:share_take/data/models/book_wants/book_wants_remote.dart';
 import 'package:share_take/data/models/request/register_request.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 
@@ -59,6 +60,10 @@ class UserRepository {
     UserLocal? user = await _localUserSource.getActiveUser();
     return user;
   }
+
+  Future<String?> getUserId() async {
+    User? user =_remoteUserSource.firebaseAuth.currentUser;
+  }
   
   Future<String?> getToken() async {
     return _localUserSource.getToken();
@@ -77,7 +82,11 @@ class UserRepository {
     return _remoteUserSource.getAllUsers();
   }
 
-// Future updateRemoteSettings(String token) async {
-//   await _remoteUserSource.postSettings(token);
-// }
+  Future<List<BookWantsRemote>> getUserBookWants(String userId) async {
+    return _remoteUserSource.getUserWishList(userId);
+  }
+
+  Future addBookToWishList(String bookId) async {
+    await _remoteUserSource.addBookToWishList(bookId);
+  }
 }
