@@ -30,6 +30,8 @@ class UserRepository {
     userLocal ??= _handleUserDataNotReceived(userRemote, email);
 
     await _localUserSource.setActiveUser(userLocal);
+    await _localUserSource.setToken(password);
+
     return userLocal;
   }
 
@@ -55,12 +57,16 @@ class UserRepository {
 
   Future<UserLocal?> getActiveUser() async {
     UserLocal? user = await _localUserSource.getActiveUser();
-    //TODO: Update token
     return user;
   }
+  
+  Future<String?> getToken() async {
+    return _localUserSource.getToken();
+}
 
   Future logout() async {
-    _localUserSource.removeActiveUser();
+    await _remoteUserSource.signOut();
+    await _localUserSource.logout();
   }
 
   Future updateUser(UserLocal user) async {

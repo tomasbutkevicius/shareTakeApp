@@ -32,17 +32,28 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           event.context,
         ),
       );
+      try {
+        final UserLocal? storedUser = await userRepository.getActiveUser();
+        final String? token = await userRepository.getToken();
 
-      final UserLocal? storedUser = await userRepository.getActiveUser();
+        if (storedUser != null && token != null) {
+          UserLocal user = await userRepository.authenticate(email: storedUser.email, password: token);
 
-      if (storedUser != null) {
-        emit(
-          state.copyWith(
-            user: storedUser,
-            status: const RequestStatusInitial(),
-          ),
-        );
-      } else {
+          emit(
+            state.copyWith(
+              user: user,
+              status: const RequestStatusInitial(),
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              user: null,
+              status: const RequestStatusInitial(),
+            ),
+          );
+        }
+      } catch (e) {
         emit(
           state.copyWith(
             user: null,

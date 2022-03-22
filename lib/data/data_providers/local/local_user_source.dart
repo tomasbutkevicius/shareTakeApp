@@ -7,16 +7,23 @@ class LocalUserSource {
   static const _keyActiveUser = "user";
   static const _keyUserList = "users";
   static const testUserName = "demo@byl.example.com";
+  static const _keyToken = "token";
   static const int testUserId = 000;
 
   Future setActiveUser(UserLocal user) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString(_keyActiveUser, jsonEncode(user.toMap()));
   }
+  
+  Future setToken(String token) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString(_keyToken, token);
+  }
 
-  Future removeActiveUser() async {
+  Future logout() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.remove(_keyActiveUser);
+    sharedPreferences.remove(_keyToken);
   }
 
   Future<UserLocal?> getActiveUser() async {
@@ -29,6 +36,12 @@ class LocalUserSource {
     print("DB Found active user");
     Map<String, dynamic> jsonUser = jsonDecode(userRaw) as Map<String, dynamic>;
     return UserLocal.fromMap(jsonUser);
+  }
+  
+  Future<String?> getToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString(_keyToken);
+    return token;
   }
 
   // Future addUser(UserLocal user) async {
