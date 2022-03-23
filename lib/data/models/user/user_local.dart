@@ -28,7 +28,7 @@ class UserLocal extends Equatable {
         email: json["email"] as String,
         firstName: json["firstName"] as String,
         lastName: json["lastName"] as String,
-        username: json["username"] as String,
+        username: "",
       );
     } catch (e) {
       return UserLocal(id: "", email: "", username: "", firstName: "", lastName: "");

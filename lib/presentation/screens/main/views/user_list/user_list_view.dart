@@ -9,7 +9,7 @@ import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
-import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
+import 'package:share_take/presentation/widgets/user/user_list_card.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
 class UserListView extends StatelessWidget {
@@ -50,7 +50,7 @@ class UserListView extends StatelessWidget {
                   child: Column(
                     children: [
                       ProxySpacingVerticalWidget(),
-                      _userCard(state.userList[index], context),
+                      UserListCardWidget(user: state.userList[index]),
                       ProxySpacingVerticalWidget(),
                     ],
                   ),
@@ -60,14 +60,6 @@ class UserListView extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _userCard(UserLocal user, BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.person),
-      title: Text(user.email),
-      trailing: Text(user.firstName),
     );
   }
 }

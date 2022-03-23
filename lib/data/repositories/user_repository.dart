@@ -51,9 +51,14 @@ class UserRepository {
       firstName: registerRequest.firstName,
       lastName: registerRequest.lastName,
     );
-    await _remoteUserSource.updateUserData(
-      userLocal,
-    );
+    try {
+      await _remoteUserSource.updateUserData(
+        userLocal,
+      );
+    } catch (e){
+      throw Exception("Account created but received error creating user meta data");
+    }
+
   }
 
   Future<UserLocal?> getActiveUser() async {

@@ -7,7 +7,8 @@ import 'package:share_take/presentation/screens/book_details/book_details_screen
 import 'package:share_take/presentation/screens/login/login_screen.dart';
 import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
-import 'package:share_take/presentation/screens/user/user_screen.dart';
+import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
+import 'package:share_take/presentation/screens/user_details/user_details_screen.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
@@ -18,12 +19,14 @@ class AppRouter {
         return _handleLoginScreen();
       case RegisterScreen.routeName:
         return _handleRegisterScreen();
-      case UserScreen.routeName:
+      case AuthUserScreen.routeName:
         return _handleUserScreen();
       case AddBookScreen.routeName:
         return _handleAddBookScreen();
       case BookDetailsScreen.routeName:
         return _handleBookDetailsScreen(settings);
+      case UserDetailsScreen.routeName:
+        return _handleUserDetailsScreen(settings);
       default:
         return null;
     }
@@ -49,7 +52,7 @@ class AppRouter {
 
   MaterialPageRoute<dynamic> _handleUserScreen() {
     return MaterialPageRoute<dynamic>(
-      builder: (_) => const UserScreen(),
+      builder: (_) => const AuthUserScreen(),
     );
   }
 
@@ -70,4 +73,14 @@ class AppRouter {
     );
   }
 
+  MaterialPageRoute<dynamic> _handleUserDetailsScreen(RouteSettings settings) {
+    final args = settings.arguments as ScreenArguments;
+    return MaterialPageRoute(
+      builder: (context) {
+        return UserDetailsScreen(
+          user: args.userLocal!,
+        );
+      },
+    );
+  }
 }
