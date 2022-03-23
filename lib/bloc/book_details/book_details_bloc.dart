@@ -29,6 +29,7 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
       emit(BookDetailsState());
     });
     on<BookDetailsGetEvent>((event, emit) async {
+      emit(BookDetailsState());
       emit(state.copyWith(status: RequestStatusLoading()));
       try {
         List<BookWantsRemote> bookWants = await bookRepository.getBookWantedList(event.bookId);
@@ -39,7 +40,7 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
         } else {
           try{
             bookWants.firstWhere((element) => element.userId == userLocal.id);
-            emit(state.copyWith(addedToWishList: true));
+            emit(state.copyWith(addedToWishList: true, wantedList: bookWants));
           } catch(e){}
         }
       } catch (e) {
@@ -58,9 +59,9 @@ class BookDetailsBloc extends Bloc<BookDetailsEvent, BookDetailsState> {
     on<BookDetailsRemoveFromWantedEvent>((event, emit) async {
       emit(state.copyWith(status: RequestStatusLoading()));
       try {
-        //TODO Remove from wish list
-        // await userRepository.addBookToWishList(event.bookId);
+        await userRepository.removeBookFromWishList(event.bookId);
         emit(state.copyWith(status: RequestStatusInitial(), addedToWishList: false));
+        add(BookDetailsGetEvent(bookId: event.bookId));
       } catch (e) {
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }

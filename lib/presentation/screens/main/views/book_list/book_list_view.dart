@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
+import 'package:share_take/bloc/book_details/book_details_bloc.dart';
 import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
@@ -125,12 +127,6 @@ class BookListView extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: ProxySpacingVerticalWidget(),
-                  ),
-                  Expanded(
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border_outlined),
-                    ),
                   ),
                 ],
               ),

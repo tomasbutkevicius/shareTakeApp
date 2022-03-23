@@ -131,11 +131,16 @@ class RemoteUserSource {
     }
   }
 
-  Future removeBookWant(String id) async {
+  Future removeBookWant(String bookId) async {
+    if (!_userLoggedIn()) {
+      throw Exception("User not found. Please login");
+    }
     try {
-    await fireStore
+      String currentUserId = firebaseAuth.currentUser!.uid;
+
+      await fireStore
         .collection(StaticApi.wantedCollection)
-        .doc(id).delete();
+        .doc(currentUserId + bookId).delete();
     } on FirebaseException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }

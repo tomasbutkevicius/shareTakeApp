@@ -27,6 +27,7 @@ class BookDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     BlocGetter.getBookDetailsBloc(context).add(BookDetailsGetEvent(bookId: bookLocal.id));
 
     return Scaffold(
@@ -70,11 +71,19 @@ class BookDetailsScreen extends StatelessWidget {
           ),
           trailing: InkWell(
             onTap: () {
-              BlocGetter.getBookDetailsBloc(context).add(
-                BookDetailsAddToWantedEvent(
-                  bookId: bookLocal.id,
-                ),
-              );
+              if(state.addedToWishList) {
+                BlocGetter.getBookDetailsBloc(context).add(
+                  BookDetailsRemoveFromWantedEvent(
+                    bookId: bookLocal.id,
+                  ),
+                );
+              } else {
+                BlocGetter.getBookDetailsBloc(context).add(
+                  BookDetailsAddToWantedEvent(
+                    bookId: bookLocal.id,
+                  ),
+                );
+              }
             },
             child: Icon(
               state.addedToWishList ? Icons.favorite : Icons.favorite_border_outlined,
