@@ -11,7 +11,7 @@ import 'package:share_take/data/repositories/book_repository.dart';
 import 'package:share_take/presentation/screens/add_book/views/edit_book_view.dart';
 import 'package:share_take/presentation/screens/add_book/views/review_book_view.dart';
 import 'package:share_take/presentation/screens/add_book/widgets/add_book_form.dart';
-import 'package:share_take/presentation/widgets/book/book_details_widget.dart';
+import 'package:share_take/presentation/widgets/book/book_details_main_widget.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/information_card.dart';

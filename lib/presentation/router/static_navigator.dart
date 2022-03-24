@@ -5,13 +5,15 @@ import 'package:provider/src/provider.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/presentation/router/arguments.dart';
 import 'package:share_take/presentation/screens/add_book/add_book_screen.dart';
 import 'package:share_take/presentation/screens/book_details/book_details_screen.dart';
 import 'package:share_take/presentation/screens/login/login_screen.dart';
 import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
-import 'package:share_take/presentation/screens/user/user_screen.dart';
+import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
+import 'package:share_take/presentation/screens/user_details/user_details_screen.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
 class StaticNavigator {
@@ -50,7 +52,7 @@ class StaticNavigator {
 
   static void pushUserScreen(BuildContext context) {
     Navigator.of(context).pushNamed(
-      UserScreen.routeName,
+      AuthUserScreen.routeName,
     );
   }
 
@@ -67,6 +69,16 @@ class StaticNavigator {
     Navigator.of(context).pushNamed(
       BookDetailsScreen.routeName,
       arguments: ScreenArguments(bookLocal: bookLocal),
+    );
+  }
+
+  static void pushUserDetailScreen(
+      BuildContext context,
+      UserLocal user,
+      ) {
+    Navigator.of(context).pushNamed(
+      UserDetailsScreen.routeName,
+      arguments: ScreenArguments(userLocal: user),
     );
   }
 

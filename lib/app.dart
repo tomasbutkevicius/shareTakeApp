@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_take/bloc/book_details/book_details_bloc.dart';
 import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
+import 'package:share_take/bloc/user_list/user_list_bloc.dart';
 import 'package:share_take/constants/static_texts.dart';
 import 'package:share_take/constants/theme/theme.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
@@ -61,10 +63,22 @@ class MyApp extends StatelessWidget {
                   AuthAppStarted(context),
                 ),
             ),
+            BlocProvider<UserListBloc>(
+              create: (_) => UserListBloc(
+                userRepository: context.read<UserRepository>(),
+              ),
+            ),
             BlocProvider<BookListBloc>(
               create: (_) => BookListBloc(
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
+              ),
+            ),
+            BlocProvider<BookDetailsBloc>(
+              create: (_) => BookDetailsBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                bookRepository: context.read<BookRepository>(),
+                userRepository: context.read<UserRepository>(),
               ),
             ),
           ],

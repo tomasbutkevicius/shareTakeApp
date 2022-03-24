@@ -5,7 +5,7 @@ import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_local.dart';
-import 'package:share_take/presentation/widgets/book/book_details_widget.dart';
+import 'package:share_take/presentation/widgets/book/book_details_main_widget.dart';
 import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/information_card.dart';
 import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
@@ -44,7 +44,7 @@ class ReviewBookView extends StatelessWidget {
             ),
             Header(text: "Review book submission"),
             ProxySpacingVerticalWidget(),
-            BookDetailsWidget(bookLocal: bookLocal),
+            BookDetailsMainWidget(bookLocal: bookLocal),
             ProxySpacingVerticalWidget(size: ProxySpacing.large,),
             _getSubmitBtn(context),
           ProxySpacingVerticalWidget(size: ProxySpacing.large,),

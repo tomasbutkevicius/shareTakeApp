@@ -7,9 +7,9 @@ import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/information_card.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 
-class UserScreen extends StatelessWidget {
-  const UserScreen({Key? key}) : super(key: key);
-  static const routeName = "/user";
+class AuthUserScreen extends StatelessWidget {
+  const AuthUserScreen({Key? key}) : super(key: key);
+  static const routeName = "/authuser";
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class UserScreen extends StatelessWidget {
 
   Widget _noUserFoundWidget() {
     return const Center(
-      child: InformationCard(message: "User info not found. Try loggin back in",),
+      child: InformationCard(message: "User info not found. Try logging back in",),
     );
   }
 
