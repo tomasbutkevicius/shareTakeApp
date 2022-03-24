@@ -56,7 +56,7 @@ class StaticWidgets {
   }
 
   static Widget getIconRemote(
-      {required String path, double? width, double? height, Color? color, Widget errorWidget = const Icon(Icons.image)}) {
+      {required String path, double? width, double? height, Color? color, Widget errorWidget = const Icon(Icons.image, size: 50,)}) {
     try {
       return Image.network(
         path,
@@ -64,6 +64,8 @@ class StaticWidgets {
         height: height,
         color: color,
         errorBuilder: (context, error, trace) {
+          return errorWidget;
+
           return SvgPicture.network(
             path,
             width: width,
