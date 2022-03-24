@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_source.dart';
 import 'package:share_take/data/firebase_storage.dart';
 import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/data/models/book_offers/book_offer_remote.dart';
 import 'package:share_take/data/models/book_wants/book_wants_remote.dart';
 import 'package:share_take/data/models/request/add_book_request.dart';
 import 'package:share_take/data/models/response/book_response.dart';
@@ -69,6 +70,10 @@ class BookRepository {
 
   Future<List<BookWantsRemote>> getBookWantedList(String bookId) async {
     return await remoteBookSource.getBookWantedList(bookId);
+  }
+
+  Future<List<BookOfferRemote>> getBookOfferList(String bookId) async {
+    return await remoteBookSource.getBookOfferList(bookId);
   }
 
 }

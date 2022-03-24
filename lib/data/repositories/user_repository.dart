@@ -98,4 +98,12 @@ class UserRepository {
   Future removeBookFromWishList(String bookId) async {
     await _remoteUserSource.removeBookWant(bookId);
   }
+
+  Future addBookToOfferList(String bookId) async {
+    await _remoteUserSource.addBookToOfferList(bookId);
+  }
+
+  Future removeBookFromOfferList(String bookId) async {
+    await _remoteUserSource.removeBookOffer(bookId);
+  }
 }

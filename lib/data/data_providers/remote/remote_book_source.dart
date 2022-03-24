@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share_take/constants/api.dart';
+import 'package:share_take/data/models/book_offers/book_offer_remote.dart';
 import 'package:share_take/data/models/book_wants/book_wants_remote.dart';
 import 'package:share_take/data/models/request/add_book_request.dart';
 import 'package:share_take/data/models/response/book_response.dart';
@@ -44,6 +45,22 @@ class RemoteBookSource {
       await wantedCollection.where('bookId', isEqualTo: bookId).get().then((snapshot) => snapshot.docs);
       if (bookWantList.isNotEmpty) {
         return bookWantList.map((e) => BookWantsRemote.fromSnapshot(e)).toList();
+      } else {
+        return [];
+      }
+    } on FirebaseException catch (firebaseException) {
+      throw Exception(firebaseException.message);
+    }
+  }
+
+  //OFFER LIST
+  Future<List<BookOfferRemote>> getBookOfferList(String bookId) async {
+    try {
+      CollectionReference offeredCollection = _fireStore.collection(StaticApi.offeredCollection);
+      List<QueryDocumentSnapshot> bookOffers =
+      await offeredCollection.where('bookId', isEqualTo: bookId).get().then((snapshot) => snapshot.docs);
+      if (bookOffers.isNotEmpty) {
+        return bookOffers.map((e) => BookOfferRemote.fromSnapshot(e)).toList();
       } else {
         return [];
       }
