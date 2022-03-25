@@ -13,9 +13,9 @@ class RemoteTradeSource {
   //REQUESTS
   Future<List<BookRequest>> getUserRequestListAsReceiver(String userId) async {
     try {
-      CollectionReference offeredCollection = fireStore.collection(StaticApi.requestCollection);
+      CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
       List<QueryDocumentSnapshot> userRequestList =
-          await offeredCollection.where('receiverId', isEqualTo: userId).get().then((snapshot) => snapshot.docs);
+          await requestCollection.where('receiverId', isEqualTo: userId).get().then((snapshot) => snapshot.docs);
 
       List<BookRequest> bookRequestList = [];
       for (QueryDocumentSnapshot snapshot in userRequestList) {
@@ -31,8 +31,8 @@ class RemoteTradeSource {
 
   Future<BookRequest> getRequest(String requestId) async {
     try {
-      CollectionReference offeredCollection = fireStore.collection(StaticApi.requestCollection);
-      DocumentSnapshot request = await offeredCollection.doc(requestId).get();
+      CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
+      DocumentSnapshot request = await requestCollection.doc(requestId).get();
 
       return BookRequest.fromSnapshot(request);
     } on FirebaseException catch (firebaseException) {
@@ -57,7 +57,7 @@ class RemoteTradeSource {
         }
       }
 
-      await fireStore.collection(StaticApi.offeredCollection).doc().set(request.toMap());
+      await fireStore.collection(StaticApi.requestCollection).doc().set(request.toMap());
     } on FirebaseException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }
