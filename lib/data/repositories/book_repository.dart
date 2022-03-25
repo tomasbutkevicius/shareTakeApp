@@ -22,8 +22,6 @@ class BookRepository {
 
     for (BookResponse response in bookResponseList) {
       String url = "";
-      print(response.title);
-      print(response.imageUrl);
 
       if (response.imageUrl != null) {
           if (!StaticUtilities.isUrl(response.imageUrl!)) {

@@ -13,6 +13,7 @@ import 'package:share_take/presentation/widgets/book/book_details_main_widget.da
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
+import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 import 'package:share_take/presentation/widgets/user/user_list_card.dart';
@@ -28,7 +29,6 @@ class BookDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     BlocGetter.getBookWantBloc(context).add(BookWantGetEvent(bookId: bookLocal.id));
     BlocGetter.getBookOfferBloc(context).add(BookOfferGetEvent(bookId: bookLocal.id));
 
@@ -70,7 +70,11 @@ class BookDetailsScreen extends StatelessWidget {
             ProxySpacingVerticalWidget(
               size: ProxySpacing.large,
             ),
-            Divider(height: 2, thickness: 4, color: ThemeColors.bordo.shade600,),
+            Divider(
+              height: 2,
+              thickness: 4,
+              color: ThemeColors.bordo.shade600,
+            ),
             BlocBuilder<BookOfferBloc, BookOfferState>(
               builder: (context, state) {
                 return CenteredLoader(
@@ -97,7 +101,7 @@ class BookDetailsScreen extends StatelessWidget {
           itemCount: state.wantedByUsersList.length,
           itemBuilder: (context, index) {
             UserLocal userThatNeedsBook = state.wantedByUsersList[index];
-            return UserListCardWidget(user: userThatNeedsBook);
+            return _getOfferedByListItem(userThatNeedsBook);
           },
         ),
       ],
@@ -107,7 +111,7 @@ class BookDetailsScreen extends StatelessWidget {
   Widget _buildBookOfferedBy(BuildContext context, BookOfferState state) {
     String message = "";
 
-    if(state.status is RequestStatusError){
+    if (state.status is RequestStatusError) {
       message = (state.status as RequestStatusError).message;
     }
 
@@ -122,8 +126,25 @@ class BookDetailsScreen extends StatelessWidget {
           shrinkWrap: true,
           itemCount: state.offeredByUsersList.length,
           itemBuilder: (context, index) {
-            UserLocal userThatNeedsBook = state.offeredByUsersList[index];
-            return UserListCardWidget(user: userThatNeedsBook);
+            UserLocal userThatOffersBook = state.offeredByUsersList[index];
+            return _getOfferedByListItem(userThatOffersBook);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _getOfferedByListItem(UserLocal userThatOffersBook) {
+    return Column(
+      children: [
+        UserListCardWidget(user: userThatOffersBook),
+        ProxySpacingVerticalWidget(),
+        ProxyButtonWidget(
+          text: "Request",
+          color: ThemeColors.blue,
+          padding: StaticStyles.listViewPadding,
+          onPressed: (){
+            print("pressed request");
           },
         ),
       ],
@@ -137,7 +158,7 @@ class BookDetailsScreen extends StatelessWidget {
       ),
       trailing: InkWell(
         onTap: () {
-          if(state.addedToWishList) {
+          if (state.addedToWishList) {
             BlocGetter.getBookWantBloc(context).add(
               BookWantRemoveFromWantedEvent(
                 bookId: bookLocal.id,
@@ -161,34 +182,34 @@ class BookDetailsScreen extends StatelessWidget {
   }
 
   Widget _getOfferBtn(BookOfferState state, BuildContext context) {
-    String text =  "Offer book:";
+    String text = "Offer book:";
 
     return ListTile(
-        leading: ProxyTextWidget(
-          text: text,
+      leading: ProxyTextWidget(
+        text: text,
+      ),
+      trailing: InkWell(
+        onTap: () {
+          if (state.addedToOfferList) {
+            BlocGetter.getBookOfferBloc(context).add(
+              BookOfferRemoveFromOfferedEvent(
+                bookId: bookLocal.id,
+                context: context,
+              ),
+            );
+          } else {
+            BlocGetter.getBookOfferBloc(context).add(
+              BookOfferAddToOfferedEvent(
+                bookId: bookLocal.id,
+                context: context,
+              ),
+            );
+          }
+        },
+        child: Icon(
+          state.addedToOfferList ? Icons.check_box_outlined : Icons.check_box_outline_blank,
         ),
-        trailing: InkWell(
-          onTap: () {
-            if(state.addedToOfferList) {
-              BlocGetter.getBookOfferBloc(context).add(
-                BookOfferRemoveFromOfferedEvent(
-                  bookId: bookLocal.id,
-                  context: context,
-                ),
-              );
-            } else {
-              BlocGetter.getBookOfferBloc(context).add(
-                BookOfferAddToOfferedEvent(
-                  bookId: bookLocal.id,
-                  context: context,
-                ),
-              );
-            }
-          },
-          child: Icon(
-            state.addedToOfferList ? Icons.check_box_outlined : Icons.check_box_outline_blank,
-          ),
-        ),
-      );
+      ),
+    );
   }
 }

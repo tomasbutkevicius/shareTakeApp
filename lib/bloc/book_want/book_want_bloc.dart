@@ -41,10 +41,13 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
           emit(state.copyWith(wantedByUsersList: wantedByUsersList));
           emit(state.copyWith(status: RequestStatusInitial()));
         } else {
-          try {
-            bookWants.firstWhere((element) => element.userId == userLocal.id);
-            emit(state.copyWith(addedToWishList: true, wantedByUsersList: wantedByUsersList));
-          } catch (e) {}
+          bool addedToWishList = false;
+          for(BookWantsRemote want in bookWants){
+            if(want.userId == userLocal.id){
+              addedToWishList = true;
+            }
+          }
+          emit(state.copyWith(addedToWishList: addedToWishList, wantedByUsersList: wantedByUsersList));
         }
       } catch (e) {
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));

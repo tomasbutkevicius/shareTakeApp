@@ -41,10 +41,13 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
           emit(state.copyWith(offeredByUsersList: offeredByUsersList));
           emit(state.copyWith(status: RequestStatusInitial()));
         } else {
-          try {
-            bookOffers.firstWhere((element) => element.userId == userLocal.id);
-            emit(state.copyWith(addedToOfferList: true, offeredByUsersList: offeredByUsersList));
-          } catch (e) {}
+          bool addedToOfferList = false;
+          for(BookOfferRemote offer in bookOffers){
+            if(offer.userId == userLocal.id){
+              addedToOfferList = true;
+            }
+          }
+            emit(state.copyWith(addedToOfferList: addedToOfferList, offeredByUsersList: offeredByUsersList));
         }
       } catch (e) {
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));
