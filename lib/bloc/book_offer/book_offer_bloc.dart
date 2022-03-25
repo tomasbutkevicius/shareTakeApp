@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
+import 'package:share_take/data/models/book_offers/book_offer_local.dart';
 import 'package:share_take/data/models/book_offers/book_offer_remote.dart';
 import 'package:share_take/data/models/book_wants/book_wants_remote.dart';
 import 'package:share_take/data/models/user/user_local.dart';
@@ -35,7 +36,7 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
       emit(state.copyWith(status: RequestStatusLoading()));
       try {
         List<BookOfferRemote> bookOffers = await bookRepository.getBookOfferList(event.bookId);
-        List<UserLocal> offeredByUsersList = await getOfferedByUsersList(bookOffers);
+        List<BookOfferLocal> offeredByUsersList = await getOfferedByUsersList(bookOffers);
         UserLocal? userLocal = authenticationBloc.state.user;
         if (userLocal == null) {
           emit(state.copyWith(offeredByUsersList: offeredByUsersList));
@@ -50,6 +51,8 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
             emit(state.copyWith(addedToOfferList: addedToOfferList, offeredByUsersList: offeredByUsersList));
         }
       } catch (e) {
+        print("error book offer get");
+        print(e.toString());
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }
     });
@@ -85,15 +88,15 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
     });
   }
 
-  Future<List<UserLocal>> getOfferedByUsersList(List<BookOfferRemote> bookOffersData) async {
-    List<UserLocal> offeredByUsersList = [];
+  Future<List<BookOfferLocal>> getOfferedByUsersList(List<BookOfferRemote> bookOffersData) async {
+    List<BookOfferLocal> offeredByUsersList = [];
     try {
       List<UserLocal> userList = await userRepository.getAllUsers();
 
       for (UserLocal user in userList) {
         try {
-          bookOffersData.firstWhere((element) => element.userId == user.id);
-          offeredByUsersList.add(user);
+          BookOfferRemote bookOfferRemote = bookOffersData.firstWhere((element) => element.userId == user.id);
+          offeredByUsersList.add(BookOfferLocal(offerId: bookOfferRemote.id, user: user));
         } catch (e) {}
       }
 

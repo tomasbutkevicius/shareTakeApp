@@ -8,11 +8,13 @@ import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/data/models/book_offers/book_offer_local.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/presentation/widgets/book/book_details_main_widget.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
+import 'package:share_take/presentation/widgets/list_card.dart';
 import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
@@ -82,7 +84,8 @@ class BookDetailsScreen extends StatelessWidget {
                   child: _buildBookOfferedBy(context, state),
                 );
               },
-            )
+            ),
+            ProxySpacingVerticalWidget(),
           ],
         ),
       ),
@@ -101,7 +104,7 @@ class BookDetailsScreen extends StatelessWidget {
           itemCount: state.wantedByUsersList.length,
           itemBuilder: (context, index) {
             UserLocal userThatNeedsBook = state.wantedByUsersList[index];
-            return _getOfferedByListItem(userThatNeedsBook);
+            return _getWantedByListItem(userThatNeedsBook);
           },
         ),
       ],
@@ -126,28 +129,41 @@ class BookDetailsScreen extends StatelessWidget {
           shrinkWrap: true,
           itemCount: state.offeredByUsersList.length,
           itemBuilder: (context, index) {
-            UserLocal userThatOffersBook = state.offeredByUsersList[index];
-            return _getOfferedByListItem(userThatOffersBook);
+            BookOfferLocal offer = state.offeredByUsersList[index];
+            return _getOfferedByListItem(offer);
           },
         ),
       ],
     );
   }
 
-  Widget _getOfferedByListItem(UserLocal userThatOffersBook) {
-    return Column(
-      children: [
-        UserListCardWidget(user: userThatOffersBook),
-        ProxySpacingVerticalWidget(),
-        ProxyButtonWidget(
-          text: "Request",
-          color: ThemeColors.blue,
-          padding: StaticStyles.listViewPadding,
-          onPressed: (){
-            print("pressed request");
-          },
-        ),
-      ],
+  Widget _getWantedByListItem(UserLocal userThatWantsBook) {
+    return ListCardWidget(
+      child: Column(
+        children: [
+          UserListCardWidget(user: userThatWantsBook),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _getOfferedByListItem(BookOfferLocal offer) {
+    return ListCardWidget(
+      child: Column(
+            children: [
+              UserListCardWidget(user: offer.user),
+              ProxySpacingVerticalWidget(),
+              ProxyButtonWidget(
+                text: "Request",
+                color: ThemeColors.blue,
+                padding: StaticStyles.listViewPadding,
+                onPressed: () {
+                  print("pressed request");
+                },
+              ),
+            ],
+          ),
     );
   }
 

@@ -50,6 +50,8 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
           emit(state.copyWith(addedToWishList: addedToWishList, wantedByUsersList: wantedByUsersList));
         }
       } catch (e) {
+        print("error book want get");
+        print(e.toString());
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }
     });
