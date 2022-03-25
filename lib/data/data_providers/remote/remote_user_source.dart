@@ -106,7 +106,7 @@ class RemoteUserSource {
   Future addBookToWishList(
     String bookId,
   ) async {
-    if (!_userLoggedIn()) {
+    if (!userLoggedIn()) {
       throw Exception("User not found. Please login");
     }
 
@@ -134,7 +134,7 @@ class RemoteUserSource {
   }
 
   Future removeBookWant(String bookId) async {
-    if (!_userLoggedIn()) {
+    if (!userLoggedIn()) {
       throw Exception("User not found. Please login");
     }
     try {
@@ -168,7 +168,7 @@ class RemoteUserSource {
   Future addBookToOfferList(
       String bookId,
       ) async {
-    if (!_userLoggedIn()) {
+    if (!userLoggedIn()) {
       throw Exception("User not found. Please login");
     }
 
@@ -196,7 +196,7 @@ class RemoteUserSource {
   }
 
   Future removeBookOffer(String bookId) async {
-    if (!_userLoggedIn()) {
+    if (!userLoggedIn()) {
       throw Exception("User not found. Please login");
     }
     try {
@@ -210,7 +210,8 @@ class RemoteUserSource {
     }
   }
 
-  bool _userLoggedIn() => firebaseAuth.currentUser != null;
+  bool userLoggedIn() => firebaseAuth.currentUser != null;
+  User? currentUser() => firebaseAuth.currentUser;
 
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 }

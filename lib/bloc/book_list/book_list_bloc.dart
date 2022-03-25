@@ -26,10 +26,6 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
         ),
       );
       List<BookLocal> books = await bookRepository.getAllBooks();
-      for (BookLocal book in books) {
-        print(book.title);
-        print(book.imageUrl);
-      }
       emit(
         state.copyWith(
           status: const RequestStatusSuccess(message: ""),

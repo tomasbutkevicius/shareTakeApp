@@ -67,7 +67,11 @@ class UserRepository {
   }
 
   Future<String?> getUserId() async {
-    User? user =_remoteUserSource.firebaseAuth.currentUser;
+    User? user =_remoteUserSource.currentUser();
+    if(user == null) {
+      return null;
+    }
+    return user.uid;
   }
   
   Future<String?> getToken() async {

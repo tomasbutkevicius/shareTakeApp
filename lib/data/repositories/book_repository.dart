@@ -1,5 +1,4 @@
 import 'package:books_finder/books_finder.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_source.dart';
 import 'package:share_take/data/firebase_storage.dart';
 import 'package:share_take/data/models/book/book_local.dart';
