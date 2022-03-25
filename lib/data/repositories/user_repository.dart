@@ -67,7 +67,11 @@ class UserRepository {
   }
 
   Future<String?> getUserId() async {
-    User? user =_remoteUserSource.firebaseAuth.currentUser;
+    User? user =_remoteUserSource.currentUser();
+    if(user == null) {
+      return null;
+    }
+    return user.uid;
   }
   
   Future<String?> getToken() async {
@@ -97,5 +101,13 @@ class UserRepository {
 
   Future removeBookFromWishList(String bookId) async {
     await _remoteUserSource.removeBookWant(bookId);
+  }
+
+  Future addBookToOfferList(String bookId) async {
+    await _remoteUserSource.addBookToOfferList(bookId);
+  }
+
+  Future removeBookFromOfferList(String bookId) async {
+    await _remoteUserSource.removeBookOffer(bookId);
   }
 }

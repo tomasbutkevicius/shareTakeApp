@@ -21,13 +21,31 @@ class StaticWidgets {
     });
   }
 
-  static Future showCustomDialog({required BuildContext context, required Widget child}) async {
+  static Future showCustomDialog({required BuildContext context, required Widget child, required VoidCallback onClose}) async {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await showDialog(
         barrierColor: ThemeColors.orange.withOpacity(0.3),
         context: context,
         builder: (context) {
           return child;
+        },
+      ).then((val) {
+        onClose();
+      });
+    });
+  }
+
+  static Future showDefaultDialog({required BuildContext context, required String text}) async {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      await showDialog(
+        barrierColor: ThemeColors.blue.withOpacity(0.3),
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Center(
+              child: Text(text),
+            ),
+          );
         },
       );
     });
@@ -56,7 +74,14 @@ class StaticWidgets {
   }
 
   static Widget getIconRemote(
-      {required String path, double? width, double? height, Color? color, Widget errorWidget = const Icon(Icons.image, size: 50,)}) {
+      {required String path,
+      double? width,
+      double? height,
+      Color? color,
+      Widget errorWidget = const Icon(
+        Icons.image,
+        size: 50,
+      )}) {
     try {
       return Image.network(
         path,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:share_take/bloc/book_details/book_details_bloc.dart';
+import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/enums.dart';
@@ -25,8 +25,6 @@ class UserDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    BlocGetter.getBookDetailsBloc(context).add(BookDetailsGetEvent(bookId: user.id));
-
     return Scaffold(
       appBar: CustomAppBar.build(context, backgroundColor: ThemeColors.bordo.shade600),
       body: Center(
@@ -44,7 +42,7 @@ class UserDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMoreDetails(BuildContext context, BookDetailsState state) {
+  Widget _buildMoreDetails(BuildContext context, BookWantState state) {
     String message = "";
 
     if(state.status is RequestStatusError){

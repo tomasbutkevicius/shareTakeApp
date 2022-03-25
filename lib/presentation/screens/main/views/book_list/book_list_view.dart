@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
-import 'package:share_take/bloc/book_details/book_details_bloc.dart';
 import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
-import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_local.dart';

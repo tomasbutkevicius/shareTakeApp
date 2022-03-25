@@ -1,26 +1,24 @@
-part of 'book_details_bloc.dart';
+part of 'book_want_bloc.dart';
 
 
-class BookDetailsState extends Equatable {
+class BookWantState extends Equatable {
   final List<UserLocal> wantedByUsersList;
-  final List<UserLocal> offeredByList;
 
   final RequestStatus status;
   final bool addedToWishList;
 
-  const BookDetailsState({
+  const BookWantState({
     this.wantedByUsersList = const [],
-    this.offeredByList = const [],
     this.status = const RequestStatusInitial(),
     this.addedToWishList = false,
   });
 
-  BookDetailsState copyWith({
+  BookWantState copyWith({
     List<UserLocal>? wantedByUsersList,
     RequestStatus? status,
     bool? addedToWishList,
   }) {
-    return BookDetailsState(
+    return BookWantState(
       wantedByUsersList: wantedByUsersList ?? this.wantedByUsersList,
       status: status ?? this.status,
       addedToWishList: addedToWishList ?? this.addedToWishList,
