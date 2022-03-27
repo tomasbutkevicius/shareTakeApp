@@ -42,8 +42,8 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
           emit(state.copyWith(status: RequestStatusInitial()));
         } else {
           bool addedToWishList = false;
-          for(BookWantsRemote want in bookWants){
-            if(want.userId == userLocal.id){
+          for (BookWantsRemote want in bookWants) {
+            if (want.userId == userLocal.id) {
               addedToWishList = true;
             }
           }
@@ -58,10 +58,20 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
     on<BookWantAddToWantedEvent>((event, emit) async {
       emit(state.copyWith(status: RequestStatusLoading()));
       try {
-        await userRepository.addBookToWishList(event.bookId);
+        UserLocal? user = authenticationBloc.state.user;
+
+        if (user == null) {
+          throw Exception("User not found, try logging back in");
+        }
+
+        await userRepository.addBookToWishList(
+          event.bookId,
+        );
         emit(state.copyWith(status: RequestStatusInitial(), addedToWishList: true));
         add(BookWantGetEvent(bookId: event.bookId));
       } catch (e) {
+        print(e.toString());
+
         await StaticWidgets.showDefaultDialog(
           context: event.context,
           text: e.toString(),
@@ -77,6 +87,8 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
         emit(state.copyWith(status: RequestStatusInitial(), addedToWishList: false));
         add(BookWantGetEvent(bookId: event.bookId));
       } catch (e) {
+        print(e.toString());
+
         await StaticWidgets.showDefaultDialog(
           context: event.context,
           text: e.toString(),
@@ -101,6 +113,8 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
 
       return wantedByUsersList;
     } catch (e) {
+      print(e.toString());
+
       throw Exception("Error getting user list for book wanted list");
     }
   }

@@ -72,11 +72,6 @@ class BookDetailsScreen extends StatelessWidget {
             ProxySpacingVerticalWidget(
               size: ProxySpacing.large,
             ),
-            Divider(
-              height: 2,
-              thickness: 4,
-              color: ThemeColors.bordo.shade600,
-            ),
             BlocBuilder<BookOfferBloc, BookOfferState>(
               builder: (context, state) {
                 return CenteredLoader(

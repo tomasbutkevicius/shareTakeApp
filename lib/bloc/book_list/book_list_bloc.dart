@@ -25,13 +25,22 @@ class BookListBloc extends Bloc<BookListEvent, BookListState> {
           status: RequestStatusLoading(),
         ),
       );
-      List<BookLocal> books = await bookRepository.getAllBooks();
-      emit(
-        state.copyWith(
-          status: const RequestStatusSuccess(message: ""),
-          bookList: books,
-        ),
-      );
+      try {
+        List<BookLocal> books = await bookRepository.getAllBooks();
+        emit(
+          state.copyWith(
+            status: const RequestStatusSuccess(message: ""),
+            bookList: books,
+          ),
+        );
+      } catch (e) {
+        print(e.toString());
+        emit(
+          state.copyWith(
+            status: RequestStatusError(message: "Error getting book list"),
+          ),
+        );
+      }
     });
 
     on<BookListResetEvent>(

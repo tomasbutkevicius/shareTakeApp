@@ -20,6 +20,7 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
         List<UserLocal> userList = await userRepository.getAllUsers();
         emit(state.copyWith(userList: userList, status: RequestStatusSuccess(message: "Updated user list")));
       } catch (e) {
+        print("Rrror getting user list");
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }
     });

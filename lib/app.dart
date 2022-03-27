@@ -13,7 +13,9 @@ import 'package:share_take/constants/static_texts.dart';
 import 'package:share_take/constants/theme/theme.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_source.dart';
+import 'package:share_take/data/data_providers/remote/remote_offer_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_user_source.dart';
+import 'package:share_take/data/data_providers/remote/remote_wishlist_source.dart';
 import 'package:share_take/data/firebase_storage.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
@@ -38,10 +40,18 @@ class MyApp extends StatelessWidget {
               fireStore: FirebaseFirestore.instance,
               firebaseAuth: FirebaseAuth.instance,
             ),
+            RemoteWishListSource(
+              fireStore: FirebaseFirestore.instance,
+            ),
+            RemoteOfferSource(
+              fireStore: FirebaseFirestore.instance,
+            ),
           ),
         ),
         RepositoryProvider(
           create: (context) => BookRepository(
+            remoteOfferSource: RemoteOfferSource(),
+            remoteWishListSource: RemoteWishListSource(),
             remoteBookSource: RemoteBookSource(),
             firebaseStorageService: FirebaseStorageService(),
           ),

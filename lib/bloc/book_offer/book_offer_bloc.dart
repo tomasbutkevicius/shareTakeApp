@@ -63,6 +63,8 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
         emit(state.copyWith(status: RequestStatusInitial(), addedToOfferList: true));
         add(BookOfferGetEvent(bookId: event.bookId));
       } catch (e) {
+        print(e.toString());
+
         await StaticWidgets.showDefaultDialog(
           context: event.context,
           text: e.toString(),
@@ -78,6 +80,8 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
         emit(state.copyWith(status: RequestStatusInitial(), addedToOfferList: false));
         add(BookOfferGetEvent(bookId: event.bookId));
       } catch (e) {
+        print(e.toString());
+
         await StaticWidgets.showDefaultDialog(
           context: event.context,
           text: e.toString(),
@@ -97,11 +101,16 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
         try {
           BookOfferRemote bookOfferRemote = bookOffersData.firstWhere((element) => element.userId == user.id);
           offeredByUsersList.add(BookOfferLocal(offerId: bookOfferRemote.id, user: user));
-        } catch (e) {}
+        } catch (e) {
+          print(e.toString());
+
+        }
       }
 
       return offeredByUsersList;
     } catch (e) {
+      print(e.toString());
+
       throw Exception("Error getting user list for book offer list");
     }
   }

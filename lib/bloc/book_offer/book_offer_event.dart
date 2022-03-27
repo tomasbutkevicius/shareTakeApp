@@ -23,6 +23,16 @@ class BookOfferAddToOfferedEvent extends BookOfferEvent {
   });
 }
 
+class BookOfferRequestBookEvent extends BookOfferEvent {
+  final BookOfferLocal offer;
+  final BuildContext context;
+
+  BookOfferRequestBookEvent({
+    required this.offer,
+    required this.context,
+  });
+}
+
 class BookOfferRemoveFromOfferedEvent extends BookOfferEvent {
   final String bookId;
   final BuildContext context;

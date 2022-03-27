@@ -3,24 +3,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/constants/api.dart';
 import 'package:share_take/data/models/book/book_request.dart';
 
-class RemoteTradeSource {
+class RemoteBookRequestSource {
   final FirebaseFirestore fireStore;
 
-  RemoteTradeSource({
+  RemoteBookRequestSource({
     required this.fireStore,
   });
 
-  //REQUESTS
-  Future<List<BookRequest>> getUserRequestListAsReceiver(String userId) async {
+  Future<List<BookRequestRemote>> getUserRequestListAsReceiver(String userId) async {
     try {
       CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
       List<QueryDocumentSnapshot> userRequestList =
           await requestCollection.where('receiverId', isEqualTo: userId).get().then((snapshot) => snapshot.docs);
 
-      List<BookRequest> bookRequestList = [];
+      List<BookRequestRemote> bookRequestList = [];
       for (QueryDocumentSnapshot snapshot in userRequestList) {
         try {
-          bookRequestList.add(BookRequest.fromSnapshot(snapshot));
+          bookRequestList.add(BookRequestRemote.fromSnapshot(snapshot));
         } catch (e) {}
       }
       return bookRequestList;
@@ -29,18 +28,18 @@ class RemoteTradeSource {
     }
   }
 
-  Future<BookRequest> getRequest(String requestId) async {
+  Future<BookRequestRemote> getRequest(String requestId) async {
     try {
       CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
       DocumentSnapshot request = await requestCollection.doc(requestId).get();
 
-      return BookRequest.fromSnapshot(request);
+      return BookRequestRemote.fromSnapshot(request);
     } on FirebaseException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }
   }
 
-  Future requestBook(BookRequest request) async {
+  Future requestBook(BookRequestRemote request) async {
     try {
       String receiverId = request.receiverId;
       String ownerId = request.ownerId;
@@ -49,9 +48,9 @@ class RemoteTradeSource {
         throw Exception("You are owner of the offer");
       }
 
-      List<BookRequest> foundRequests = await getUserRequestListAsReceiver(receiverId);
+      List<BookRequestRemote> foundRequests = await getUserRequestListAsReceiver(receiverId);
 
-      for (BookRequest foundRequest in foundRequests) {
+      for (BookRequestRemote foundRequest in foundRequests) {
         if (foundRequest.offerId == request.offerId) {
           throw Exception("Request already exists");
         }

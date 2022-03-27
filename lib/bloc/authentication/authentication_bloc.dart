@@ -8,7 +8,6 @@ import 'package:share_take/constants/static_localization.dart';
 import 'package:share_take/data/models/request/register_request.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
-import 'package:share_take/presentation/router/static_navigator.dart';
 
 import '../../localization/translations.dart';
 
@@ -54,6 +53,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           );
         }
       } catch (e) {
+        print(e.toString());
+
         emit(
           state.copyWith(
             user: null,
@@ -85,12 +86,16 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           user: user,
         ));
       } on Exception catch (exc) {
+        print(exc.toString());
+
         emit(state.copyWith(
           status: RequestStatusError(message: exc.toString()),
           user: null,
         ));
         return;
       } catch (error) {
+        print(error.toString());
+
         emit(state.copyWith(
           status: RequestStatusError(message: error.toString()),
           user: null,
@@ -135,6 +140,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           ),
         );
       } catch (e) {
+        print(e.toString());
         emit(state.copyWith(
           status: RequestStatusError(message: e.toString()),
           user: null,

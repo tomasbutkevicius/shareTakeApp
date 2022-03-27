@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/bloc/user_list/user_list_bloc.dart';
 import 'package:share_take/constants/static_styles.dart';
-import 'package:share_take/constants/theme/theme_colors.dart';
-import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/user/user_list_card.dart';
@@ -28,6 +25,11 @@ class UserListView extends StatelessWidget {
       builder: (context, state) {
         return CenteredLoader(
           isLoading: state.status is RequestStatusLoading,
+          showRefresh: state.status is RequestStatusError,
+          onRefresh: () {
+            BlocGetter.getUserListBloc(context).add(UserListResetEvent());
+            BlocGetter.getUserListBloc(context).add(UserListGetEvent());
+          },
           child: _body(state),
         );
       },

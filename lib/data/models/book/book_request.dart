@@ -1,38 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:share_take/constants/enums.dart';
 
-class BookRequest {
+class BookRequestRemote {
   final String id;
   final String bookId;
   final String ownerId;
   final String receiverId;
   final String offerId;
-  final String bookTitle;
   final BookRequestStatus status;
 
-  const BookRequest({
+  const BookRequestRemote({
     required this.id,
     required this.bookId,
     required this.ownerId,
     required this.receiverId,
     required this.offerId,
-    required this.bookTitle,
     required this.status,
   });
 
   Map<String, dynamic> toMap() {
+    //id is created by firestore
     return {
-      'id': this.id,
       'bookId': this.bookId,
       'ownerId': this.ownerId,
       'receiverId': this.receiverId,
       'offerId': this.offerId,
-      'bookTitle': this.bookTitle,
       'status': this.status.name
     };
   }
 
-  factory BookRequest.fromSnapshot(DocumentSnapshot snapshot) {
+  factory BookRequestRemote.fromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
     try {
       BookRequestStatus status = BookRequestStatus.waiting;
@@ -43,13 +40,12 @@ class BookRequest {
         status = BookRequestStatus.rejected;
       }
 
-      return BookRequest(
-        id: map['id'] as String,
+      return BookRequestRemote(
+        id: snapshot.id,
         bookId: map['bookId'] as String,
         ownerId: map['ownerId'] as String,
         receiverId: map['receiverId'] as String,
         offerId: map['offerId'] as String,
-        bookTitle: map['bookTitle'] as String,
         status: status,
       );
     } catch (e) {
