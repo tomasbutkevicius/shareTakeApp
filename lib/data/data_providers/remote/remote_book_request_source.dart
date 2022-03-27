@@ -52,7 +52,7 @@ class RemoteBookRequestSource {
 
       for (BookRequestRemote foundRequest in foundRequests) {
         if (foundRequest.offerId == request.offerId) {
-          throw Exception("Request already exists");
+          throw Exception("Request is already sent");
         }
       }
 

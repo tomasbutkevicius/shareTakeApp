@@ -11,7 +11,6 @@ class AuthenticationState extends Equatable {
 
   AuthenticationState copyWith({
     required UserLocal? user,
-    int? wrongInputCount,
     RequestStatus? status,
   }) {
     return AuthenticationState(

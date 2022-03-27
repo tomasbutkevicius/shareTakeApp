@@ -125,7 +125,7 @@ class BookDetailsScreen extends StatelessWidget {
           itemCount: state.offeredByUsersList.length,
           itemBuilder: (context, index) {
             BookOfferLocal offer = state.offeredByUsersList[index];
-            return _getOfferedByListItem(offer);
+            return _getOfferedByListItem(offer, context);
           },
         ),
       ],
@@ -142,23 +142,24 @@ class BookDetailsScreen extends StatelessWidget {
     );
   }
 
-
-  Widget _getOfferedByListItem(BookOfferLocal offer) {
+  Widget _getOfferedByListItem(BookOfferLocal offer, BuildContext context) {
     return ListCardWidget(
       child: Column(
-            children: [
-              UserListCardWidget(user: offer.user),
-              ProxySpacingVerticalWidget(),
-              ProxyButtonWidget(
-                text: "Request",
-                color: ThemeColors.blue,
-                padding: StaticStyles.listViewPadding,
-                onPressed: () {
-                  print("pressed request");
-                },
-              ),
-            ],
+        children: [
+          UserListCardWidget(user: offer.owner),
+          ProxySpacingVerticalWidget(),
+          ProxyButtonWidget(
+            text: "Request",
+            color: ThemeColors.blue,
+            padding: StaticStyles.listViewPadding,
+            onPressed: () {
+              BlocGetter.getBookOfferBloc(context).add(
+                BookOfferRequestBookEvent(offer: offer, context: context),
+              );
+            },
           ),
+        ],
+      ),
     );
   }
 

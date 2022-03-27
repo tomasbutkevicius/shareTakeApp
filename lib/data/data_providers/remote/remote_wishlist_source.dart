@@ -55,7 +55,6 @@ class RemoteWishListSource {
     }
   }
 
-
   Future removeBookWant(String bookId, String userId) async {
     try {
       await _fireStore.collection(StaticApi.wantedCollection).doc(userId + bookId).delete();
@@ -63,6 +62,5 @@ class RemoteWishListSource {
       throw Exception(firebaseException.message);
     }
   }
-
 
 }

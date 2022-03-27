@@ -12,12 +12,12 @@ class TradeRepository {
     required this.remoteOfferSource,
   });
 
-  Future requestBook(
-    String bookId,
-    String ownerId,
-    String receiverId,
-    String offerId,
-  ) async {
+  Future requestBook({
+    required String bookId,
+    required String ownerId,
+    required String receiverId,
+    required String offerId,
+  }) async {
     try {
       await remoteOfferSource.getOfferById(offerId);
     } catch (e) {

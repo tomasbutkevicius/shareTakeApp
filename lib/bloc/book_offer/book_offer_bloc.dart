@@ -11,6 +11,7 @@ import 'package:share_take/data/models/book_offers/book_offer_remote.dart';
 import 'package:share_take/data/models/book_wants/book_wants_remote.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
+import 'package:share_take/data/repositories/trade_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
@@ -21,12 +22,14 @@ part 'book_offer_state.dart';
 class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
   final UserRepository userRepository;
   final BookRepository bookRepository;
+  final TradeRepository tradeRepository;
   final AuthenticationBloc authenticationBloc;
 
   BookOfferBloc({
     required this.authenticationBloc,
     required this.userRepository,
     required this.bookRepository,
+    required this.tradeRepository,
   }) : super(const BookOfferState()) {
     on<BookOfferResetEvent>((event, emit) async {
       emit(BookOfferState());
@@ -43,12 +46,12 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
           emit(state.copyWith(status: RequestStatusInitial()));
         } else {
           bool addedToOfferList = false;
-          for(BookOfferRemote offer in bookOffers){
-            if(offer.userId == userLocal.id){
+          for (BookOfferRemote offer in bookOffers) {
+            if (offer.userId == userLocal.id) {
               addedToOfferList = true;
             }
           }
-            emit(state.copyWith(addedToOfferList: addedToOfferList, offeredByUsersList: offeredByUsersList));
+          emit(state.copyWith(addedToOfferList: addedToOfferList, offeredByUsersList: offeredByUsersList));
         }
       } catch (e) {
         print("error book offer get");
@@ -90,6 +93,35 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
         });
       }
     });
+    on<BookOfferRequestBookEvent>((event, emit) async {
+      emit(state.copyWith(status: RequestStatusLoading()));
+      UserLocal? user = authenticationBloc.state.user;
+      try {
+        if (user == null) {
+          throw Exception("Please login to continue");
+        }
+        await tradeRepository.requestBook(
+          bookId: event.offer.bookId,
+          ownerId: event.offer.owner.id,
+          receiverId: user.id,
+          offerId: event.offer.offerId,
+        );
+        await StaticWidgets.showDefaultDialog(
+          context: event.context,
+          text: "Request sent",
+        ).then((value) {
+          emit(state.copyWith(status: RequestStatusInitial()));
+        });
+      } catch (e) {
+        print(e.toString());
+        await StaticWidgets.showDefaultDialog(
+          context: event.context,
+          text: e.toString(),
+        ).then((value) {
+          emit(state.copyWith(status: RequestStatusInitial()));
+        });
+      }
+    });
   }
 
   Future<List<BookOfferLocal>> getOfferedByUsersList(List<BookOfferRemote> bookOffersData) async {
@@ -100,10 +132,13 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
       for (UserLocal user in userList) {
         try {
           BookOfferRemote bookOfferRemote = bookOffersData.firstWhere((element) => element.userId == user.id);
-          offeredByUsersList.add(BookOfferLocal(offerId: bookOfferRemote.id, user: user));
+          offeredByUsersList.add(BookOfferLocal(
+            offerId: bookOfferRemote.id,
+            owner: user,
+            bookId: bookOfferRemote.bookId,
+          ));
         } catch (e) {
           print(e.toString());
-
         }
       }
 
