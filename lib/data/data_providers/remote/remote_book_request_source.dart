@@ -88,4 +88,23 @@ class RemoteBookRequestSource {
       throw Exception(firebaseException.message);
     }
   }
+
+
+  Future<List<BookRequestRemote>> getRequestsByOfferId(String offerId) async {
+    try {
+      CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
+      List<QueryDocumentSnapshot> requestList =
+      await requestCollection.where('offerId', isEqualTo: offerId).get().then((snapshot) => snapshot.docs);
+
+      List<BookRequestRemote> bookRequestList = [];
+      for (QueryDocumentSnapshot snapshot in requestList) {
+        try {
+          bookRequestList.add(BookRequestRemote.fromSnapshot(snapshot));
+        } catch (e) {}
+      }
+      return bookRequestList;
+    } on FirebaseException catch (firebaseException) {
+      throw Exception(firebaseException.message);
+    }
+  }
 }

@@ -22,11 +22,18 @@ class SharingInfoView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.file_upload),
-                ProxyButtonWidget(
-                  color: ThemeColors.blue.shade600,
-                  text: "Book Requests (as owner)",
-                  padding: StaticStyles.listViewPadding,
+                Icon(Icons.notifications_active_outlined),
+                Container(
+                  height: 50,
+                  width: 250,
+                  child: ProxyButtonWidget(
+                    color: ThemeColors.blue.shade600,
+                    text: "Requested from you",
+                    padding: StaticStyles.listViewPadding,
+                    onPressed: (){
+                      StaticNavigator.pushRequestsOwnerScreen(context);
+                    },
+                  ),
                 ),
               ],
             ),
@@ -36,14 +43,18 @@ class SharingInfoView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.file_download),
-                ProxyButtonWidget(
-                  color: ThemeColors.blue.shade600,
-                  text: "Book Requests (as receiver)",
-                  padding: StaticStyles.listViewPadding,
-                  onPressed: (){
-                    StaticNavigator.pushRequestsReceiverScreen(context);
-                  },
+                Icon(Icons.send_to_mobile),
+                Container(
+                  height: 50,
+                  width: 250,
+                  child: ProxyButtonWidget(
+                    color: ThemeColors.blue.shade600,
+                    text: "Requested from others",
+                    padding: StaticStyles.listViewPadding,
+                    onPressed: (){
+                      StaticNavigator.pushRequestsReceiverScreen(context);
+                    },
+                  ),
                 ),
               ],
             ),

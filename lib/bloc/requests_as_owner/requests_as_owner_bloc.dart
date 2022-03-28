@@ -13,36 +13,37 @@ import 'package:share_take/data/repositories/book_repository.dart';
 import 'package:share_take/data/repositories/trade_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 
-part 'requests_as_receiver_event.dart';
+part 'requests_as_owner_event.dart';
 
-part 'requests_as_receiver_state.dart';
+part 'requests_as_owner_state.dart';
 
-class RequestsAsReceiverBloc extends Bloc<RequestsAsReceiverEvent, RequestsAsReceiverState> {
+class RequestsAsOwnerBloc extends Bloc<RequestsAsOwnerEvent, RequestsAsOwnerState> {
   final AuthenticationBloc authenticationBloc;
   final TradeRepository tradeRepository;
   final UserRepository userRepository;
   final BookRepository bookRepository;
 
-  RequestsAsReceiverBloc({
+  RequestsAsOwnerBloc({
     required this.authenticationBloc,
     required this.tradeRepository,
     required this.userRepository,
     required this.bookRepository,
-  }) : super(const RequestsAsReceiverState()) {
-    on<RequestsReceiverResetEvent>((event, emit) {
-      emit(RequestsAsReceiverState());
+  }) : super(const RequestsAsOwnerState()) {
+    on<RequestsOwnerResetEvent>((event, emit) {
+      emit(RequestsAsOwnerState());
     });
-    on<RequestsReceiverResetStatusEvent>((event, emit) {
+    on<RequestsOwnerResetStatusEvent>((event, emit) {
       emit(state.copyWith(status: const RequestStatusInitial()));
     });
-    on<RequestsReceiverGetListEvent>((event, emit) async {
+    on<RequestsOwnerGetListEvent>((event, emit) async {
       emit(state.copyWith(status: RequestStatusLoading()));
       try {
         UserLocal? loggedInUser = authenticationBloc.state.user;
         if (loggedInUser == null) {
           throw Exception("User not logged in");
         }
-        List<BookRequestRemote> remoteRequests = await tradeRepository.getBookRequestsAsReceiver(loggedInUser.id);
+        print("GETTING BOOK REQUESTS");
+        List<BookRequestRemote> remoteRequests = await tradeRepository.getBookRequestsAsOwner(loggedInUser.id);
         List<BookRequestLocal> localRequests = await convertRemoteRequestsToLocal(remoteRequests);
 
         emit(

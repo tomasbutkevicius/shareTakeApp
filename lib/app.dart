@@ -8,6 +8,8 @@ import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/book_offer/book_offer_bloc.dart';
 import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
+import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
+import 'package:share_take/bloc/requests_as_receiver/requests_as_receiver_bloc.dart';
 import 'package:share_take/bloc/user_list/user_list_bloc.dart';
 import 'package:share_take/bloc/user_offer/user_offer_bloc.dart';
 import 'package:share_take/constants/static_texts.dart';
@@ -123,6 +125,22 @@ class MyApp extends StatelessWidget {
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),
+              ),
+            ),
+            BlocProvider<RequestsAsReceiverBloc>(
+              create: (_) => RequestsAsReceiverBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                bookRepository: context.read<BookRepository>(),
+                userRepository: context.read<UserRepository>(),
+                tradeRepository: context.read<TradeRepository>(),
+              ),
+            ),
+            BlocProvider<RequestsAsOwnerBloc>(
+              create: (_) => RequestsAsOwnerBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                bookRepository: context.read<BookRepository>(),
+                userRepository: context.read<UserRepository>(),
+                tradeRepository: context.read<TradeRepository>(),
               ),
             ),
           ],

@@ -142,6 +142,7 @@ class BookDetailsScreen extends StatelessWidget {
         Header(text: "Wanted by:"),
         state.wantedByUsersList.isEmpty ? ProxyTextWidget(text: "No users found") : SizedBox.shrink(),
         ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: state.wantedByUsersList.length,
           itemBuilder: (context, index) {
@@ -169,6 +170,7 @@ class BookDetailsScreen extends StatelessWidget {
         state.offeredByUsersList.isEmpty ? ProxyTextWidget(text: "No users found") : SizedBox.shrink(),
         ListView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: state.offeredByUsersList.length,
           itemBuilder: (context, index) {
             BookOfferLocal offer = state.offeredByUsersList[index];

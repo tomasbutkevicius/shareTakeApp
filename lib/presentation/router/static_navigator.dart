@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
+import 'package:share_take/bloc/helpers/bloc_getter.dart';
+import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
+import 'package:share_take/bloc/requests_as_receiver/requests_as_receiver_bloc.dart';
 import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/presentation/router/arguments.dart';
@@ -11,6 +14,7 @@ import 'package:share_take/presentation/screens/add_book/add_book_screen.dart';
 import 'package:share_take/presentation/screens/book_details/book_details_screen.dart';
 import 'package:share_take/presentation/screens/login/login_screen.dart';
 import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
+import 'package:share_take/presentation/screens/owner_requests/owner_requests_screen.dart';
 import 'package:share_take/presentation/screens/receiver_requests/receiver_requests_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
 import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
@@ -90,8 +94,22 @@ class StaticNavigator {
       handleUnauthorised(context);
       return;
     }
+    BlocGetter.getRequestsReceiverBloc(context).add(RequestsReceiverGetListEvent());
     Navigator.of(context).pushNamed(
       ReceiverRequestsScreen.routeName,
+    );
+  }
+
+  static void pushRequestsOwnerScreen(
+      BuildContext context,
+      ) {
+    if(!authorised(context)){
+      handleUnauthorised(context);
+      return;
+    }
+    BlocGetter.getRequestsOwnerBloc(context).add(RequestsOwnerGetListEvent());
+    Navigator.of(context).pushNamed(
+      OwnerRequestsScreen.routeName,
     );
   }
 

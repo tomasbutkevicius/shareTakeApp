@@ -39,4 +39,8 @@ class TradeRepository {
   Future<List<BookRequestRemote>> getBookRequestsAsReceiver(String userId) async {
     return remoteBookRequestSource.getUserRequestListAsReceiver(userId);
   }
+
+  Future<List<BookRequestRemote>> getBookRequestsAsOwner(String userId) async {
+    return remoteBookRequestSource.getUserRequestListAsOwner(userId);
+  }
 }

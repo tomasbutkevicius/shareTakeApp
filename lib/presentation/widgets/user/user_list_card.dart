@@ -16,7 +16,7 @@ class UserListCardWidget extends StatelessWidget {
       child: ListTile(
         leading: Icon(Icons.person),
         title: Text(user.email),
-        trailing: Text(user.firstName),
+        subtitle: Text(user.firstName),
       ),
     );
   }

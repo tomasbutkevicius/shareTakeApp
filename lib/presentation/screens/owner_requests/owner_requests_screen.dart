@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
-import 'package:share_take/bloc/requests_as_receiver/requests_as_receiver_bloc.dart';
+import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_request_local.dart';
@@ -16,9 +16,9 @@ import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dar
 import 'package:share_take/presentation/widgets/user/user_list_card.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
-class ReceiverRequestsScreen extends StatelessWidget {
-  const ReceiverRequestsScreen({Key? key}) : super(key: key);
-  static const String routeName = "/requests/receiver";
+class OwnerRequestsScreen extends StatelessWidget {
+  const OwnerRequestsScreen({Key? key}) : super(key: key);
+  static const String routeName = "/requests/owner";
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +26,17 @@ class ReceiverRequestsScreen extends StatelessWidget {
       appBar: CustomAppBar.build(
         context,
         backgroundColor: ThemeColors.darker_grey,
-        titleText: "Requests pending",
+        titleText: "Requests incoming",
       ),
-      body: BlocConsumer<RequestsAsReceiverBloc, RequestsAsReceiverState>(
+      body: BlocConsumer<RequestsAsOwnerBloc, RequestsAsOwnerState>(
         listener: (context, state) {
           if (state.status is RequestStatusSuccess) {
             StaticWidgets.showDefaultDialog(
               context: context,
               text: (state.status as RequestStatusSuccess).message,
             ).then(
-              (value) => BlocGetter.getRequestsReceiverBloc(context).add(
-                RequestsReceiverResetStatusEvent(),
+              (value) => BlocGetter.getRequestsOwnerBloc(context).add(
+                RequestsOwnerGetListEvent(),
               ),
             );
           }
@@ -56,13 +56,13 @@ class ReceiverRequestsScreen extends StatelessWidget {
     );
   }
 
-  ListView _buildRequestScreenBody(BuildContext context, RequestsAsReceiverState state) {
+  ListView _buildRequestScreenBody(BuildContext context, RequestsAsOwnerState state) {
     return ListView(
       padding: StaticStyles.listViewPadding,
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       children: [
-        Header(text: "You have requested:"),
+        Header(text: "Received requests:"),
         state.requestList.isEmpty ? ProxyTextWidget(text: "No requests found") : SizedBox.shrink(),
         ListView.builder(
           shrinkWrap: true,
@@ -83,10 +83,10 @@ class ReceiverRequestsScreen extends StatelessWidget {
     return ListCardWidget(
       child: Column(
         children: [
-          ProxyTextWidget(text: "Owner"),
+          ProxyTextWidget(text: "Owner (you)"),
           UserListCardWidget(user: request.owner),
           ProxySpacingVerticalWidget(),
-          ProxyTextWidget(text: "Receiver (you)"),
+          ProxyTextWidget(text: "Receiver"),
           UserListCardWidget(user: request.receiver),
           ProxySpacingVerticalWidget(),
           ProxyTextWidget(text: "Offer"),

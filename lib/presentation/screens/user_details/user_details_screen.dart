@@ -91,6 +91,7 @@ class UserDetailsScreen extends StatelessWidget {
         state.wantedBooks.isEmpty ? ProxyTextWidget(text: "No wanted books found") : SizedBox.shrink(),
         ListView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: state.wantedBooks.length,
           itemBuilder: (context, index) {
             BookLocal book = state.wantedBooks[index];
@@ -119,6 +120,7 @@ class UserDetailsScreen extends StatelessWidget {
         state.offeredBooks.isEmpty ? ProxyTextWidget(text: "No offered books found") : SizedBox.shrink(),
         ListView.builder(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemCount: state.offeredBooks.length,
           itemBuilder: (context, index) {
             BookLocal book = state.offeredBooks[index];
