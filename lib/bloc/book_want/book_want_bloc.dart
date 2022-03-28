@@ -38,8 +38,10 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
         List<UserLocal> wantedByUsersList = await getWantedByUsersList(bookWants);
         UserLocal? userLocal = authenticationBloc.state.user;
         if (userLocal == null) {
-          emit(state.copyWith(wantedByUsersList: wantedByUsersList));
-          emit(state.copyWith(status: RequestStatusInitial()));
+          emit(state.copyWith(
+            wantedByUsersList: wantedByUsersList,
+            status: RequestStatusInitial(),
+          ));
         } else {
           bool addedToWishList = false;
           for (BookWantsRemote want in bookWants) {
@@ -47,7 +49,11 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
               addedToWishList = true;
             }
           }
-          emit(state.copyWith(addedToWishList: addedToWishList, wantedByUsersList: wantedByUsersList));
+          emit(state.copyWith(
+            addedToWishList: addedToWishList,
+            wantedByUsersList: wantedByUsersList,
+            status: RequestStatusInitial(),
+          ));
         }
       } catch (e) {
         print("error book want get");

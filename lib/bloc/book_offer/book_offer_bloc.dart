@@ -42,8 +42,7 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
         List<BookOfferLocal> offeredByUsersList = await getOfferedByUsersList(bookOffers);
         UserLocal? userLocal = authenticationBloc.state.user;
         if (userLocal == null) {
-          emit(state.copyWith(offeredByUsersList: offeredByUsersList));
-          emit(state.copyWith(status: RequestStatusInitial()));
+          emit(state.copyWith(offeredByUsersList: offeredByUsersList, status: RequestStatusInitial()));
         } else {
           bool addedToOfferList = false;
           for (BookOfferRemote offer in bookOffers) {
@@ -51,7 +50,11 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
               addedToOfferList = true;
             }
           }
-          emit(state.copyWith(addedToOfferList: addedToOfferList, offeredByUsersList: offeredByUsersList));
+          emit(state.copyWith(
+            addedToOfferList: addedToOfferList,
+            offeredByUsersList: offeredByUsersList,
+            status: RequestStatusInitial(),
+          ));
         }
       } catch (e) {
         print("error book offer get");

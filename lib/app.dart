@@ -9,6 +9,7 @@ import 'package:share_take/bloc/book_offer/book_offer_bloc.dart';
 import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/bloc/user_list/user_list_bloc.dart';
+import 'package:share_take/bloc/user_offer/user_offer_bloc.dart';
 import 'package:share_take/constants/static_texts.dart';
 import 'package:share_take/constants/theme/theme.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
@@ -25,6 +26,7 @@ import 'package:share_take/presentation/router/app_router.dart';
 
 import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/language_selection/language_selection_bloc.dart';
+import 'bloc/user_want/user_want_bloc.dart';
 
 class MyApp extends StatelessWidget {
   final AppRouter appRouter;
@@ -107,6 +109,20 @@ class MyApp extends StatelessWidget {
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),
                 tradeRepository: context.read<TradeRepository>(),
+              ),
+            ),
+            BlocProvider<UserWantBloc>(
+              create: (_) => UserWantBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                bookRepository: context.read<BookRepository>(),
+                userRepository: context.read<UserRepository>(),
+              ),
+            ),
+            BlocProvider<UserOfferBloc>(
+              create: (_) => UserOfferBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                bookRepository: context.read<BookRepository>(),
+                userRepository: context.read<UserRepository>(),
               ),
             ),
           ],

@@ -6,6 +6,8 @@ import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/book_offer/book_offer_bloc.dart';
 import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/user_list/user_list_bloc.dart';
+import 'package:share_take/bloc/user_offer/user_offer_bloc.dart';
+import 'package:share_take/bloc/user_want/user_want_bloc.dart';
 
 class BlocGetter {
   static BookListBloc getBookListBloc(BuildContext context) {
@@ -30,5 +32,13 @@ class BlocGetter {
 
   static UserListBloc getUserListBloc(BuildContext context) {
     return BlocProvider.of<UserListBloc>(context);
+  }
+
+  static UserWantBloc getUserWantBloc(BuildContext context) {
+    return BlocProvider.of<UserWantBloc>(context);
+  }
+
+  static UserOfferBloc getUserOfferBloc(BuildContext context) {
+    return BlocProvider.of<UserOfferBloc>(context);
   }
 }

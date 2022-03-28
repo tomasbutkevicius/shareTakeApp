@@ -56,7 +56,7 @@ class BookDetailsScreen extends StatelessWidget {
             BlocBuilder<BookOfferBloc, BookOfferState>(
               builder: (context, state) {
                 return CenteredLoader(
-                  isLoading: state is RequestStatusLoading,
+                  isLoading: state.status is RequestStatusLoading,
                   child: _getOfferBtn(state, context),
                 );
               },
@@ -64,7 +64,7 @@ class BookDetailsScreen extends StatelessWidget {
             BlocBuilder<BookWantBloc, BookWantState>(
               builder: (context, state) {
                 return CenteredLoader(
-                  isLoading: state is RequestStatusLoading,
+                  isLoading: state.status is RequestStatusLoading,
                   child: _buildBookWantedBy(context, state),
                 );
               },
@@ -75,7 +75,7 @@ class BookDetailsScreen extends StatelessWidget {
             BlocBuilder<BookOfferBloc, BookOfferState>(
               builder: (context, state) {
                 return CenteredLoader(
-                  isLoading: state is RequestStatusLoading,
+                  isLoading: state.status is RequestStatusLoading,
                   child: _buildBookOfferedBy(context, state),
                 );
               },

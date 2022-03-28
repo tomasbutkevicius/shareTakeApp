@@ -78,7 +78,15 @@ class BookRepository {
     return await remoteWishListSource.getBookWantedList(bookId);
   }
 
+  Future<List<BookWantsRemote>> getUserWishList(String userId) async {
+    return await remoteWishListSource.getUserWishList(userId);
+  }
+
   Future<List<BookOfferRemote>> getBookOfferList(String bookId) async {
     return await remoteOfferSource.getBookOfferList(bookId);
+  }
+
+  Future<List<BookOfferRemote>> getUserOfferList(String userId) async {
+    return await remoteOfferSource.getUserOfferList(userId);
   }
 }
