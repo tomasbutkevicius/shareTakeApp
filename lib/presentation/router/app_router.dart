@@ -6,6 +6,7 @@ import 'package:share_take/presentation/screens/add_book/add_book_screen.dart';
 import 'package:share_take/presentation/screens/book_details/book_details_screen.dart';
 import 'package:share_take/presentation/screens/login/login_screen.dart';
 import 'package:share_take/presentation/screens/main/main_menu_screen.dart';
+import 'package:share_take/presentation/screens/receiver_requests/receiver_requests_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
 import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
 import 'package:share_take/presentation/screens/user_details/user_details_screen.dart';
@@ -27,6 +28,8 @@ class AppRouter {
         return _handleBookDetailsScreen(settings);
       case UserDetailsScreen.routeName:
         return _handleUserDetailsScreen(settings);
+      case ReceiverRequestsScreen.routeName:
+        return _handleReceiverRequestsScreen();
       default:
         return null;
     }
@@ -81,6 +84,12 @@ class AppRouter {
           user: args.userLocal!,
         );
       },
+    );
+  }
+
+  MaterialPageRoute<dynamic> _handleReceiverRequestsScreen() {
+    return MaterialPageRoute<dynamic>(
+      builder: (_) => const ReceiverRequestsScreen(),
     );
   }
 }

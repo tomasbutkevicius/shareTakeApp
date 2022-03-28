@@ -34,7 +34,7 @@ class UserDetailsScreen extends StatelessWidget {
     BlocGetter.getUserOfferBloc(context).add(UserOfferGetEvent(userId: user.id));
 
     return Scaffold(
-      appBar: CustomAppBar.build(context, backgroundColor: ThemeColors.bordo.shade600),
+      appBar: CustomAppBar.build(context),
       body: Center(
         child: ListView(
           padding: StaticStyles.listViewPadding,
