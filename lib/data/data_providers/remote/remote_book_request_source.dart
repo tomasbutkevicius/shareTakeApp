@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/constants/api.dart';
+import 'package:share_take/constants/enums.dart';
 import 'package:share_take/data/models/book/book_request_remote.dart';
 
 class RemoteBookRequestSource {
@@ -14,7 +15,7 @@ class RemoteBookRequestSource {
     try {
       CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
       List<QueryDocumentSnapshot> userRequestList =
-      await requestCollection.where('ownerId', isEqualTo: userId).get().then((snapshot) => snapshot.docs);
+          await requestCollection.where('ownerId', isEqualTo: userId).get().then((snapshot) => snapshot.docs);
 
       List<BookRequestRemote> bookRequestList = [];
       for (QueryDocumentSnapshot snapshot in userRequestList) {
@@ -80,7 +81,6 @@ class RemoteBookRequestSource {
     }
   }
 
-
   Future deleteBookRequest(String userId, String requestId) async {
     try {
       await fireStore.collection(StaticApi.requestCollection).doc(requestId).delete();
@@ -89,12 +89,11 @@ class RemoteBookRequestSource {
     }
   }
 
-
   Future<List<BookRequestRemote>> getRequestsByOfferId(String offerId) async {
     try {
       CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
       List<QueryDocumentSnapshot> requestList =
-      await requestCollection.where('offerId', isEqualTo: offerId).get().then((snapshot) => snapshot.docs);
+          await requestCollection.where('offerId', isEqualTo: offerId).get().then((snapshot) => snapshot.docs);
 
       List<BookRequestRemote> bookRequestList = [];
       for (QueryDocumentSnapshot snapshot in requestList) {
@@ -103,6 +102,18 @@ class RemoteBookRequestSource {
         } catch (e) {}
       }
       return bookRequestList;
+    } on FirebaseException catch (firebaseException) {
+      throw Exception(firebaseException.message);
+    }
+  }
+
+  Future updateRequestStatus(String requestId, BookRequestStatus status) async {
+    try {
+      CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
+
+      await requestCollection.doc(requestId).update({
+        "status": status.name
+      });
     } on FirebaseException catch (firebaseException) {
       throw Exception(firebaseException.message);
     }

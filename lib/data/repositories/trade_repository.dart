@@ -43,4 +43,16 @@ class TradeRepository {
   Future<List<BookRequestRemote>> getBookRequestsAsOwner(String userId) async {
     return remoteBookRequestSource.getUserRequestListAsOwner(userId);
   }
+
+  Future updateBookRequestStatus(
+    String requestId,
+    String userId,
+    BookRequestStatus status,
+  ) async {
+    BookRequestRemote foundRequest = await remoteBookRequestSource.getRequest(requestId);
+    if (foundRequest.ownerId != userId) {
+      throw Exception("Only owner can edit status");
+    }
+    await remoteBookRequestSource.updateRequestStatus(requestId, status);
+  }
 }

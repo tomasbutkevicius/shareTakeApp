@@ -8,3 +8,7 @@ class RequestsOwnerResetStatusEvent extends RequestsAsOwnerEvent {}
 class RequestsOwnerResetEvent extends RequestsAsOwnerEvent {}
 
 class RequestsOwnerGetListEvent extends RequestsAsOwnerEvent {}
+
+class RequestsOwnerStatusChangeEvent extends RequestsAsOwnerEvent {
+
+}
