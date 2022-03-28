@@ -1,7 +1,7 @@
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/data/data_providers/remote/remote_offer_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_request_source.dart';
-import 'package:share_take/data/models/book/book_request.dart';
+import 'package:share_take/data/models/book/book_request_remote.dart';
 
 class TradeRepository {
   final RemoteBookRequestSource remoteBookRequestSource;
@@ -34,5 +34,9 @@ class TradeRepository {
     );
 
     await remoteBookRequestSource.requestBook(request);
+  }
+
+  Future<List<BookRequestRemote>> getBookRequestsAsReceiver(String userId) async {
+    return remoteBookRequestSource.getUserRequestListAsReceiver(userId);
   }
 }

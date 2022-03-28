@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share_take/constants/api.dart';
-import 'package:share_take/data/models/book/book_request.dart';
+import 'package:share_take/data/models/book/book_request_remote.dart';
 
 class RemoteBookRequestSource {
   final FirebaseFirestore fireStore;
@@ -9,6 +9,24 @@ class RemoteBookRequestSource {
   RemoteBookRequestSource({
     required this.fireStore,
   });
+
+  Future<List<BookRequestRemote>> getUserRequestListAsOwner(String userId) async {
+    try {
+      CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
+      List<QueryDocumentSnapshot> userRequestList =
+      await requestCollection.where('ownerId', isEqualTo: userId).get().then((snapshot) => snapshot.docs);
+
+      List<BookRequestRemote> bookRequestList = [];
+      for (QueryDocumentSnapshot snapshot in userRequestList) {
+        try {
+          bookRequestList.add(BookRequestRemote.fromSnapshot(snapshot));
+        } catch (e) {}
+      }
+      return bookRequestList;
+    } on FirebaseException catch (firebaseException) {
+      throw Exception(firebaseException.message);
+    }
+  }
 
   Future<List<BookRequestRemote>> getUserRequestListAsReceiver(String userId) async {
     try {
