@@ -70,13 +70,7 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
         add(BookOfferGetEvent(bookId: event.bookId));
       } catch (e) {
         print(e.toString());
-
-        await StaticWidgets.showDefaultDialog(
-          context: event.context,
-          text: e.toString(),
-        ).then((value) {
-          emit(state.copyWith(status: RequestStatusInitial()));
-        });
+        emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }
     });
     on<BookOfferRemoveFromOfferedEvent>((event, emit) async {
@@ -88,12 +82,7 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
       } catch (e) {
         print(e.toString());
 
-        await StaticWidgets.showDefaultDialog(
-          context: event.context,
-          text: e.toString(),
-        ).then((value) {
-          emit(state.copyWith(status: RequestStatusInitial()));
-        });
+        emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }
     });
     on<BookOfferRequestBookEvent>((event, emit) async {
@@ -109,21 +98,14 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
           receiverId: user.id,
           offerId: event.offer.offerId,
         );
-        await StaticWidgets.showDefaultDialog(
-          context: event.context,
-          text: "Request sent",
-        ).then((value) {
-          emit(state.copyWith(status: RequestStatusInitial()));
-        });
+        emit(state.copyWith(status: RequestStatusSuccess(message: "Request sent")));
+
       } catch (e) {
-        print(e.toString());
-        await StaticWidgets.showDefaultDialog(
-          context: event.context,
-          text: e.toString(),
-        ).then((value) {
-          emit(state.copyWith(status: RequestStatusInitial()));
-        });
+        emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }
+    });
+    on<BookOfferStatusResetEvent>((event, emit) {
+      emit(state.copyWith(status: RequestStatusInitial()));
     });
   }
 

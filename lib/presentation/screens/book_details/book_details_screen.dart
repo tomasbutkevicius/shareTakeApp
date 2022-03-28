@@ -19,6 +19,7 @@ import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 import 'package:share_take/presentation/widgets/user/user_list_card.dart';
+import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
 class BookDetailsScreen extends StatelessWidget {
   const BookDetailsScreen({
@@ -34,54 +35,100 @@ class BookDetailsScreen extends StatelessWidget {
     BlocGetter.getBookWantBloc(context).add(BookWantGetEvent(bookId: bookLocal.id));
     BlocGetter.getBookOfferBloc(context).add(BookOfferGetEvent(bookId: bookLocal.id));
 
-    return Scaffold(
-      appBar: CustomAppBar.build(context, backgroundColor: ThemeColors.bordo.shade600),
-      body: Center(
-        child: ListView(
-          padding: StaticStyles.listViewPadding,
-          children: <Widget>[
-            ProxySpacingVerticalWidget(),
-            BookDetailsMainWidget(bookLocal: bookLocal),
-            ProxySpacingVerticalWidget(
-              size: ProxySpacing.large,
-            ),
-            BlocBuilder<BookWantBloc, BookWantState>(
-              builder: (context, state) {
-                return CenteredLoader(
-                  isLoading: state is RequestStatusLoading,
-                  child: _getWantBtn(state, context),
-                );
-              },
-            ),
-            BlocBuilder<BookOfferBloc, BookOfferState>(
-              builder: (context, state) {
-                return CenteredLoader(
-                  isLoading: state.status is RequestStatusLoading,
-                  child: _getOfferBtn(state, context),
-                );
-              },
-            ),
-            BlocBuilder<BookWantBloc, BookWantState>(
-              builder: (context, state) {
-                return CenteredLoader(
-                  isLoading: state.status is RequestStatusLoading,
-                  child: _buildBookWantedBy(context, state),
-                );
-              },
-            ),
-            ProxySpacingVerticalWidget(
-              size: ProxySpacing.large,
-            ),
-            BlocBuilder<BookOfferBloc, BookOfferState>(
-              builder: (context, state) {
-                return CenteredLoader(
-                  isLoading: state.status is RequestStatusLoading,
-                  child: _buildBookOfferedBy(context, state),
-                );
-              },
-            ),
-            ProxySpacingVerticalWidget(),
-          ],
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<BookOfferBloc, BookOfferState>(
+          listener: (context, state) {
+            RequestStatus status = state.status;
+            if (status is RequestStatusSuccess) {
+              StaticWidgets.showDefaultDialog(
+                context: context,
+                text: (status).message,
+              ).then((value) {
+                BlocGetter.getBookOfferBloc(context).add(BookOfferStatusResetEvent());
+              });
+            }
+            if (status is RequestStatusError) {
+              StaticWidgets.showDefaultDialog(
+                context: context,
+                text: (status).message,
+              ).then((value) {
+                BlocGetter.getBookOfferBloc(context).add(BookOfferStatusResetEvent());
+              });
+            }
+          },
+        ),
+        BlocListener<BookWantBloc, BookWantState>(
+          listener: (context, state) {
+            RequestStatus status = state.status;
+            if (status is RequestStatusSuccess) {
+              StaticWidgets.showDefaultDialog(
+                context: context,
+                text: (status).message,
+              ).then((value) {
+                BlocGetter.getBookWantBloc(context).add(BookWantStatusResetEvent());
+              });
+            }
+            if (status is RequestStatusError) {
+              StaticWidgets.showDefaultDialog(
+                context: context,
+                text: (status).message,
+              ).then((value) {
+                BlocGetter.getBookWantBloc(context).add(BookWantStatusResetEvent());
+              });
+            }
+          },
+        ),
+      ],
+      child: Scaffold(
+        appBar: CustomAppBar.build(context, backgroundColor: ThemeColors.bordo.shade600),
+        body: Center(
+          child: ListView(
+            padding: StaticStyles.listViewPadding,
+            children: <Widget>[
+              ProxySpacingVerticalWidget(),
+              BookDetailsMainWidget(bookLocal: bookLocal),
+              ProxySpacingVerticalWidget(
+                size: ProxySpacing.large,
+              ),
+              BlocBuilder<BookWantBloc, BookWantState>(
+                builder: (context, state) {
+                  return CenteredLoader(
+                    isLoading: state is RequestStatusLoading,
+                    child: _getWantBtn(state, context),
+                  );
+                },
+              ),
+              BlocBuilder<BookOfferBloc, BookOfferState>(
+                builder: (context, state) {
+                  return CenteredLoader(
+                    isLoading: state.status is RequestStatusLoading,
+                    child: _getOfferBtn(state, context),
+                  );
+                },
+              ),
+              BlocBuilder<BookWantBloc, BookWantState>(
+                builder: (context, state) {
+                  return CenteredLoader(
+                    isLoading: state.status is RequestStatusLoading,
+                    child: _buildBookWantedBy(context, state),
+                  );
+                },
+              ),
+              ProxySpacingVerticalWidget(
+                size: ProxySpacing.large,
+              ),
+              BlocBuilder<BookOfferBloc, BookOfferState>(
+                builder: (context, state) {
+                  return CenteredLoader(
+                    isLoading: state.status is RequestStatusLoading,
+                    child: _buildBookOfferedBy(context, state),
+                  );
+                },
+              ),
+              ProxySpacingVerticalWidget(),
+            ],
+          ),
         ),
       ),
     );

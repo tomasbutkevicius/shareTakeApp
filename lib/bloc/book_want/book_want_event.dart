@@ -5,6 +5,9 @@ abstract class BookWantEvent {}
 
 class BookWantResetEvent extends BookWantEvent {}
 
+class BookWantStatusResetEvent extends BookWantEvent {}
+
+
 class BookWantGetEvent extends BookWantEvent {
   final String bookId;
 

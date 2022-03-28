@@ -78,12 +78,8 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
       } catch (e) {
         print(e.toString());
 
-        await StaticWidgets.showDefaultDialog(
-          context: event.context,
-          text: e.toString(),
-        ).then((value) {
-          emit(state.copyWith(status: RequestStatusInitial()));
-        });
+        emit(state.copyWith(status: RequestStatusError(message: e.toString())));
+
       }
     });
     on<BookWantRemoveFromWantedEvent>((event, emit) async {
@@ -94,14 +90,12 @@ class BookWantBloc extends Bloc<BookWantEvent, BookWantState> {
         add(BookWantGetEvent(bookId: event.bookId));
       } catch (e) {
         print(e.toString());
-
-        await StaticWidgets.showDefaultDialog(
-          context: event.context,
-          text: e.toString(),
-        ).then((value) {
-          emit(state.copyWith(status: RequestStatusInitial()));
-        });
+        emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }
+    });
+
+    on<BookWantStatusResetEvent>((event, emit) {
+      emit(state.copyWith(status: RequestStatusInitial()));
     });
   }
 

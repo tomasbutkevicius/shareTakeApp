@@ -5,6 +5,8 @@ abstract class BookOfferEvent {}
 
 class BookOfferResetEvent extends BookOfferEvent {}
 
+class BookOfferStatusResetEvent extends BookOfferEvent {}
+
 class BookOfferGetEvent extends BookOfferEvent {
   final String bookId;
 
