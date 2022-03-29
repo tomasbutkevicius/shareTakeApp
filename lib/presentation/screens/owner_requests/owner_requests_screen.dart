@@ -131,7 +131,7 @@ class OwnerRequestsScreen extends StatelessWidget {
           context.read<RequestsAsOwnerBloc>().add(
                 RequestsOwnerStatusUpdateEvent(
                   requestId: requestLocal.requestId,
-                  status: BookRequestStatus.rejected,
+                  status: BookRequestStatus.accepted,
                 ),
               );
         }
