@@ -12,7 +12,6 @@ import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/list_card.dart';
-import 'package:share_take/presentation/widgets/proxy/button/proxy_button_text_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
@@ -92,6 +91,25 @@ class OwnerRequestsScreen extends StatelessWidget {
     return ListCardWidget(
       child: Column(
         children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              child: Icon(Icons.delete),
+              onTap: () {
+                StaticWidgets.confirmationDialog(
+                  context: context,
+                  text: "Are you sure you want to delete request? You will be able to receive it again",
+                  actionYes: () {
+                    BlocGetter.getRequestsOwnerBloc(context).add(
+                      RequestsOwnerDeleteEvent(
+                        requestId: request.requestId,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
           ProxyTextWidget(text: "Owner (you)"),
           UserListCardWidget(user: request.owner),
           ProxySpacingVerticalWidget(),
@@ -108,6 +126,8 @@ class OwnerRequestsScreen extends StatelessWidget {
           request.status == BookRequestStatus.rejected ? SizedBox.shrink() : _getAcceptBtn(context, request),
           ProxySpacingVerticalWidget(),
           request.status == BookRequestStatus.accepted ? SizedBox.shrink() : _getRejectBtn(context, request),
+          ProxySpacingVerticalWidget(),
+          request.status == BookRequestStatus.accepted ? _getCreateTradeBtn(context, request) : SizedBox.shrink(),
         ],
       ),
     );
@@ -160,6 +180,27 @@ class OwnerRequestsScreen extends StatelessWidget {
                 ),
               );
         }
+      },
+    );
+  }
+
+  Widget _getCreateTradeBtn(BuildContext context, BookRequestLocal requestLocal) {
+    String buttonText = "Trade";
+    Color buttonColor = ThemeColors.blue.shade600;
+    return ProxyButtonWidget(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 100,
+      ),
+      text: buttonText,
+      color: buttonColor,
+      isUppercase: false,
+      onPressed: () {
+        context.read<RequestsAsOwnerBloc>().add(
+              RequestsOwnerCreateBookTradeEvent(
+                requestLocal: requestLocal,
+              ),
+            );
       },
     );
   }

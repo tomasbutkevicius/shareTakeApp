@@ -19,10 +19,18 @@ class RequestsOwnerStatusUpdateEvent extends RequestsAsOwnerEvent {
   });
 }
 
-class RequestsOwnerStatusDeleteEvent extends RequestsAsOwnerEvent {
+class RequestsOwnerDeleteEvent extends RequestsAsOwnerEvent {
   final String requestId;
 
-  RequestsOwnerStatusDeleteEvent({
+  RequestsOwnerDeleteEvent({
     required this.requestId,
+  });
+}
+
+class RequestsOwnerCreateBookTradeEvent extends RequestsAsOwnerEvent {
+  final BookRequestLocal requestLocal;
+
+  RequestsOwnerCreateBookTradeEvent({
+    required this.requestLocal,
   });
 }

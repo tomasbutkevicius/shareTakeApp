@@ -10,7 +10,7 @@ import 'package:share_take/data/models/book/book_request_local.dart';
 import 'package:share_take/data/models/book/book_request_remote.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
-import 'package:share_take/data/repositories/trade_repository.dart';
+import 'package:share_take/data/repositories/book_request_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 
 part 'requests_as_receiver_event.dart';
@@ -19,13 +19,13 @@ part 'requests_as_receiver_state.dart';
 
 class RequestsAsReceiverBloc extends Bloc<RequestsAsReceiverEvent, RequestsAsReceiverState> {
   final AuthenticationBloc authenticationBloc;
-  final TradeRepository tradeRepository;
+  final BookRequestRepository requestRepository;
   final UserRepository userRepository;
   final BookRepository bookRepository;
 
   RequestsAsReceiverBloc({
     required this.authenticationBloc,
-    required this.tradeRepository,
+    required this.requestRepository,
     required this.userRepository,
     required this.bookRepository,
   }) : super(const RequestsAsReceiverState()) {
@@ -42,7 +42,7 @@ class RequestsAsReceiverBloc extends Bloc<RequestsAsReceiverEvent, RequestsAsRec
         if (loggedInUser == null) {
           throw Exception("User not logged in");
         }
-        List<BookRequestRemote> remoteRequests = await tradeRepository.getBookRequestsAsReceiver(loggedInUser.id);
+        List<BookRequestRemote> remoteRequests = await requestRepository.getBookRequestsAsReceiver(loggedInUser.id);
         List<BookRequestLocal> localRequests = await convertRemoteRequestsToLocal(remoteRequests);
 
         emit(

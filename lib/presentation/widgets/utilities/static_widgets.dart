@@ -21,6 +21,37 @@ class StaticWidgets {
     });
   }
 
+  static void confirmationDialog({
+    required BuildContext context,
+    required String text,
+    required VoidCallback actionYes,
+  }
+  ) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(text),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Yes"),
+              onPressed: (){
+                actionYes();
+                Navigator.of(context).pop();
+              } ,
+            ),
+            TextButton(
+              child: Text("No"),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   static Future showCustomDialog({required BuildContext context, required Widget child, required VoidCallback onClose}) async {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       await showDialog(

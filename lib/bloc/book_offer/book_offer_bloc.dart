@@ -11,7 +11,7 @@ import 'package:share_take/data/models/book_offers/book_offer_remote.dart';
 import 'package:share_take/data/models/book_wants/book_wants_remote.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
-import 'package:share_take/data/repositories/trade_repository.dart';
+import 'package:share_take/data/repositories/book_request_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
@@ -22,7 +22,7 @@ part 'book_offer_state.dart';
 class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
   final UserRepository userRepository;
   final BookRepository bookRepository;
-  final TradeRepository tradeRepository;
+  final BookRequestRepository tradeRepository;
   final AuthenticationBloc authenticationBloc;
 
   BookOfferBloc({
