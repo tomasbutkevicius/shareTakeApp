@@ -93,6 +93,7 @@ class RequestsAsReceiverBloc extends Bloc<RequestsAsReceiverEvent, RequestsAsRec
               receiver: receiver,
               offerId: requestRemote.offerId,
               status: requestRemote.status,
+              editable: requestRemote.editable,
             ),
           );
         }

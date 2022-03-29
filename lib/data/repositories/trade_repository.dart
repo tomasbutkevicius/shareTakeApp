@@ -49,10 +49,26 @@ class TradeRepository {
     String userId,
     BookRequestStatus status,
   ) async {
+    print("update caled");
     BookRequestRemote foundRequest = await remoteBookRequestSource.getRequest(requestId);
+    print("found request");
+    print(foundRequest.toString());
+    if(!foundRequest.editable) {
+      throw Exception('Request edit disabled');
+    }
     if (foundRequest.ownerId != userId) {
       throw Exception("Only owner can edit status");
     }
-    await remoteBookRequestSource.updateRequestStatus(requestId, status);
+    if (foundRequest.status == status){
+      return;
+    }
+    if(status == BookRequestStatus.accepted) {
+      await remoteBookRequestSource.updateRequestStatus(requestId, status);
+      return;
+    }
+    if(status == BookRequestStatus.rejected) {
+      await remoteBookRequestSource.updateRequestStatus(requestId, status);
+      return;
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
+import 'package:share_take/constants/enums.dart';
 import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/book/book_request_local.dart';
 import 'package:share_take/data/models/book/book_request_remote.dart';
@@ -29,34 +30,63 @@ class RequestsAsOwnerBloc extends Bloc<RequestsAsOwnerEvent, RequestsAsOwnerStat
     required this.userRepository,
     required this.bookRepository,
   }) : super(const RequestsAsOwnerState()) {
-    on<RequestsOwnerResetEvent>((event, emit) {
-      emit(RequestsAsOwnerState());
-    });
-    on<RequestsOwnerResetStatusEvent>((event, emit) {
-      emit(state.copyWith(status: const RequestStatusInitial()));
-    });
-    on<RequestsOwnerGetListEvent>((event, emit) async {
-      emit(state.copyWith(status: RequestStatusLoading()));
-      try {
-        UserLocal? loggedInUser = authenticationBloc.state.user;
-        if (loggedInUser == null) {
-          throw Exception("User not logged in");
-        }
-        print("GETTING BOOK REQUESTS");
-        List<BookRequestRemote> remoteRequests = await tradeRepository.getBookRequestsAsOwner(loggedInUser.id);
-        List<BookRequestLocal> localRequests = await convertRemoteRequestsToLocal(remoteRequests);
+    on<RequestsOwnerResetEvent>(_handleRequestsOwnerResetEvent);
+    on<RequestsOwnerResetStatusEvent>(_handleRequestsOwnerResetStatusEvent);
+    on<RequestsOwnerGetListEvent>(_handleRequestsOwnerGetListEvent);
+    on<RequestsOwnerStatusUpdateEvent>(_handleRequestsOwnerStatusUpdateEvent);
+  }
 
-        emit(
-          state.copyWith(
-            status: RequestStatusInitial(),
-            requestList: localRequests,
-          ),
-        );
-      } catch (e) {
-        print(e.toString());
-        emit(state.copyWith(status: RequestStatusError(message: e.toString())));
+  void _handleRequestsOwnerResetEvent(RequestsOwnerResetEvent event, Emitter<RequestsAsOwnerState> emit) {
+    emit(const RequestsAsOwnerState());
+  }
+
+  void _handleRequestsOwnerResetStatusEvent(RequestsOwnerResetStatusEvent event, Emitter<RequestsAsOwnerState> emit) {
+    emit(state.copyWith(status: const RequestStatusInitial()));
+  }
+
+  Future _handleRequestsOwnerGetListEvent(RequestsOwnerGetListEvent event, Emitter<RequestsAsOwnerState> emit) async {
+    emit(state.copyWith(status: RequestStatusLoading()));
+    try {
+      UserLocal? loggedInUser = authenticationBloc.state.user;
+      if (loggedInUser == null) {
+        throw Exception("User not logged in");
       }
-    });
+      print("GETTING BOOK REQUESTS");
+      List<BookRequestRemote> remoteRequests = await tradeRepository.getBookRequestsAsOwner(loggedInUser.id);
+      List<BookRequestLocal> localRequests = await convertRemoteRequestsToLocal(remoteRequests);
+
+      emit(
+        state.copyWith(
+          status: RequestStatusInitial(),
+          requestList: localRequests,
+        ),
+      );
+    } catch (e) {
+      print(e.toString());
+      emit(state.copyWith(status: RequestStatusError(message: e.toString())));
+    }
+  }
+
+  Future _handleRequestsOwnerStatusUpdateEvent(RequestsOwnerStatusUpdateEvent event, Emitter<RequestsAsOwnerState> emit) async {
+    emit(state.copyWith(status: RequestStatusLoading()));
+    try {
+      UserLocal? loggedInUser = authenticationBloc.state.user;
+      if (loggedInUser == null) {
+        throw Exception("User not logged in");
+      }
+      await tradeRepository.updateBookRequestStatus(
+        event.requestId,
+        loggedInUser.id,
+        BookRequestStatus.accepted,
+      );
+
+      add(RequestsOwnerGetListEvent());
+    } catch (e) {
+      print("ERRoR");
+      print(e.toString());
+      print(e.toString());
+      emit(state.copyWith(status: RequestStatusError(message: e.toString())));
+    }
   }
 
   Future<List<BookRequestLocal>> convertRemoteRequestsToLocal(List<BookRequestRemote> requestListRemote) async {
@@ -94,6 +124,7 @@ class RequestsAsOwnerBloc extends Bloc<RequestsAsOwnerEvent, RequestsAsOwnerStat
               receiver: receiver,
               offerId: requestRemote.offerId,
               status: requestRemote.status,
+              editable: requestRemote.editable,
             ),
           );
         }

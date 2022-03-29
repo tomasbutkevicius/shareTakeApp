@@ -10,6 +10,7 @@ class BookRequestLocal extends Equatable {
   final UserLocal receiver;
   final String offerId;
   final BookRequestStatus status;
+  final bool editable;
 
   const BookRequestLocal({
     required this.requestId,
@@ -18,6 +19,7 @@ class BookRequestLocal extends Equatable {
     required this.receiver,
     required this.offerId,
     required this.status,
+    required this.editable,
   });
 
   @override
@@ -28,5 +30,6 @@ class BookRequestLocal extends Equatable {
         receiver,
         offerId,
         status,
+        editable,
       ];
 }

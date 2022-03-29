@@ -8,6 +8,7 @@ class BookRequestRemote {
   final String receiverId;
   final String offerId;
   final BookRequestStatus status;
+  final bool editable;
 
   const BookRequestRemote({
     required this.id,
@@ -16,16 +17,18 @@ class BookRequestRemote {
     required this.receiverId,
     required this.offerId,
     required this.status,
+    this.editable = true,
   });
 
   Map<String, dynamic> toMap() {
     //id is created by firestore
     return {
-      'bookId': this.bookId,
-      'ownerId': this.ownerId,
-      'receiverId': this.receiverId,
-      'offerId': this.offerId,
-      'status': this.status.name
+      'bookId': bookId,
+      'ownerId': ownerId,
+      'receiverId': receiverId,
+      'offerId': offerId,
+      'status': status.name,
+      'editable': editable,
     };
   }
 
@@ -39,6 +42,10 @@ class BookRequestRemote {
       } else if(statusString.toLowerCase() == BookRequestStatus.rejected.name){
         status = BookRequestStatus.rejected;
       }
+      bool editable = true;
+      try {
+        editable = map['editable'] as bool;
+      }catch(e) {}
 
       return BookRequestRemote(
         id: snapshot.id,
@@ -47,10 +54,16 @@ class BookRequestRemote {
         receiverId: map['receiverId'] as String,
         offerId: map['offerId'] as String,
         status: status,
+        editable: editable,
       );
     } catch (e) {
       throw Exception("Error parsing book request, make sure app is updated");
     }
 
+  }
+
+  @override
+  String toString() {
+    return 'BookRequestRemote{id: $id, bookId: $bookId, ownerId: $ownerId, receiverId: $receiverId, offerId: $offerId, status: $status, editable: $editable}';
   }
 }

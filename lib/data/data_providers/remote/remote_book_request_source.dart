@@ -112,9 +112,10 @@ class RemoteBookRequestSource {
       CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
 
       await requestCollection.doc(requestId).update({
-        "status": status.name
+        "status": status.name,
+        'editable': false,
       });
-    } on FirebaseException catch (firebaseException) {
+    } on FirebaseException catch (firebaseException) {;
       throw Exception(firebaseException.message);
     }
   }

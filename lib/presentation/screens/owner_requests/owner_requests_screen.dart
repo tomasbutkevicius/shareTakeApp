@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
+import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_request_local.dart';
@@ -11,6 +12,8 @@ import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
 import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/list_card.dart';
+import 'package:share_take/presentation/widgets/proxy/button/proxy_button_text_widget.dart';
+import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 import 'package:share_take/presentation/widgets/user/user_list_card.dart';
@@ -40,12 +43,19 @@ class OwnerRequestsScreen extends StatelessWidget {
               ),
             );
           }
+          if (state.status is RequestStatusError) {
+            StaticWidgets.showDefaultDialog(
+              context: context,
+              text: (state.status as RequestStatusError).message,
+            ).then(
+              (value) => BlocGetter.getRequestsOwnerBloc(context).add(
+                RequestsOwnerResetStatusEvent(),
+              ),
+            );
+          }
         },
         builder: (context, state) {
           RequestStatus requestStatus = state.status;
-          if (requestStatus is RequestStatusError) {
-            return Center(child: ProxyTextWidget(text: "Encountered error\n" + requestStatus.message));
-          }
 
           return CenteredLoader(
             isLoading: requestStatus is RequestStatusLoading,
@@ -74,7 +84,6 @@ class OwnerRequestsScreen extends StatelessWidget {
           },
         ),
         ProxySpacingVerticalWidget(),
-
       ],
     );
   }
@@ -96,9 +105,62 @@ class OwnerRequestsScreen extends StatelessWidget {
             leading: Icon(Icons.swap_horiz),
             title: Text("STATUS: " + request.status.name),
           ),
+          request.status == BookRequestStatus.rejected ? SizedBox.shrink() : _getAcceptBtn(context, request),
+          ProxySpacingVerticalWidget(),
+          request.status == BookRequestStatus.accepted ? SizedBox.shrink() : _getRejectBtn(context, request),
         ],
       ),
     );
   }
 
+  Widget _getAcceptBtn(BuildContext context, BookRequestLocal requestLocal) {
+    String buttonText = requestLocal.status == BookRequestStatus.accepted ? "Accepted" : "ACCEPT";
+    Color buttonColor = requestLocal.status == BookRequestStatus.waiting
+        ? ThemeColors.green.shade600
+        : ThemeColors.green.shade600.withOpacity(0.5);
+    return ProxyButtonWidget(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 100,
+      ),
+      text: buttonText,
+      color: buttonColor,
+      isUppercase: false,
+      onPressed: () {
+        if (requestLocal.editable) {
+          context.read<RequestsAsOwnerBloc>().add(
+                RequestsOwnerStatusUpdateEvent(
+                  requestId: requestLocal.requestId,
+                  status: BookRequestStatus.rejected,
+                ),
+              );
+        }
+      },
+    );
+  }
+
+  Widget _getRejectBtn(BuildContext context, BookRequestLocal requestLocal) {
+    String buttonText = requestLocal.status == BookRequestStatus.rejected ? "Rejected" : "REJECT";
+    Color buttonColor =
+        requestLocal.status == BookRequestStatus.waiting ? ThemeColors.red.shade600 : ThemeColors.red.shade600.withOpacity(0.5);
+    return ProxyButtonWidget(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 100,
+      ),
+      text: buttonText,
+      color: buttonColor,
+      isUppercase: false,
+      onPressed: () {
+        if (requestLocal.editable) {
+          context.read<RequestsAsOwnerBloc>().add(
+                RequestsOwnerStatusUpdateEvent(
+                  requestId: requestLocal.requestId,
+                  status: BookRequestStatus.rejected,
+                ),
+              );
+        }
+      },
+    );
+  }
 }

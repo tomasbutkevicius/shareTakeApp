@@ -9,6 +9,20 @@ class RequestsOwnerResetEvent extends RequestsAsOwnerEvent {}
 
 class RequestsOwnerGetListEvent extends RequestsAsOwnerEvent {}
 
-class RequestsOwnerStatusChangeEvent extends RequestsAsOwnerEvent {
+class RequestsOwnerStatusUpdateEvent extends RequestsAsOwnerEvent {
+  final String requestId;
+  final BookRequestStatus status;
 
+  RequestsOwnerStatusUpdateEvent({
+    required this.requestId,
+    required this.status,
+  });
+}
+
+class RequestsOwnerStatusDeleteEvent extends RequestsAsOwnerEvent {
+  final String requestId;
+
+  RequestsOwnerStatusDeleteEvent({
+    required this.requestId,
+  });
 }
