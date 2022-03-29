@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/book_offer/book_offer_bloc.dart';
+import 'package:share_take/bloc/book_trade_list/book_trade_list_bloc.dart';
 import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
@@ -151,6 +152,15 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<RequestsAsOwnerBloc>(
               create: (_) => RequestsAsOwnerBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                bookRepository: context.read<BookRepository>(),
+                userRepository: context.read<UserRepository>(),
+                requestRepository: context.read<BookRequestRepository>(),
+                tradeRepository: context.read<TradeRepository>(),
+              ),
+            ),
+            BlocProvider<BookTradeListBloc>(
+              create: (_) => BookTradeListBloc(
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),

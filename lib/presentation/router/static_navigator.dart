@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
+import 'package:share_take/bloc/book_trade_list/book_trade_list_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
@@ -18,6 +19,7 @@ import 'package:share_take/presentation/screens/owner_requests/owner_requests_sc
 import 'package:share_take/presentation/screens/receiver_requests/receiver_requests_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
 import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
+import 'package:share_take/presentation/screens/trade_list/trade_list_screen.dart';
 import 'package:share_take/presentation/screens/user_details/user_details_screen.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
 
@@ -110,6 +112,19 @@ class StaticNavigator {
     BlocGetter.getRequestsOwnerBloc(context).add(RequestsOwnerGetListEvent());
     Navigator.of(context).pushNamed(
       OwnerRequestsScreen.routeName,
+    );
+  }
+
+  static void pushTradeListScreen(
+      BuildContext context,
+      ) {
+    if(!authorised(context)){
+      handleUnauthorised(context);
+      return;
+    }
+    BlocGetter.getBookTradeListBloc(context).add(BookTradeListGetListEvent());
+    Navigator.of(context).pushNamed(
+      TradeListScreen.routeName,
     );
   }
 

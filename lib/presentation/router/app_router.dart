@@ -10,6 +10,7 @@ import 'package:share_take/presentation/screens/owner_requests/owner_requests_sc
 import 'package:share_take/presentation/screens/receiver_requests/receiver_requests_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
 import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
+import 'package:share_take/presentation/screens/trade_list/trade_list_screen.dart';
 import 'package:share_take/presentation/screens/user_details/user_details_screen.dart';
 
 class AppRouter {
@@ -33,6 +34,8 @@ class AppRouter {
         return _handleReceiverRequestsScreen();
       case OwnerRequestsScreen.routeName:
         return _handleOwnerRequestsScreen();
+      case TradeListScreen.routeName:
+        return _handleTradeListScreen();
       default:
         return null;
     }
@@ -99,6 +102,12 @@ class AppRouter {
   MaterialPageRoute<dynamic> _handleOwnerRequestsScreen() {
     return MaterialPageRoute<dynamic>(
       builder: (_) => const OwnerRequestsScreen(),
+    );
+  }
+
+  MaterialPageRoute<dynamic> _handleTradeListScreen() {
+    return MaterialPageRoute<dynamic>(
+      builder: (_) => const TradeListScreen(),
     );
   }
 }

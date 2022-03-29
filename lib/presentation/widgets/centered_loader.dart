@@ -27,7 +27,7 @@ class CenteredLoader extends StatelessWidget {
         child: const Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(
-              ThemeColors.orange,
+              ThemeColors.blue,
             ),
           ),
         ),

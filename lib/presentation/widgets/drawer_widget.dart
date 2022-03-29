@@ -23,7 +23,7 @@ class DrawerWidget extends StatelessWidget {
 
     return Drawer(
       child: Material(
-        color: ThemeColors.blue.shade600,
+        color: ThemeColors.blue,
         child: ListView(
           padding: padding,
           children: [
