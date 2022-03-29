@@ -77,13 +77,11 @@ class RequestsAsOwnerBloc extends Bloc<RequestsAsOwnerEvent, RequestsAsOwnerStat
       await tradeRepository.updateBookRequestStatus(
         event.requestId,
         loggedInUser.id,
-        BookRequestStatus.accepted,
+        event.status,
       );
 
       add(RequestsOwnerGetListEvent());
     } catch (e) {
-      print("ERRoR");
-      print(e.toString());
       print(e.toString());
       emit(state.copyWith(status: RequestStatusError(message: e.toString())));
     }
