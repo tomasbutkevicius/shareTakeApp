@@ -50,6 +50,7 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
           );
         }
       } catch (e) {
+        print(e.toString());
         emit(state.copyWith(
           status: RequestStatusError(
             message: e.toString(),
@@ -86,6 +87,7 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
           )
         );
       } catch(e){
+        print(e.toString());
         emit(
           state.copyWith(
             status: RequestStatusError(

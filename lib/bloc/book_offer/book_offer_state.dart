@@ -2,7 +2,7 @@ part of 'book_offer_bloc.dart';
 
 
 class BookOfferState extends Equatable {
-  final List<UserLocal> offeredByUsersList;
+  final List<BookOfferLocal> offeredByUsersList;
 
   final RequestStatus status;
   final bool addedToOfferList;
@@ -14,7 +14,7 @@ class BookOfferState extends Equatable {
   });
 
   BookOfferState copyWith({
-    List<UserLocal>? offeredByUsersList,
+    List<BookOfferLocal>? offeredByUsersList,
     RequestStatus? status,
     bool? addedToOfferList,
   }) {

@@ -19,13 +19,15 @@ class BookListView extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocGetter.getBookListBloc(context).add(BookListGetListEvent());
 
-    return BlocConsumer<BookListBloc, BookListState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocBuilder<BookListBloc, BookListState>(
       builder: (context, state) {
         return CenteredLoader(
           isLoading: state.status is RequestStatusLoading,
+          showRefresh: state.status is RequestStatusError,
+          onRefresh: (){
+            BlocGetter.getBookListBloc(context).add(BookListResetEvent());
+            BlocGetter.getBookListBloc(context).add(BookListGetListEvent());
+          },
           child: _body(state),
         );
       },

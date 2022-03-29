@@ -8,14 +8,15 @@ class CustomAppBar {
       BuildContext context, {
         bool showBackBtn = true,
         bool showTitle = true,
+        String titleText = "Share Take",
         Color backgroundColor = ThemeColors.blue,
       }) {
     return AppBar(
       shadowColor: ThemeColors.white.withOpacity(0.5),
       backgroundColor: backgroundColor,
       leading: showBackBtn ? _backButton(context) : SizedBox.shrink(),
-      title: showTitle ? const Center(
-        child: AppTitleTextWidget(),
+      title: showTitle ? Center(
+        child: AppTitleTextWidget(text: titleText,),
       ) : null,
       actions: [
         Builder(

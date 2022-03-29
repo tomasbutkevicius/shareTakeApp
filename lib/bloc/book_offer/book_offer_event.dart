@@ -5,6 +5,8 @@ abstract class BookOfferEvent {}
 
 class BookOfferResetEvent extends BookOfferEvent {}
 
+class BookOfferStatusResetEvent extends BookOfferEvent {}
+
 class BookOfferGetEvent extends BookOfferEvent {
   final String bookId;
 
@@ -19,6 +21,16 @@ class BookOfferAddToOfferedEvent extends BookOfferEvent {
 
   BookOfferAddToOfferedEvent({
     required this.bookId,
+    required this.context,
+  });
+}
+
+class BookOfferRequestBookEvent extends BookOfferEvent {
+  final BookOfferLocal offer;
+  final BuildContext context;
+
+  BookOfferRequestBookEvent({
+    required this.offer,
     required this.context,
   });
 }

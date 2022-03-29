@@ -13,7 +13,7 @@ class StaticWidgets {
   static void showSnackBar(BuildContext context, String message, {TimeDuration duration = TimeDuration.short}) {
     final snackBar = SnackBar(
       content: Text(message),
-      backgroundColor: ThemeColors.orange.shade400,
+      backgroundColor: ThemeColors.purple.shade600,
       duration: StaticProxy.getTimeDurationValue(duration),
     );
     WidgetsBinding.instance!.addPostFrameCallback((_) {

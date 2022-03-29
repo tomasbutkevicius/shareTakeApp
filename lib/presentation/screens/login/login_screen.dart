@@ -80,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                         child: Padding(
                           padding: StaticStyles.contentPadding,
                           child: ProxyTextWidget(
-                            color: ThemeColors.orange,
+                            color: ThemeColors.blue.shade600,
                             text: "Register",
                             fontStyle: FontStyle.italic,
                           ),
