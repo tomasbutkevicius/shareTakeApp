@@ -38,7 +38,7 @@ class OwnerRequestsScreen extends StatelessWidget {
               text: (state.status as RequestStatusSuccess).message,
             ).then(
               (value) => BlocGetter.getRequestsOwnerBloc(context).add(
-                RequestsOwnerGetListEvent(),
+                RequestsOwnerResetStatusEvent(),
               ),
             );
           }

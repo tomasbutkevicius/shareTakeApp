@@ -43,12 +43,19 @@ class ReceiverRequestsScreen extends StatelessWidget {
               ),
             );
           }
+          if (state.status is RequestStatusError) {
+            StaticWidgets.showDefaultDialog(
+              context: context,
+              text: (state.status as RequestStatusError).message,
+            ).then(
+                  (value) => BlocGetter.getRequestsReceiverBloc(context).add(
+                    RequestsReceiverResetStatusEvent(),
+              ),
+            );
+          }
         },
         builder: (context, state) {
           RequestStatus requestStatus = state.status;
-          if (requestStatus is RequestStatusError) {
-            return Center(child: ProxyTextWidget(text: "Encountered error\n" + requestStatus.message));
-          }
 
           return CenteredLoader(
             isLoading: requestStatus is RequestStatusLoading,
@@ -117,8 +124,8 @@ class ReceiverRequestsScreen extends StatelessWidget {
       color: buttonColor,
       isUppercase: false,
       onPressed: () {
-        context.read<RequestsAsOwnerBloc>().add(
-              RequestsOwnerCreateBookTradeEvent(
+        context.read<RequestsAsReceiverBloc>().add(
+          RequestsReceiverCreateBookTradeEvent(
                 requestLocal: requestLocal,
               ),
             );

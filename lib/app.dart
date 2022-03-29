@@ -148,6 +148,7 @@ class MyApp extends StatelessWidget {
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),
                 requestRepository: context.read<BookRequestRepository>(),
+                tradeRepository: context.read<TradeRepository>(),
               ),
             ),
             BlocProvider<RequestsAsOwnerBloc>(
