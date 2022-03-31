@@ -29,4 +29,22 @@ class BookTradeLocal extends Equatable {
         receiver,
         status,
       ];
+
+  BookTradeLocal copyWith({
+    String? id,
+    DateTime? startDate,
+    BookLocal? book,
+    UserLocal? owner,
+    UserLocal? receiver,
+    TradeStatus? status,
+  }) {
+    return BookTradeLocal(
+      id: id ?? this.id,
+      startDate: startDate ?? this.startDate,
+      book: book ?? this.book,
+      owner: owner ?? this.owner,
+      receiver: receiver ?? this.receiver,
+      status: status ?? this.status,
+    );
+  }
 }

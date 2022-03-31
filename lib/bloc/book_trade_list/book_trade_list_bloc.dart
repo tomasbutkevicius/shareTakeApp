@@ -10,7 +10,6 @@ import 'package:share_take/data/models/trade/book_trade_local.dart';
 import 'package:share_take/data/models/trade/book_trade_remote.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
-import 'package:share_take/data/repositories/book_request_repository.dart';
 import 'package:share_take/data/repositories/trade_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 
@@ -20,14 +19,12 @@ part 'book_trade_list_state.dart';
 
 class BookTradeListBloc extends Bloc<BookTradeListEvent, BookTradeListState> {
   final AuthenticationBloc authenticationBloc;
-  final BookRequestRepository requestRepository;
   final UserRepository userRepository;
   final BookRepository bookRepository;
   final TradeRepository tradeRepository;
 
   BookTradeListBloc({
     required this.authenticationBloc,
-    required this.requestRepository,
     required this.userRepository,
     required this.bookRepository,
     required this.tradeRepository,

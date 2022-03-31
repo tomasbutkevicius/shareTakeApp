@@ -64,16 +64,16 @@ class RemoteBookTradeSource {
     }
   }
 
-  // Future<BookRequestRemote> getRequest(String requestId) async {
-  //   try {
-  //     CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
-  //     DocumentSnapshot request = await requestCollection.doc(requestId).get();
-  //
-  //     return BookRequestRemote.fromSnapshot(request);
-  //   } on FirebaseException catch (firebaseException) {
-  //     throw Exception(firebaseException.message);
-  //   }
-  // }
+  Future<BookTradeRemote> getTrade(String id) async {
+    try {
+      CollectionReference collection = fireStore.collection(StaticApi.tradeCollection);
+      DocumentSnapshot request = await collection.doc(id).get();
+
+      return BookTradeRemote.fromSnapshot(request);
+    } on FirebaseException catch (firebaseException) {
+      throw Exception(firebaseException.message);
+    }
+  }
 
   Future createBookTrade(BookTradeRemote tradeRemote) async {
     try {
@@ -97,6 +97,28 @@ class RemoteBookTradeSource {
       await fireStore.collection(StaticApi.tradeCollection).doc().set(tradeRemote.toMap());
     } on FirebaseException catch (firebaseException) {
       throw Exception(firebaseException.message);
+    }
+  }
+
+  Future updateTradeStatus(String userId, String tradeId, TradeStatus status) async {
+    try {
+      CollectionReference collection = fireStore.collection(StaticApi.tradeCollection);
+
+      BookTradeRemote bookTradeRemoteFound = await getTrade(tradeId);
+
+      if(bookTradeRemoteFound.ownerId != userId) {
+        throw Exception("User must be owner to update status");
+      }
+
+      if(bookTradeRemoteFound.status == status) {
+        throw Exception("Selected status already set");
+      }
+
+      await collection.doc(tradeId).update({
+        "status": status.name,
+      });
+    } on FirebaseException catch (firebaseException) {;
+    throw Exception(firebaseException.message);
     }
   }
 
@@ -126,16 +148,4 @@ class RemoteBookTradeSource {
   //   }
   // }
   //
-  // Future updateRequestStatus(String requestId, BookRequestStatus status) async {
-  //   try {
-  //     CollectionReference requestCollection = fireStore.collection(StaticApi.requestCollection);
-  //
-  //     await requestCollection.doc(requestId).update({
-  //       "status": status.name,
-  //       'editable': false,
-  //     });
-  //   } on FirebaseException catch (firebaseException) {;
-  //   throw Exception(firebaseException.message);
-  //   }
-  // }
 }

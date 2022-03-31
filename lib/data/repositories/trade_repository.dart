@@ -3,7 +3,6 @@ import 'package:share_take/data/data_providers/remote/remote_book_trade_source.d
 import 'package:share_take/data/data_providers/remote/remote_offer_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_request_source.dart';
 import 'package:share_take/data/models/book/book_request_local.dart';
-import 'package:share_take/data/models/book/book_request_remote.dart';
 import 'package:share_take/data/models/trade/book_trade_remote.dart';
 
 class TradeRepository {
@@ -37,5 +36,9 @@ class TradeRepository {
 
   Future<List<BookTradeRemote>> getUserTrades(String userId) async {
     return await remoteBookTradeSource.getUserTradeList(userId);
+  }
+
+  Future updateTradeStatus({required String userId, required String tradeId, required TradeStatus status}) async {
+    return await remoteBookTradeSource.updateTradeStatus(userId, tradeId, status);
   }
 }

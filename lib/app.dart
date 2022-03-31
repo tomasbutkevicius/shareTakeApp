@@ -165,7 +165,6 @@ class MyApp extends StatelessWidget {
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),
-                requestRepository: context.read<BookRequestRepository>(),
                 tradeRepository: context.read<TradeRepository>(),
               ),
             ),

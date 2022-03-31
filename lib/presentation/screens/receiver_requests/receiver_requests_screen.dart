@@ -113,7 +113,7 @@ class ReceiverRequestsScreen extends StatelessWidget {
   }
 
   Widget _getCreateTradeBtn(BuildContext context, BookRequestLocal requestLocal) {
-    String buttonText = "Trade";
+    String buttonText = "Start Trade";
     Color buttonColor = ThemeColors.blue.shade600;
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
