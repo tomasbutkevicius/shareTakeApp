@@ -30,7 +30,7 @@ class TradeItem extends StatelessWidget {
             ProxySpacingVerticalWidget(),
             ListTile(
               leading: Icon(Icons.swap_horiz),
-              title: Text("STATUS: " + trade.status.name),
+              title: Text("STATUS: " + trade.status.name.toUpperCase()),
             ),
             ListTile(
               leading: Icon(Icons.date_range),
