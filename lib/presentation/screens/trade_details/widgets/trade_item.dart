@@ -7,6 +7,8 @@ import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widg
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 import 'package:share_take/presentation/widgets/user/user_list_card.dart';
 
+import '../../../../utilities/static_utilities.dart';
+
 class TradeItem extends StatelessWidget {
   const TradeItem({Key? key, required this.trade}) : super(key: key);
 
@@ -29,6 +31,12 @@ class TradeItem extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.swap_horiz),
               title: Text("STATUS: " + trade.status.name),
+            ),
+            ListTile(
+              leading: Icon(Icons.date_range),
+              title: ProxyTextWidget(
+                text: "Started: " + StaticUtilities.formatDate(trade.startDate),
+              ),
             ),
             ProxySpacingVerticalWidget(),
           ],
