@@ -4,15 +4,12 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
+import 'package:share_take/bloc/book_trade_list/book_trade_list_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/enums.dart';
-import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/trade/book_trade_local.dart';
-import 'package:share_take/data/models/trade/book_trade_remote.dart';
 import 'package:share_take/data/models/user/user_local.dart';
-import 'package:share_take/data/repositories/book_repository.dart';
 import 'package:share_take/data/repositories/trade_repository.dart';
-import 'package:share_take/data/repositories/user_repository.dart';
 
 part 'book_trade_event.dart';
 
@@ -20,15 +17,13 @@ part 'book_trade_state.dart';
 
 class BookTradeBloc extends Bloc<BookTradeEvent, BookTradeState> {
   final AuthenticationBloc authenticationBloc;
-  final UserRepository userRepository;
-  final BookRepository bookRepository;
   final TradeRepository tradeRepository;
+  final BookTradeListBloc bookTradeListBloc;
 
   BookTradeBloc({
     required this.authenticationBloc,
-    required this.userRepository,
-    required this.bookRepository,
     required this.tradeRepository,
+    required this.bookTradeListBloc,
   }) : super(const BookTradeState()) {
     on<BookTradeResetEvent>(_handleBookTradeResetEvent);
     on<BookTradeResetStatusEvent>(_handleBookTradeResetStatusEvent);
@@ -45,7 +40,7 @@ class BookTradeBloc extends Bloc<BookTradeEvent, BookTradeState> {
   }
 
   void _handleBookTradeOpenEvent(BookTradeOpenEvent event, Emitter<BookTradeState> emit) {
-    emit(state.copyWith(trade: event.selectedTrade));
+    emit(state.copyWith(trade: event.selectedTrade, status: const RequestStatusInitial()));
   }
 
   Future _handleBookTradeUpdateStatusEvent(BookTradeUpdateStatusEvent event, Emitter<BookTradeState> emit) async {
@@ -77,6 +72,7 @@ class BookTradeBloc extends Bloc<BookTradeEvent, BookTradeState> {
           trade: trade.copyWith(status: event.status),
         ),
       );
+      bookTradeListBloc.add(BookTradeListGetListEvent());
     } catch (e) {
       print(e.toString());
       emit(state.copyWith(status: RequestStatusError(message: e.toString())));

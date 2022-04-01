@@ -9,6 +9,7 @@ import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
 import 'package:share_take/bloc/requests_as_receiver/requests_as_receiver_bloc.dart';
 import 'package:share_take/data/models/book/book_local.dart';
+import 'package:share_take/data/models/trade/book_trade_local.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/presentation/router/arguments.dart';
 import 'package:share_take/presentation/screens/add_book/add_book_screen.dart';
@@ -19,6 +20,8 @@ import 'package:share_take/presentation/screens/owner_requests/owner_requests_sc
 import 'package:share_take/presentation/screens/receiver_requests/receiver_requests_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
 import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
+import 'package:share_take/presentation/screens/trade_details/trade_details_owner_screen.dart';
+import 'package:share_take/presentation/screens/trade_details/trade_details_receiver_screen.dart';
 import 'package:share_take/presentation/screens/trade_list/trade_list_screen.dart';
 import 'package:share_take/presentation/screens/user_details/user_details_screen.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
@@ -80,9 +83,9 @@ class StaticNavigator {
   }
 
   static void pushUserDetailScreen(
-      BuildContext context,
-      UserLocal user,
-      ) {
+    BuildContext context,
+    UserLocal user,
+  ) {
     Navigator.of(context).pushNamed(
       UserDetailsScreen.routeName,
       arguments: ScreenArguments(userLocal: user),
@@ -90,9 +93,9 @@ class StaticNavigator {
   }
 
   static void pushRequestsReceiverScreen(
-      BuildContext context,
-      ) {
-    if(!authorised(context)){
+    BuildContext context,
+  ) {
+    if (!authorised(context)) {
       handleUnauthorised(context);
       return;
     }
@@ -103,9 +106,9 @@ class StaticNavigator {
   }
 
   static void pushRequestsOwnerScreen(
-      BuildContext context,
-      ) {
-    if(!authorised(context)){
+    BuildContext context,
+  ) {
+    if (!authorised(context)) {
       handleUnauthorised(context);
       return;
     }
@@ -116,9 +119,9 @@ class StaticNavigator {
   }
 
   static void pushTradeListScreen(
-      BuildContext context,
-      ) {
-    if(!authorised(context)){
+    BuildContext context,
+  ) {
+    if (!authorised(context)) {
       handleUnauthorised(context);
       return;
     }
@@ -126,6 +129,35 @@ class StaticNavigator {
     Navigator.of(context).pushNamed(
       TradeListScreen.routeName,
     );
+  }
+
+  static void pushTradeDetailsScreen(
+    BuildContext context,
+    BookTradeLocal bookTradeLocal,
+  ) {
+    if (!authorised(context)) {
+      handleUnauthorised(context);
+      return;
+    }
+    AuthenticationState state = BlocProvider.of<AuthenticationBloc>(context).state;
+
+    if (state.user!.id == bookTradeLocal.owner.id) {
+      Navigator.of(context).pushNamed(
+        TradeDetailsOwnerScreen.routeName,
+        arguments: ScreenArguments(tradeLocal: bookTradeLocal),
+      );
+      return;
+    }
+
+    if (state.user!.id == bookTradeLocal.receiver.id) {
+      Navigator.of(context).pushNamed(
+        TradeDetailsReceiverScreen.routeName,
+        arguments: ScreenArguments(tradeLocal: bookTradeLocal),
+      );
+      return;
+    }
+
+    StaticWidgets.showSnackBar(context, "You do not belong to trade");
   }
 
   static void popContext(BuildContext context) {

@@ -10,6 +10,8 @@ import 'package:share_take/presentation/screens/owner_requests/owner_requests_sc
 import 'package:share_take/presentation/screens/receiver_requests/receiver_requests_screen.dart';
 import 'package:share_take/presentation/screens/register/register_screen.dart';
 import 'package:share_take/presentation/screens/auth_user/auth_user_screen.dart';
+import 'package:share_take/presentation/screens/trade_details/trade_details_owner_screen.dart';
+import 'package:share_take/presentation/screens/trade_details/trade_details_receiver_screen.dart';
 import 'package:share_take/presentation/screens/trade_list/trade_list_screen.dart';
 import 'package:share_take/presentation/screens/user_details/user_details_screen.dart';
 
@@ -36,6 +38,11 @@ class AppRouter {
         return _handleOwnerRequestsScreen();
       case TradeListScreen.routeName:
         return _handleTradeListScreen();
+      case TradeDetailsOwnerScreen.routeName:
+        return _handleTradeDetailsOwnerScreen(settings);
+      case TradeDetailsReceiverScreen.routeName:
+        return _handleTradeDetailsReceiverScreen(settings);
+        
       default:
         return null;
     }
@@ -108,6 +115,30 @@ class AppRouter {
   MaterialPageRoute<dynamic> _handleTradeListScreen() {
     return MaterialPageRoute<dynamic>(
       builder: (_) => const TradeListScreen(),
+    );
+  }
+
+
+  MaterialPageRoute<dynamic> _handleTradeDetailsOwnerScreen(RouteSettings settings) {
+    final args = settings.arguments as ScreenArguments;
+    return MaterialPageRoute(
+      builder: (context) {
+        return TradeDetailsOwnerScreen(
+          bookTrade: args.tradeLocal!,
+        );
+      },
+    );
+  }
+
+
+  MaterialPageRoute<dynamic> _handleTradeDetailsReceiverScreen(RouteSettings settings) {
+    final args = settings.arguments as ScreenArguments;
+    return MaterialPageRoute(
+      builder: (context) {
+        return TradeDetailsReceiverScreen(
+          bookTrade: args.tradeLocal!,
+        );
+      },
     );
   }
 }

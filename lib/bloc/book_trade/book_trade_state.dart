@@ -5,7 +5,10 @@ class BookTradeState extends Equatable {
   final RequestStatus status;
 
   @override
-  List<Object?> get props => [trade, status,];
+  List<Object?> get props => [
+        trade,
+        status,
+      ];
 
   const BookTradeState({
     this.trade,

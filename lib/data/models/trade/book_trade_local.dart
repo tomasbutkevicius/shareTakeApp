@@ -47,4 +47,16 @@ class BookTradeLocal extends Equatable {
       status: status ?? this.status,
     );
   }
+
+  @override
+  String toString() {
+    return '-------------\n'
+        'Date of trade start: $startDate\n\n'
+        'Book isbn: ${book.isbn}\n'
+        'Book title: ${book.title}\n\n'
+        'Owner: ${owner.firstName} ${owner.lastName} ${owner.email}\n '
+        'Receiver: ${receiver.firstName} ${receiver.lastName} ${receiver.email}\n\n'
+        'Status: ${status.name.toUpperCase()} \n'
+        '-------------\n';
+  }
 }

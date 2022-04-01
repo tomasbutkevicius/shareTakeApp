@@ -3,16 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/book_trade_list/book_trade_list_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
-import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
-import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
 import 'package:share_take/constants/theme/theme_colors.dart';
-import 'package:share_take/data/models/book/book_request_local.dart';
 import 'package:share_take/data/models/trade/book_trade_local.dart';
+import 'package:share_take/presentation/router/static_navigator.dart';
 import 'package:share_take/presentation/screens/user_details/widgets/book_list_card_widget.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
-import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/list_card.dart';
 import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
@@ -125,6 +122,7 @@ class TradeListScreen extends StatelessWidget {
       color: buttonColor,
       isUppercase: false,
       onPressed: () {
+        StaticNavigator.pushTradeDetailsScreen(context, trade);
       },
     );
   }

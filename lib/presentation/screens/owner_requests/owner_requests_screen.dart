@@ -141,7 +141,7 @@ class OwnerRequestsScreen extends StatelessWidget {
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: 100,
+        horizontal: 30,
       ),
       text: buttonText,
       color: buttonColor,
@@ -166,7 +166,7 @@ class OwnerRequestsScreen extends StatelessWidget {
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: 100,
+        horizontal: 30,
       ),
       text: buttonText,
       color: buttonColor,
@@ -190,7 +190,7 @@ class OwnerRequestsScreen extends StatelessWidget {
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: 100,
+        horizontal: 30,
       ),
       text: buttonText,
       color: buttonColor,
