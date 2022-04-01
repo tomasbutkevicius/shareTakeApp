@@ -10,6 +10,7 @@ import 'package:share_take/presentation/router/static_navigator.dart';
 import 'package:share_take/presentation/screens/user_details/widgets/book_list_card_widget.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
 import 'package:share_take/presentation/widgets/custom_app_bar.dart';
+import 'package:share_take/presentation/widgets/header.dart';
 import 'package:share_take/presentation/widgets/list_card.dart';
 import 'package:share_take/presentation/widgets/proxy/button/proxy_button_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
@@ -70,7 +71,7 @@ class TradeListScreen extends StatelessWidget {
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       children: [
-        state.tradeList.isEmpty ? ProxyTextWidget(text: "No trades found") : SizedBox.shrink(),
+        state.tradeList.isEmpty ? Header(text: "No trades found") : SizedBox.shrink(),
         ListView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),

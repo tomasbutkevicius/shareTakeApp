@@ -31,6 +31,7 @@ class AuthLoginEvent extends AuthenticationEvent {
 class AuthRegisterEvent extends AuthenticationEvent {
   final String email;
   final String password;
+  final String repeatPassword;
   final String firstName;
   final String lastName;
   final BuildContext context;
@@ -38,13 +39,14 @@ class AuthRegisterEvent extends AuthenticationEvent {
   const AuthRegisterEvent({
     required this.email,
     required this.password,
+    required this.repeatPassword,
     required this.firstName,
     required this.lastName,
     required this.context,
   });
 
   @override
-  List<Object> get props => [email, password, firstName, lastName, context];
+  List<Object> get props => [email, password, repeatPassword, firstName, lastName, context];
 }
 
 class AuthRemindPasswordEvent extends AuthenticationEvent {

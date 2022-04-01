@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
+import 'package:share_take/data/data_senders/email_service.dart';
 import 'package:share_take/data/models/book_offers/book_offer_local.dart';
 import 'package:share_take/data/models/book_offers/book_offer_remote.dart';
 import 'package:share_take/data/models/book_wants/book_wants_remote.dart';
@@ -98,8 +99,16 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
           receiverId: user.id,
           offerId: event.offer.offerId,
         );
-        emit(state.copyWith(status: RequestStatusSuccess(message: "Request sent")));
 
+        try{
+          await EmailService.sendEmail(
+            toEmails: [event.offer.owner.email],
+            ccEmails: [user.email],
+            subject: "(Share Take App) Book request received",
+            body: "You have received notification from ${user.email} for your book offer",
+          );
+        }catch(e){}
+        emit(state.copyWith(status: RequestStatusSuccess(message: "Request sent")));
       } catch (e) {
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));
       }

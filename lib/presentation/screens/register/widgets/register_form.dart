@@ -21,12 +21,15 @@ class _RegisterFormState extends State<RegisterForm> {
   late final TextEditingController _firstNameController = TextEditingController();
   late final TextEditingController _lastNameController = TextEditingController();
   late final TextEditingController _passwordController = TextEditingController();
+  late final TextEditingController _passwordRepeatController = TextEditingController();
+
   final focus = FocusNode();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _passwordRepeatController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     super.dispose();
@@ -42,6 +45,8 @@ class _RegisterFormState extends State<RegisterForm> {
             _emailField(context),
             const ProxySpacingVerticalWidget(),
             _passwordField(context),
+            const ProxySpacingVerticalWidget(),
+            _passwordRepeatField(context),
             const ProxySpacingVerticalWidget(),
             _firstNameField(context),
             const ProxySpacingVerticalWidget(),
@@ -72,6 +77,30 @@ class _RegisterFormState extends State<RegisterForm> {
               labelText: "Password",
               icon: Icon(
                 Icons.security,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _passwordRepeatField(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 480.0),
+            child: ProxyTextFormField(
+              obscureText: true,
+              controller: _passwordRepeatController,
+              onFieldSubmitted: (v) {
+                FocusScope.of(context).requestFocus(focus);
+              },
+              labelText: "Repeat Password",
+              icon: Icon(
+                Icons.security_outlined,
               ),
             ),
           ),
@@ -159,7 +188,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget _getSubmitBtn(BuildContext context) {
-    String buttonText = "JOIN THE CLUB";
+    String buttonText = "SUBMIT";
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
@@ -173,6 +202,7 @@ class _RegisterFormState extends State<RegisterForm> {
           AuthRegisterEvent(
             email: _emailController.text,
             password: _passwordController.text,
+            repeatPassword: _passwordRepeatController.text,
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,
             context: context,

@@ -39,7 +39,7 @@ class DrawerWidget extends StatelessWidget {
                     iconData: Icons.verified_user,
                     onTap: () {
                       StaticNavigator.popContext(context);
-                      StaticNavigator.pushUserScreen(context);
+                      StaticNavigator.pushUserDetailScreen(context, state.user!);
                     },
                   );
                 }
@@ -53,22 +53,22 @@ class DrawerWidget extends StatelessWidget {
               },
             ),
             _buildDivider(),
-            _buildMenuItemIconData(
-              text: Translations.wishList,
-              iconData: Icons.favorite,
-              onTap: () {
-                Navigator.pop(context);
-                // StaticNavigator.navigateToTemperatureMain(context);
-              },
-            ),
-            _buildMenuItemIconData(
-              text: Translations.yourOffers,
-              iconData: Icons.folder_shared,
-              onTap: () {
-                Navigator.pop(context);
-                // StaticNavigator.navigateToHistoryMain(context);
-              },
-            ),
+            // _buildMenuItemIconData(
+            //   text: Translations.wishList,
+            //   iconData: Icons.favorite,
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     // StaticNavigator.navigateToTemperatureMain(context);
+            //   },
+            // ),
+            // _buildMenuItemIconData(
+            //   text: Translations.yourOffers,
+            //   iconData: Icons.folder_shared,
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     // StaticNavigator.navigateToHistoryMain(context);
+            //   },
+            // ),
             _buildMenuItemIconData(
               text: "Add book",
               iconData: Icons.add,

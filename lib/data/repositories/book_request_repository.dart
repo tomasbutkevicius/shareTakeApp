@@ -1,6 +1,7 @@
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/data/data_providers/remote/remote_offer_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_request_source.dart';
+import 'package:share_take/data/data_senders/email_service.dart';
 import 'package:share_take/data/models/book/book_request_remote.dart';
 
 class BookRequestRepository {

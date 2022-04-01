@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:share_take/bloc/authentication/authentication_bloc.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/constants/enums.dart';
+import 'package:share_take/data/data_senders/email_service.dart';
 import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/book/book_request_local.dart';
 import 'package:share_take/data/models/book/book_request_remote.dart';
@@ -84,6 +85,19 @@ class RequestsAsOwnerBloc extends Bloc<RequestsAsOwnerEvent, RequestsAsOwnerStat
         loggedInUser.id,
         event.status,
       );
+
+      if(event.status == BookRequestStatus.accepted) {
+        try{
+        BookRequestLocal bookRequestLocal = state.requestList.firstWhere((element) => element.requestId == event.requestId);
+
+          await EmailService.sendEmail(
+            toEmails: [bookRequestLocal.receiver.email],
+            ccEmails: [bookRequestLocal.owner.email],
+            subject: "(Share Take App) Book Request accepted!!",
+            body: "Your request for ${bookRequestLocal.book.title} book has been accepted",
+          );
+        }catch(e){}
+      }
 
       add(RequestsOwnerGetListEvent());
     } catch (e) {
