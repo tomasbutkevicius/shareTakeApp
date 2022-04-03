@@ -81,7 +81,7 @@ class RemoteBookRequestSource {
     }
   }
 
-  Future deleteBookRequest(String userId, String requestId) async {
+  Future deleteBookRequest(String requestId) async {
     try {
       await fireStore.collection(StaticApi.requestCollection).doc(requestId).delete();
     } on FirebaseException catch (firebaseException) {

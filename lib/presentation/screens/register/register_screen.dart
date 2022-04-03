@@ -20,7 +20,7 @@ class RegisterScreen extends StatelessWidget {
     String message = "";
 
     return Scaffold(
-      appBar: CustomAppBar.build(context, backgroundColor: ThemeColors.blue.shade600),
+      appBar: CustomAppBar.build(context,),
       body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state.status is RequestStatusError) {

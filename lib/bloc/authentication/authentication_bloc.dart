@@ -116,6 +116,9 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         );
 
         String? errorMessage = validateRegisterRequest(registerRequest);
+        if(event.repeatPassword.trim() != event.password.trim()){
+          errorMessage = "Passwords do not match";
+        }
         if (errorMessage != null) {
           emit(state.copyWith(
             status: RequestStatusError(message: errorMessage),

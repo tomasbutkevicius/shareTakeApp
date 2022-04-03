@@ -5,5 +5,5 @@ class StaticApi {
   static const String wantedCollection = "wanted";
   static const String offeredCollection = "offered";
   static const String requestCollection = "requests";
-
+  static const String tradeCollection = "bookTrades";
 }

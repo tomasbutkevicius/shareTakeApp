@@ -22,12 +22,33 @@ class SharingInfoView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Icon(Icons.swap_horizontal_circle_outlined),
+                Container(
+                  height: 50,
+                  width: 250,
+                  child: ProxyButtonWidget(
+                    color: ThemeColors.light_blue.shade600,
+                    text: "Trades",
+                    padding: StaticStyles.listViewPadding,
+                    onPressed: (){
+                      StaticNavigator.pushTradeListScreen(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            ProxySpacingVerticalWidget(
+              size: ProxySpacing.huge,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Icon(Icons.notifications_active_outlined),
                 Container(
                   height: 50,
                   width: 250,
                   child: ProxyButtonWidget(
-                    color: ThemeColors.blue.shade600,
+                    color: ThemeColors.orange.shade600,
                     text: "Requested from you",
                     padding: StaticStyles.listViewPadding,
                     onPressed: (){
@@ -48,7 +69,7 @@ class SharingInfoView extends StatelessWidget {
                   height: 50,
                   width: 250,
                   child: ProxyButtonWidget(
-                    color: ThemeColors.blue.shade600,
+                    color: ThemeColors.orange.shade600,
                     text: "Requested from others",
                     padding: StaticStyles.listViewPadding,
                     onPressed: (){

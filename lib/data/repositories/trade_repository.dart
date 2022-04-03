@@ -1,74 +1,44 @@
 import 'package:share_take/constants/enums.dart';
+import 'package:share_take/data/data_providers/remote/remote_book_trade_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_offer_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_request_source.dart';
-import 'package:share_take/data/models/book/book_request_remote.dart';
+import 'package:share_take/data/models/book/book_request_local.dart';
+import 'package:share_take/data/models/trade/book_trade_remote.dart';
 
 class TradeRepository {
   final RemoteBookRequestSource remoteBookRequestSource;
   final RemoteOfferSource remoteOfferSource;
+  final RemoteBookTradeSource remoteBookTradeSource;
 
   const TradeRepository({
     required this.remoteBookRequestSource,
     required this.remoteOfferSource,
+    required this.remoteBookTradeSource,
   });
 
-  Future requestBook({
-    required String bookId,
-    required String ownerId,
-    required String receiverId,
-    required String offerId,
+  Future createBookTrade({
+    required BookRequestLocal requestLocal,
   }) async {
-    try {
-      await remoteOfferSource.getOfferById(offerId);
-    } catch (e) {
-      throw Exception("Could not find offer");
+    if(requestLocal.status != BookRequestStatus.accepted) {
+      throw Exception("Request not accepted");
     }
-
-    BookRequestRemote request = BookRequestRemote(
+    BookTradeRemote bookTradeRemote = BookTradeRemote(
       id: "",
-      bookId: bookId,
-      ownerId: ownerId,
-      receiverId: receiverId,
-      offerId: offerId,
-      status: BookRequestStatus.waiting,
+      startDate: DateTime.now(),
+      bookId: requestLocal.book.id,
+      ownerId: requestLocal.owner.id,
+      receiverId: requestLocal.receiver.id,
+      status: TradeStatus.negotiating,
     );
 
-    await remoteBookRequestSource.requestBook(request);
+    await remoteBookTradeSource.createBookTrade(bookTradeRemote);
   }
 
-  Future<List<BookRequestRemote>> getBookRequestsAsReceiver(String userId) async {
-    return remoteBookRequestSource.getUserRequestListAsReceiver(userId);
+  Future<List<BookTradeRemote>> getUserTrades(String userId) async {
+    return await remoteBookTradeSource.getUserTradeList(userId);
   }
 
-  Future<List<BookRequestRemote>> getBookRequestsAsOwner(String userId) async {
-    return remoteBookRequestSource.getUserRequestListAsOwner(userId);
-  }
-
-  Future updateBookRequestStatus(
-    String requestId,
-    String userId,
-    BookRequestStatus status,
-  ) async {
-    print("update caled");
-    BookRequestRemote foundRequest = await remoteBookRequestSource.getRequest(requestId);
-    print("found request");
-    print(foundRequest.toString());
-    if(!foundRequest.editable) {
-      throw Exception('Request edit disabled');
-    }
-    if (foundRequest.ownerId != userId) {
-      throw Exception("Only owner can edit status");
-    }
-    if (foundRequest.status == status){
-      return;
-    }
-    if(status == BookRequestStatus.accepted) {
-      await remoteBookRequestSource.updateRequestStatus(requestId, status);
-      return;
-    }
-    if(status == BookRequestStatus.rejected) {
-      await remoteBookRequestSource.updateRequestStatus(requestId, status);
-      return;
-    }
+  Future updateTradeStatus({required String userId, required String tradeId, required TradeStatus status}) async {
+    return await remoteBookTradeSource.updateTradeStatus(userId, tradeId, status);
   }
 }

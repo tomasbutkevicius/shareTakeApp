@@ -106,7 +106,6 @@ class _LoginFormState extends State<LoginForm> {
         horizontal: 100,
       ),
       text: buttonText,
-      color: ThemeColors.blue.shade600,
       isUppercase: false,
       onPressed: () {
         context.read<AuthenticationBloc>().add(

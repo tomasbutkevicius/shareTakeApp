@@ -6,6 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_take/bloc/book_list/book_list_bloc.dart';
 import 'package:share_take/bloc/book_offer/book_offer_bloc.dart';
+import 'package:share_take/bloc/book_trade/book_trade_bloc.dart';
+import 'package:share_take/bloc/book_trade_list/book_trade_list_bloc.dart';
 import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
@@ -17,11 +19,13 @@ import 'package:share_take/constants/theme/theme.dart';
 import 'package:share_take/data/data_providers/local/local_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_request_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_source.dart';
+import 'package:share_take/data/data_providers/remote/remote_book_trade_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_offer_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_wishlist_source.dart';
 import 'package:share_take/data/firebase_storage.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
+import 'package:share_take/data/repositories/book_request_repository.dart';
 import 'package:share_take/data/repositories/trade_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 import 'package:share_take/presentation/router/app_router.dart';
@@ -63,11 +67,23 @@ class MyApp extends StatelessWidget {
           ),
         ),
         RepositoryProvider(
+          create: (context) => BookRequestRepository(
+            remoteOfferSource: RemoteOfferSource(),
+            remoteBookRequestSource: RemoteBookRequestSource(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+        ),
+        RepositoryProvider(
           create: (context) => TradeRepository(
-              remoteOfferSource: RemoteOfferSource(),
-              remoteBookRequestSource: RemoteBookRequestSource(
-                fireStore: FirebaseFirestore.instance,
-              )),
+            remoteOfferSource: RemoteOfferSource(),
+            remoteBookRequestSource: RemoteBookRequestSource(
+              fireStore: FirebaseFirestore.instance,
+            ),
+            remoteBookTradeSource: RemoteBookTradeSource(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
         )
       ],
       child: Builder(builder: (context) {
@@ -110,7 +126,7 @@ class MyApp extends StatelessWidget {
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),
-                tradeRepository: context.read<TradeRepository>(),
+                tradeRepository: context.read<BookRequestRepository>(),
               ),
             ),
             BlocProvider<UserWantBloc>(
@@ -132,6 +148,7 @@ class MyApp extends StatelessWidget {
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),
+                requestRepository: context.read<BookRequestRepository>(),
                 tradeRepository: context.read<TradeRepository>(),
               ),
             ),
@@ -140,7 +157,23 @@ class MyApp extends StatelessWidget {
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 bookRepository: context.read<BookRepository>(),
                 userRepository: context.read<UserRepository>(),
+                requestRepository: context.read<BookRequestRepository>(),
                 tradeRepository: context.read<TradeRepository>(),
+              ),
+            ),
+            BlocProvider<BookTradeListBloc>(
+              create: (_) => BookTradeListBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                bookRepository: context.read<BookRepository>(),
+                userRepository: context.read<UserRepository>(),
+                tradeRepository: context.read<TradeRepository>(),
+              ),
+            ),
+            BlocProvider<BookTradeBloc>(
+              create: (_) => BookTradeBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                tradeRepository: context.read<TradeRepository>(),
+                bookTradeListBloc: BlocProvider.of<BookTradeListBloc>(_),
               ),
             ),
           ],
