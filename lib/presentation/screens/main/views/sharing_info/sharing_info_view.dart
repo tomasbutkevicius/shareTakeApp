@@ -49,7 +49,7 @@ class SharingInfoView extends StatelessWidget {
                   width: 250,
                   child: ProxyButtonWidget(
                     color: ThemeColors.orange.shade600,
-                    text: "Requested from you",
+                    text: "Received requests",
                     padding: StaticStyles.listViewPadding,
                     onPressed: (){
                       StaticNavigator.pushRequestsOwnerScreen(context);
@@ -70,7 +70,7 @@ class SharingInfoView extends StatelessWidget {
                   width: 250,
                   child: ProxyButtonWidget(
                     color: ThemeColors.orange.shade600,
-                    text: "Requested from others",
+                    text: "My requests",
                     padding: StaticStyles.listViewPadding,
                     onPressed: (){
                       StaticNavigator.pushRequestsReceiverScreen(context);
