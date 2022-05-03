@@ -29,7 +29,7 @@ class StaticUtilities {
   }
 
   static String formatDateDetailed(DateTime date) {
-    DateFormat formatter = DateFormat('yyyy/MM/dd H:m');
+    DateFormat formatter = DateFormat('yyyy/MM/dd H:mm');
 
     return formatter.format(date);
   }
