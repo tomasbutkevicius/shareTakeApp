@@ -127,7 +127,7 @@ class TradeDetailsOwnerScreen extends StatelessWidget {
             Expanded(
               flex: 2,
               child: EmailButtonWidget(
-                buttonText: "Email receiver",
+                buttonText: "Email",
                 toEmails: [
                   state.trade!.receiver.email,
                   state.trade!.owner.email,
