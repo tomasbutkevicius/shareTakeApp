@@ -9,6 +9,7 @@ import 'package:share_take/bloc/book_trade_list/book_trade_list_bloc.dart';
 import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
 import 'package:share_take/bloc/requests_as_receiver/requests_as_receiver_bloc.dart';
+import 'package:share_take/bloc/trade_comments/trade_comments_bloc.dart';
 import 'package:share_take/bloc/user_list/user_list_bloc.dart';
 import 'package:share_take/bloc/user_offer/user_offer_bloc.dart';
 import 'package:share_take/bloc/user_want/user_want_bloc.dart';
@@ -60,5 +61,9 @@ class BlocGetter {
 
   static BookTradeBloc getBookTradeBloc(BuildContext context) {
     return BlocProvider.of<BookTradeBloc>(context);
+  }
+
+  static TradeCommentsBloc getTradeCommentsBloc(BuildContext context) {
+    return BlocProvider.of<TradeCommentsBloc>(context);
   }
 }

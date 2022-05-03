@@ -28,6 +28,12 @@ class StaticUtilities {
     return formatter.format(date);
   }
 
+  static String formatDateDetailed(DateTime date) {
+    DateFormat formatter = DateFormat('yyyy/MM/dd H:mm');
+
+    return formatter.format(date);
+  }
+
   static bool isUrl(String text) {
     return Uri.tryParse(text)?.hasAbsolutePath ?? false;
   }
