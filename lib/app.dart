@@ -12,6 +12,7 @@ import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/bottom_main_navigation/bottom_main_navigation_bloc.dart';
 import 'package:share_take/bloc/requests_as_owner/requests_as_owner_bloc.dart';
 import 'package:share_take/bloc/requests_as_receiver/requests_as_receiver_bloc.dart';
+import 'package:share_take/bloc/trade_comments/trade_comments_bloc.dart';
 import 'package:share_take/bloc/user_list/user_list_bloc.dart';
 import 'package:share_take/bloc/user_offer/user_offer_bloc.dart';
 import 'package:share_take/constants/static_texts.dart';
@@ -20,12 +21,14 @@ import 'package:share_take/data/data_providers/local/local_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_request_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_book_trade_source.dart';
+import 'package:share_take/data/data_providers/remote/remote_comment_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_offer_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_user_source.dart';
 import 'package:share_take/data/data_providers/remote/remote_wishlist_source.dart';
 import 'package:share_take/data/firebase_storage.dart';
 import 'package:share_take/data/repositories/book_repository.dart';
 import 'package:share_take/data/repositories/book_request_repository.dart';
+import 'package:share_take/data/repositories/comment_repository.dart';
 import 'package:share_take/data/repositories/trade_repository.dart';
 import 'package:share_take/data/repositories/user_repository.dart';
 import 'package:share_take/presentation/router/app_router.dart';
@@ -81,6 +84,13 @@ class MyApp extends StatelessWidget {
               fireStore: FirebaseFirestore.instance,
             ),
             remoteBookTradeSource: RemoteBookTradeSource(
+              fireStore: FirebaseFirestore.instance,
+            ),
+          ),
+        ),
+        RepositoryProvider(
+          create: (context) => CommentRepository(
+            remoteCommentSource: RemoteCommentSource(
               fireStore: FirebaseFirestore.instance,
             ),
           ),
@@ -174,6 +184,12 @@ class MyApp extends StatelessWidget {
                 authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
                 tradeRepository: context.read<TradeRepository>(),
                 bookTradeListBloc: BlocProvider.of<BookTradeListBloc>(_),
+              ),
+            ),
+            BlocProvider<TradeCommentsBloc>(
+              create: (_) => TradeCommentsBloc(
+                authenticationBloc: BlocProvider.of<AuthenticationBloc>(_),
+                commentRepository: context.read<CommentRepository>(),
               ),
             ),
           ],

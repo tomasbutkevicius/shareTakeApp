@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class BookTradeCommentRemote extends Equatable {
+class BookTradeCommentModel extends Equatable {
   final String id;
   final String tradeId;
   final DateTime date;
@@ -9,7 +9,7 @@ class BookTradeCommentRemote extends Equatable {
   final String authorId;
   final String text;
 
-  const BookTradeCommentRemote({
+  const BookTradeCommentModel({
     required this.id,
     required this.tradeId,
     required this.date,
@@ -28,10 +28,10 @@ class BookTradeCommentRemote extends Equatable {
     };
   }
 
-  factory BookTradeCommentRemote.fromSnapshot(DocumentSnapshot snapshot) {
+  factory BookTradeCommentModel.fromSnapshot(DocumentSnapshot snapshot) {
     Map<String, dynamic> map = snapshot.data() as Map<String, dynamic>;
     try {
-      return BookTradeCommentRemote(
+      return BookTradeCommentModel(
         id: snapshot.id,
         date: DateTime.fromMillisecondsSinceEpoch((snapshot["date"] as Timestamp).millisecondsSinceEpoch),
         authorId: map["authorId"] as String,
