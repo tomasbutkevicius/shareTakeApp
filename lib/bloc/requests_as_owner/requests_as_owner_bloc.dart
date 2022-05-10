@@ -87,16 +87,16 @@ class RequestsAsOwnerBloc extends Bloc<RequestsAsOwnerEvent, RequestsAsOwnerStat
       );
 
       if(event.status == BookRequestStatus.accepted) {
-        try{
-        BookRequestLocal bookRequestLocal = state.requestList.firstWhere((element) => element.requestId == event.requestId);
-
-          await EmailService.sendEmail(
-            toEmails: [bookRequestLocal.receiver.email],
-            ccEmails: [bookRequestLocal.owner.email],
-            subject: "(Share Take App) Book Request accepted!!",
-            body: "Your request for ${bookRequestLocal.book.title} book has been accepted",
-          );
-        }catch(e){}
+        // try{
+        // BookRequestLocal bookRequestLocal = state.requestList.firstWhere((element) => element.requestId == event.requestId);
+        //
+        //   await EmailService.sendEmail(
+        //     toEmails: [bookRequestLocal.receiver.email],
+        //     ccEmails: [bookRequestLocal.owner.email],
+        //     subject: "(Share Take App) Book Request accepted!!",
+        //     body: "Your request for ${bookRequestLocal.book.title} book has been accepted",
+        //   );
+        // }catch(e){}
       }
 
       add(RequestsOwnerGetListEvent());

@@ -8,6 +8,7 @@ import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/presentation/router/static_navigator.dart';
 import 'package:share_take/presentation/widgets/centered_loader.dart';
+import 'package:share_take/presentation/widgets/list_card.dart';
 import 'package:share_take/presentation/widgets/proxy/spacing/proxy_spacing_widget.dart';
 import 'package:share_take/presentation/widgets/proxy/text/proxy_text_widget.dart';
 import 'package:share_take/presentation/widgets/utilities/static_widgets.dart';
@@ -64,73 +65,54 @@ class BookListView extends StatelessWidget {
   }
 
   Widget _bookCard(BookLocal book, BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: ThemeColors.bordo.shade600,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: StaticStyles.listViewPadding,
-          child: Column(
-            children: [
-              Flex(
-                direction: Axis.horizontal,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ProxyTextWidget(text: book.title),
-                  ),
-                  Expanded(
-                    child: IconButton(
-                      onPressed: () {
-                        StaticNavigator.pushBookDetailScreen(context, book);
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios),
-                    ),
-                  ),
-                ],
-              ),
-              ProxyTextWidget(
-                text: book.subtitle ?? "",
-              ),
-              Container(
-                constraints: BoxConstraints(
-                  minHeight: 250,
-                  minWidth: 250,
-                  maxHeight: 250,
-                  maxWidth: 250,
+    return ListCardWidget(
+      child: Padding(
+        padding: StaticStyles.listViewPadding,
+        child: Column(
+          children: [
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: ProxyTextWidget(text: book.title),
                 ),
-                child: StaticWidgets.getIconRemote(
-                  path: book.imageUrl ?? "",
-                ),
-              ),
-              Flex(
-                direction: Axis.horizontal,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ProxySpacingVerticalWidget(),
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {
+                      StaticNavigator.pushBookDetailScreen(context, book);
+                    },
+                    icon: const Icon(Icons.arrow_forward_ios),
                   ),
-                ],
+                ),
+              ],
+            ),
+            ProxyTextWidget(
+              text: book.subtitle ?? "",
+            ),
+            Container(
+              constraints: BoxConstraints(
+                minHeight: 250,
+                minWidth: 250,
+                maxHeight: 250,
+                maxWidth: 250,
               ),
-            ],
-          ),
+              child: StaticWidgets.getIconRemote(
+                path: book.imageUrl ?? "",
+              ),
+            ),
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: ProxySpacingVerticalWidget(),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

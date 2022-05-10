@@ -100,14 +100,14 @@ class BookOfferBloc extends Bloc<BookOfferEvent, BookOfferState> {
           offerId: event.offer.offerId,
         );
 
-        try{
-          await EmailService.sendEmail(
-            toEmails: [event.offer.owner.email],
-            ccEmails: [user.email],
-            subject: "(Share Take App) Book request received",
-            body: "You have received notification from ${user.email} for your book offer",
-          );
-        }catch(e){}
+        // try{
+        //   await EmailService.sendEmail(
+        //     toEmails: [event.offer.owner.email],
+        //     ccEmails: [user.email],
+        //     subject: "(Share Take App) Book request received",
+        //     body: "You have received notification from ${user.email} for your book offer",
+        //   );
+        // }catch(e){}
         emit(state.copyWith(status: RequestStatusSuccess(message: "Request sent")));
       } catch (e) {
         emit(state.copyWith(status: RequestStatusError(message: e.toString())));
