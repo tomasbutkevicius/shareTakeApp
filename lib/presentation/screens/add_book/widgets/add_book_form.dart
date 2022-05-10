@@ -24,17 +24,16 @@ class AddBookForm extends StatefulWidget {
 }
 
 class _AddBookFormState extends State<AddBookForm> {
-  late final TextEditingController _isbnController = TextEditingController(text: widget.bookToAdd.isbn);
-  late final TextEditingController _titleController = TextEditingController(text: widget.bookToAdd.title);
-  late final TextEditingController _subtitleController = TextEditingController(text: widget.bookToAdd.subtitle);
-  late final TextEditingController _authorsController = TextEditingController(text: widget.bookToAdd.authors.toString());
-  late final TextEditingController _imageController = TextEditingController(text: widget.bookToAdd.imageUrl);
-  late final TextEditingController _langController = TextEditingController(text: widget.bookToAdd.language);
-  late final TextEditingController _pagesController = TextEditingController(text: widget.bookToAdd.pages.toString());
-  late final TextEditingController _dateController = TextEditingController(text: "");
-
+  late final TextEditingController _isbnController;
+  late final TextEditingController _titleController;
+  late final TextEditingController _subtitleController;
+  late final TextEditingController _authorsController;
+  late final TextEditingController _imageController;
+  late final TextEditingController _langController;
+  late final TextEditingController _pagesController;
+  late final TextEditingController _dateController;
   late DateTime selectedDate;
-  late final TextEditingController _descriptionController = TextEditingController(text: widget.bookToAdd.description);
+  late final TextEditingController _descriptionController;
 
   final focus = FocusNode();
 
@@ -43,17 +42,30 @@ class _AddBookFormState extends State<AddBookForm> {
     DateFormat formatter = DateFormat('yyyy/MM/dd');
 
     selectedDate = widget.bookToAdd.publishDate ?? DateTime.now();
-    _dateController.value = TextEditingValue(text: formatter.format(selectedDate));
+    _dateController = TextEditingController(text: formatter.format(selectedDate));
+    _isbnController = TextEditingController(text: widget.bookToAdd.isbn);
+    _titleController = TextEditingController(text: widget.bookToAdd.title);
+    _subtitleController = TextEditingController(text: widget.bookToAdd.subtitle);
+    _authorsController = TextEditingController(text: widget.bookToAdd.authors.toString());
+    _imageController = TextEditingController(text: widget.bookToAdd.imageUrl);
+    _langController = TextEditingController(text: widget.bookToAdd.language);
+    _pagesController = TextEditingController(text: widget.bookToAdd.pages.toString());
+    _descriptionController = TextEditingController(text: widget.bookToAdd.description);
     super.initState();
-
   }
 
   @override
   void dispose() {
     _isbnController.dispose();
-    // _authorsController.dispose();
     _titleController.dispose();
     _subtitleController.dispose();
+    _authorsController.dispose();
+    _imageController.dispose();
+    _langController.dispose();
+    _pagesController.dispose();
+    _dateController.dispose();
+    _descriptionController.dispose();
+
     super.dispose();
   }
 
@@ -82,9 +94,13 @@ class _AddBookFormState extends State<AddBookForm> {
                 const ProxySpacingVerticalWidget(),
                 _inputField(context: context, controller: _authorsController, label: "Authors", enabled: false),
                 const ProxySpacingVerticalWidget(),
-                _getAddAuthorBtn(context),
-                const ProxySpacingVerticalWidget(),
-                _getRemoveAuthorBtn(context),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _getRemoveAuthorBtn(context),
+                    _getAddAuthorBtn(context),
+                  ],
+                ),
                 const ProxySpacingVerticalWidget(),
                 _inputField(context: context, controller: _imageController, label: "Image url", enabled: false),
                 const ProxySpacingVerticalWidget(),
@@ -179,7 +195,7 @@ class _AddBookFormState extends State<AddBookForm> {
     return ProxyButtonWidget(
       padding: const EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: 100,
+        horizontal: 120,
       ),
       text: buttonText,
       color: ThemeColors.bordo.shade600,
@@ -207,32 +223,17 @@ class _AddBookFormState extends State<AddBookForm> {
   }
 
   Widget _getAddAuthorBtn(BuildContext context) {
-    String buttonText = "Add author";
-    return ProxyButtonWidget(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: 100,
-      ),
-      text: buttonText,
-      color: ThemeColors.bordo.shade600,
-      isUppercase: false,
-      onPressed: () async {
+    return InkWell(
+      onTap: () async {
         await _displayAuthorInputDialog(context);
       },
+      child: Icon(Icons.add),
     );
   }
 
   Widget _getRemoveAuthorBtn(BuildContext context) {
-    String buttonText = "Remove author";
-    return ProxyButtonWidget(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: 100,
-      ),
-      text: buttonText,
-      color: ThemeColors.bordo.shade600,
-      isUppercase: false,
-      onPressed: () {
+    return InkWell(
+      onTap: (){
         if (widget.bookToAdd.authors.isNotEmpty) {
           setState(() {
             widget.bookToAdd.authors.removeLast();
@@ -240,6 +241,7 @@ class _AddBookFormState extends State<AddBookForm> {
           });
         }
       },
+      child: Icon(Icons.remove),
     );
   }
 

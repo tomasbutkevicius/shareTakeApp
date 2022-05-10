@@ -20,7 +20,7 @@ class ProxyButtonWidget extends StatelessWidget {
     this.fontWeight = ProxyFontWeight.semiBold,
     this.padding = const EdgeInsets.symmetric(
       vertical: 20.0,
-      horizontal: 40.0,
+      horizontal: 80.0,
     ),
     this.onPressed,
     this.isUppercase = false,
