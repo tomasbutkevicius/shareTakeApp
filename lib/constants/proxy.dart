@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:share_take/constants/enums.dart';
 
-class ProxyConstants {
+class StaticProxy {
   static const Map<ProxyFontSize, double> sizeVariants = {
     ProxyFontSize.extraSmall: 14.0,
     ProxyFontSize.small: 16.0,

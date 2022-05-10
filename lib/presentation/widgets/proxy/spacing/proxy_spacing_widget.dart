@@ -14,7 +14,7 @@ class ProxySpacingVerticalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 0,
-      height: ProxyConstants.getSpacing(size),
+      height: StaticProxy.getSpacing(size),
     );
   }
 }
@@ -31,7 +31,7 @@ class ProxySpacingHorizontalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 0,
-      width: ProxyConstants.getSpacing(size),
+      width: StaticProxy.getSpacing(size),
     );
   }
 }

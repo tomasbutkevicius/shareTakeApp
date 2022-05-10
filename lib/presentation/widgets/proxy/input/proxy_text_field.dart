@@ -39,7 +39,7 @@ class ProxyTextField extends StatelessWidget {
         hintText: Translations.hintText,
         hintStyle: TextStyle(
           color: ThemeColors.black.withOpacity(0.5),
-          fontSize: ProxyConstants.getFontSize(
+          fontSize: StaticProxy.getFontSize(
             ProxyFontSize.extraSmall,
           ),
         ),

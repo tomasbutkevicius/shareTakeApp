@@ -43,8 +43,8 @@ class ProxyTextWidget extends StatelessWidget {
       style: TextStyle(
         height: 1.1,
         color: color,
-        fontSize: ProxyConstants.getFontSize(fontSize),
-        fontWeight: ProxyConstants.getFontWeight(fontWeight),
+        fontSize: StaticProxy.getFontSize(fontSize),
+        fontWeight: StaticProxy.getFontWeight(fontWeight),
         fontStyle: fontStyle,
         decoration: isLineThrough ? TextDecoration.lineThrough : isUnderline ? TextDecoration.underline : null,
       ),

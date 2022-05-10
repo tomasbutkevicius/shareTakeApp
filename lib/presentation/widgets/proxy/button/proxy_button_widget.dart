@@ -15,7 +15,7 @@ class ProxyButtonWidget extends StatelessWidget {
   const ProxyButtonWidget({
     Key? key,
     required this.text,
-    this.color = ThemeColors.green,
+    this.color = ThemeColors.blue,
     this.fontSize = ProxyFontSize.medium,
     this.fontWeight = ProxyFontWeight.semiBold,
     this.padding = const EdgeInsets.symmetric(
@@ -47,8 +47,8 @@ class ProxyButtonWidget extends StatelessWidget {
         foregroundColor: MaterialStateProperty.all<Color>(ThemeColors.white),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(padding),
         textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
-          fontSize: ProxyConstants.getFontSize(fontSize),
-          fontWeight: ProxyConstants.getFontWeight(fontWeight),
+          fontSize: StaticProxy.getFontSize(fontSize),
+          fontWeight: StaticProxy.getFontWeight(fontWeight),
         )),
       ),
     );

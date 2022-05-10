@@ -26,6 +26,15 @@ class ThemeColors {
         600: const Color(0xFFC38000),
       }
   );
+
+  static const MaterialColor bordo = MaterialColor(
+      0xFFF6A100,
+      const <int, Color> {
+        400: const Color(0xFFA33700),
+        500: const Color(0xFF5A2F00),
+        600: const Color(0xFF5A2001),
+      }
+  );
   static const MaterialColor red = MaterialColor(
       0xFFF70015,
       const <int, Color> {
@@ -83,7 +92,7 @@ class ThemeColors {
   static const Color grey = Color(0xFFDDDDDD);
   static const Color dark_grey = Color(0xFFAFAFAF);
   static const Color darker_grey = Color(0xFF777777);
-  static const Color black = Color(0xFF333333);
+  static const Color black = Color(0xFF000000);
 
   // Price colors.
   static const Color priceRegular = black;
@@ -91,6 +100,9 @@ class ThemeColors {
   static const Color priceCampaign = red;
   static const Color priceEmployee = purple;
   static const Color priceUnknown = red;
+  static const Color primaryColor = orange;
+  static const Color secondaryColor = white;
+  static const Color backgroundColor = blue;
 
   // Overlays
   static const Color modalOverlay = Color(0x80000000);

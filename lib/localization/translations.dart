@@ -16,6 +16,30 @@ class Translations {
     return tr("invalid_route");
   }
   
+  static String get appTitle {
+    return tr("app_title");
+  }
+  
+  static String get emailPasswordCannotBeEmpty {
+    return tr("emailPasswordCannotBeEmpty");
+  }
+  
+  static String get wishList {
+    return tr("wish_list");
+  }
+  
+  static String get yourOffers {
+    return tr("your_offers");
+  }
+  
+  static String get logout {
+    return tr("logout");
+  }
+  
+  static String get login {
+    return tr("login");
+  }
+  
 
 
 }

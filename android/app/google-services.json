@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "473684524538",
+    "project_id": "share-take",
+    "storage_bucket": "share-take.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473684524538:android:c5d31945dfb02918f3f843",
+        "android_client_info": {
+          "package_name": "com.tomas.share_take"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473684524538-k9kbeggrgurbfd8obes20u8p0d3qqkk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8NO5ZqHm1edfhIMr8YXU4WSLXoc0PAI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473684524538-k9kbeggrgurbfd8obes20u8p0d3qqkk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
