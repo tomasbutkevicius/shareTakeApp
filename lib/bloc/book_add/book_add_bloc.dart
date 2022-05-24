@@ -45,7 +45,7 @@ class BookAddBloc extends Bloc<BookAddEvent, BookAddState> {
           emit(
             state.copyWith(
               bookToAdd: bookLocal,
-              status: RequestStatusSuccess(message: ""),
+              status: RequestStatusInitial(),
             ),
           );
         }

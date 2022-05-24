@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:share_take/bloc/book_want/book_want_bloc.dart';
 import 'package:share_take/bloc/helpers/bloc_getter.dart';
 import 'package:share_take/bloc/helpers/request_status.dart';
 import 'package:share_take/bloc/user_offer/user_offer_bloc.dart';
 import 'package:share_take/bloc/user_want/user_want_bloc.dart';
 import 'package:share_take/constants/enums.dart';
 import 'package:share_take/constants/static_styles.dart';
-import 'package:share_take/constants/theme/theme_colors.dart';
 import 'package:share_take/data/models/book/book_local.dart';
 import 'package:share_take/data/models/user/user_local.dart';
 import 'package:share_take/presentation/screens/user_details/widgets/book_list_card_widget.dart';
